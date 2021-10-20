@@ -1,17 +1,24 @@
 import { InvalidField } from '@errors/InvalidField'
-import { Car } from '@models/CarModel'
+import { Accessory, Car } from '@models/CarModel'
 import CarRepository from '@repositories/CarRepository'
 class CarService {
 
     async create(payload: Car) {
-        if(payload.acessorios.length == 0){
+        if (payload.acessorios.length == 0) {
             throw new InvalidField('acessorios')
         }
-        if(payload.ano < 1950 || payload.ano > 2022 ){
+        if (payload.ano < 1950 || payload.ano > 2022) {
             throw new InvalidField('ano')
         }
-        const car = await CarRepository.create(payload)
-        return car
+        
+        payload.acessorios = this.deDuplicate(payload.acessorios)
+
+        return await CarRepository.create(payload)
+    }
+
+    deDuplicate(list: Accessory[]): Accessory[] {
+        return list.filter((elem, index, arr) => arr.findIndex((t) => (
+            t.descricao === elem.descricao)) === index)
     }
 
     getById() { }
