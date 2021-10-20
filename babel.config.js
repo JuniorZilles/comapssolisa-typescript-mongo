@@ -19,7 +19,8 @@ module.exports = {
           '@controllers': './src/api/controllers',
           '@models': './src/api/models',
           '@repositories': './src/api/repositories',
-          '@services': './src/api/services'
+          '@services': './src/api/services',
+          '@errors': './src/api/errors'
         }
       }
     ]

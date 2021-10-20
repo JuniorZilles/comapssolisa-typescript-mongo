@@ -24,6 +24,9 @@
       ],
       "@services/*": [
         "./src/api/services/*"
+      ],
+      "@errors/*": [
+        "./src/api/errors/*"
       ]
     }, 
     "typeRoots": [
