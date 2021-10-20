@@ -4,16 +4,25 @@ import CarRepository from '@repositories/CarRepository'
 class CarService {
 
     async create(payload: Car) {
-        if (payload.acessorios.length == 0) {
-            throw new InvalidField('acessorios')
-        }
-        if (payload.ano < 1950 || payload.ano > 2022) {
-            throw new InvalidField('ano')
-        }
+        this.isValidAccessories(payload.acessorios)
+
+        this.isValidYear(payload.ano)
         
         payload.acessorios = this.deDuplicate(payload.acessorios)
 
         return await CarRepository.create(payload)
+    }
+
+    isValidAccessories(acessories:Accessory[]){
+        if (acessories.length == 0) {
+            throw new InvalidField('acessorios')
+        }
+    }
+
+    isValidYear(year:Number){
+        if (year < 1950 || year > 2022) {
+            throw new InvalidField('ano')
+        }
     }
 
     deDuplicate(list: Accessory[]): Accessory[] {
