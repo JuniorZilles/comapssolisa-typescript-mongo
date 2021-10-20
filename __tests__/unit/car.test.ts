@@ -87,7 +87,7 @@ describe("src :: api :: services :: car", () => {
         }
     })
 
-    it("should not accept duplicated accessory", async () => {
+    it("should include just one if duplicated accessory", async () => {
         const carData = {
             modelo: "GM S10 2.8",
             cor: "branco",
@@ -96,12 +96,40 @@ describe("src :: api :: services :: car", () => {
             quantidadePassageiros: 5
         }
         const car = await CarService.create(carData)
-        
+
         expect(car.id).toBeDefined()
         expect(car.dataCriacao).toBeDefined()
         expect(car.ano).toBe(carData.ano)
         expect(car.cor).toBe(carData.cor)
         expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros)
         expect(car.acessorios.length).toEqual(1)
+    })
+
+    it("should include just one if duplicated accessory", async () => {
+        const accessories = [
+            { descricao: "Ar-condicionado" },
+            { descricao: "Dir. Hidráulica" },
+            { descricao: "Cabine Dupla" },
+            { descricao: "Tração 4x4" },
+            { descricao: "4 portas" },
+            { descricao: "Diesel" },
+            { descricao: "Air bag" },
+            { descricao: "ABS" },
+            { descricao: "4 portas" }
+        ]
+
+        const list = CarService.deDuplicate(accessories)
+
+        expect(list.length).toEqual(8)
+        expect(list).toMatchObject([
+            { descricao: "Ar-condicionado" },
+            { descricao: "Dir. Hidráulica" },
+            { descricao: "Cabine Dupla" },
+            { descricao: "Tração 4x4" },
+            { descricao: "4 portas" },
+            { descricao: "Diesel" },
+            { descricao: "Air bag" },
+            { descricao: "ABS" }
+        ])
     })
 })
