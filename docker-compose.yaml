@@ -1,5 +1,17 @@
 version: '3.4'
 services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: MongoDB2021
+    ports:
+      - 27017:27017
+    volumes:
+      - /var/lib/mongo:/var/lib/mongo
+    networks:
+      - mongo-compose-network
+  
   mongo-express:
     image: mongo-express
     ports:
@@ -7,23 +19,11 @@ services:
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: junior
       ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2021
-      ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: MongoDB2021
+      ME_CONFIG_MONGODB_URL: "mongodb://root:MongoDB2021@projeto_final_parte_1_mongo_1:27017/"
     links:
       - mongo
-    networks:
-      - mongo-compose-network
-
-  mongo:
-    image: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: MongoDB2021
-    ports:
-      - "27017:27017"
-    volumes:
-      - /var/lib/mongo:/var/lib/mongo
+    depends_on:
+      - "mongo"
     networks:
       - mongo-compose-network
 networks:
