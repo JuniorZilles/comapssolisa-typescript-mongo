@@ -38,4 +38,22 @@ describe("src :: api :: services :: car", () => {
         expect(car.cor).toBe(carData.cor)
         expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros)
     })
+
+    it("should have at least one accessory", async () => {
+        try {
+            const car = await CarService.create({
+                "modelo": "GM S10 2.8",
+                "cor": "branco",
+                "ano": 2021,
+                "acessorios": [],
+                "quantidadePassageiros": 5
+            })
+            expect(car.id).toBeUndefined()
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão")
+        }
+    })
+
+    
 })
