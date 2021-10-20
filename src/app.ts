@@ -1,5 +1,6 @@
 import express from 'express'
 import router from './routes'
+import './infra/mongo/index'
 
 class App {
 
