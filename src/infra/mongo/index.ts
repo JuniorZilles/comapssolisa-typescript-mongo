@@ -1,15 +1,31 @@
 import mongoose from 'mongoose';
 import config from '../../config/config'
 
-class DatabaseDatabase {
-  constructor() {
-    this.connect();
+class MongoDatabase {
+
+
+  async connect() {
+    await mongoose.connect(
+      `mongodb://${config.database.host}/${config.database.collection}`,
+      {
+        "user": config.database.username,
+        "pass": config.database.password,
+        "authSource": "admin",
+      }
+    );
+
+    mongoose.connection.on('open', ()=>{
+      console.log("Connected to mongo");
+    })
+
+    mongoose.connection.on('error', (err:any)=>{
+      console.log(err);
+    })    
   }
 
-  connect() {
-    const uri = `mongodb://${config.database.username}:${config.database.password}@${config.database.host}/${config.database.collection}`;
-    return mongoose.connect(uri);
+  async disconect(){
+    await mongoose.connection.close()
   }
 }
 
-export default new DatabaseDatabase().connect();
+export default new MongoDatabase()
