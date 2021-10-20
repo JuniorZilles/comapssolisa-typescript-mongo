@@ -7,6 +7,9 @@ class CarService {
         if(payload.acessorios.length == 0){
             throw new InvalidField('acessorios')
         }
+        if(payload.ano < 1950 || payload.ano > 2022 ){
+            throw new InvalidField('ano')
+        }
         const car = await CarRepository.create(payload)
         return car
     }
