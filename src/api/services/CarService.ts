@@ -13,13 +13,13 @@ class CarService {
         return await CarRepository.create(payload)
     }
 
-    isValidAccessories(acessories:Accessory[]){
+    private isValidAccessories(acessories:Accessory[]){
         if (acessories.length == 0) {
             throw new InvalidField('acessorios')
         }
     }
 
-    isValidYear(year:Number){
+    private isValidYear(year:Number){
         if (year < 1950 || year > 2022) {
             throw new InvalidField('ano')
         }
