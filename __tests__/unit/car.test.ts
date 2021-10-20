@@ -42,11 +42,11 @@ describe("src :: api :: services :: car", () => {
     it("should have at least one accessory", async () => {
         try {
             const car = await CarService.create({
-                "modelo": "GM S10 2.8",
-                "cor": "branco",
-                "ano": 2021,
-                "acessorios": [],
-                "quantidadePassageiros": 5
+                modelo: "GM S10 2.8",
+                cor: "branco",
+                ano: 2021,
+                acessorios: [],
+                quantidadePassageiros: 5
             })
             expect(car.id).toBeUndefined()
         } catch (e) {
@@ -55,5 +55,53 @@ describe("src :: api :: services :: car", () => {
         }
     })
 
-    
+    it("the year should not be greater than 2022", async () => {
+        try {
+            const car = await CarService.create({
+                modelo: "GM S10 2.8",
+                cor: "branco",
+                ano: 2023,
+                acessorios: [{ descricao: "Ar-condicionado" }],
+                quantidadePassageiros: 5
+            })
+            expect(car.id).toBeUndefined()
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
+        }
+    })
+
+    it("the year should not be least than 1950", async () => {
+        try {
+            const car = await CarService.create({
+                modelo: "GM S10 2.8",
+                cor: "branco",
+                ano: 1949,
+                acessorios: [{ descricao: "Ar-condicionado" }],
+                quantidadePassageiros: 5
+            })
+            expect(car.id).toBeUndefined()
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
+        }
+    })
+
+    it("should not accept duplicated accessory", async () => {
+        const carData = {
+            modelo: "GM S10 2.8",
+            cor: "branco",
+            ano: 2019,
+            acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
+        const car = await CarService.create(carData)
+        
+        expect(car.id).toBeDefined()
+        expect(car.dataCriacao).toBeDefined()
+        expect(car.ano).toBe(carData.ano)
+        expect(car.cor).toBe(carData.cor)
+        expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros)
+        expect(car.acessorios.length).toEqual(1)
+    })
 })
