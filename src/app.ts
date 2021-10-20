@@ -1,7 +1,7 @@
 import express from 'express'
 import router from './routes'
-import './infra/mongo/index'
-
+import MongoDatabase from './infra/mongo/index'
+MongoDatabase.connect()
 class App {
 
     public server
