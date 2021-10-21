@@ -5,25 +5,29 @@ export interface Accessory {
 }
 
 export interface Car {
-    id?:String
-    modelo: String
-    cor: String
+    id?: string
+    modelo: string
+    cor: string
     ano: Number
     acessorios: Accessory[]
-    quantidadePassageiros: Number,
-    dataCriacao?:Date
-        
+    quantidadePassageiros: Number
+    dataCriacao?: Date
 }
 
 const CarSchema = new mongoose.Schema({
-    modelo: String,
-    cor: String,
-    ano: Number,
-    acessorios: Array,
-    quantidadePassageiros: Number,
-    dataCriacao: {type: Date, default: Date.now}
+    modelo: {type: String, required:true },
+    cor: {type: String, required:true },
+    ano: {type: Number, required:true },
+    acessorios: {type: Array, required:true },
+    quantidadePassageiros:  {type: Number, required:true },
+    dataCriacao: { type: Date, default: Date.now }
 })
 
-const CarModel = mongoose.model<Car>('Car', CarSchema);
+const CarModel = mongoose.model<Car>('Car', CarSchema)
 
-export default CarModel;
+export const isValid = (id: string) => {
+    return mongoose.isValidObjectId(id)
+}
+
+export default CarModel
+
