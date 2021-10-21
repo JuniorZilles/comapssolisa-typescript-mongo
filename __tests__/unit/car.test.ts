@@ -9,13 +9,13 @@ MongoDatabase.connect()
 
 describe("src :: api :: services :: car", () => {
     beforeAll(async () => {
-        //await CarModel.deleteMany()
+        await CarModel.deleteMany()
     })
     afterAll(async () => {
         await MongoDatabase.disconect()
     })
     afterEach(async () => {
-        //await CarModel.deleteMany()
+        await CarModel.deleteMany()
     })
 
     it("should create a car", async () => {
@@ -254,7 +254,6 @@ describe("src :: api :: services :: car", () => {
         const carData = await factory.create<Car>('Car')
         const car = await CarService.create(carData)
         if(car.id){
-            console.log(car.id)
             const result = await CarService.update(car.id,{ acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] })
             expect(result).toBe(true)
             const resultCar = await CarService.getById(car.id)
