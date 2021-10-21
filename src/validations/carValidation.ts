@@ -7,7 +7,7 @@ export const CreateValidation = async (req: Request, res: Response, next: NextFu
         const schema = Joi.object({
             modelo: Joi.string().required(),
             cor: Joi.string().required(),
-            ano: Joi.number().required(),
+            ano: Joi.number().min(1950).max(2022).required(),
             acessorios: Joi.array().min(1).items(
                 Joi.object({
                     descricao: Joi.string().required()
@@ -29,7 +29,7 @@ export const UpdateValidation = async (req: Request, res: Response, next: NextFu
         const schema = Joi.object({
             modelo: Joi.string(),
             cor: Joi.string(),
-            ano: Joi.number(),
+            ano: Joi.number().min(1950).max(2022),
             acessorios: Joi.array().min(1).items(
                 Joi.object({
                     descricao: Joi.string()
@@ -51,7 +51,7 @@ export const GetValidation = async (req: Request, res: Response, next: NextFunct
         const schema = Joi.object({
             modelo: Joi.string(),
             cor: Joi.string(),
-            ano: Joi.number(),
+            ano: Joi.number().min(1950).max(2022),
             acessorio: Joi.string(),
             quantidadePassageiros: Joi.number(),
             size: Joi.number(),
