@@ -1,6 +1,6 @@
 import { InvalidField } from '@errors/InvalidField'
 import { NotFound } from '@errors/NotFound'
-import { Accessory, Car } from '@models/CarModel'
+import { Accessory, Car, CarUpdateModel } from '@models/CarModel'
 import { CarSearch } from '@models/CarSearchModel'
 import CarRepository from '@repositories/CarRepository'
 class CarService {
@@ -56,8 +56,15 @@ class CarService {
         return await CarRepository.delete(id)
     }
 
-    async update(id:string) { 
+    async update(id:string, payload:CarUpdateModel) { 
         await this.getById(id)
+        if(payload.acessorios){
+            this.isValidAccessories(payload.acessorios)
+        }
+        if(payload.ano){
+            this.isValidYear(payload.ano)
+        }
+        return await CarRepository.update(id, payload)
     }
 }
 
