@@ -51,13 +51,13 @@ class CarService {
         return await CarRepository.findAll(payload, start, size)
     }
 
-    delete(id:string) { 
-        this.getById(id)
-        CarRepository.delete(id)
+    async delete(id:string) { 
+        await this.getById(id)
+        return await CarRepository.delete(id)
     }
 
-    update(id:string) { 
-        this.getById(id)
+    async update(id:string) { 
+        await this.getById(id)
     }
 }
 
