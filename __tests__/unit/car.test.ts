@@ -73,7 +73,7 @@ describe("src :: api :: services :: car", () => {
         expect(car.acessorios.length).toEqual(1)
     })
 
-    it("should include just one if duplicated accessory", async () => {
+    it("should remove duplicated accessory", async () => {
         const accessories = [
             { descricao: "Ar-condicionado" },
             { descricao: "Dir. Hidráulica" },
