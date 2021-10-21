@@ -14,15 +14,16 @@ class CarRepository  {
       return new VehiclesModel(cars, count, size, start, offsets)
     }
 
-    delete(id:string){
-
+    async delete(id:string):Promise<boolean>{
+      await CarModel.findByIdAndRemove(id).exec()
+      return true
     }
 
     async findById(id:string):Promise<Car>{
       return await CarModel.findById(id) as Car
     } 
 
-    validId(id:string){
+    validId(id:string):boolean{
       return isValid(id);
     }
   }
