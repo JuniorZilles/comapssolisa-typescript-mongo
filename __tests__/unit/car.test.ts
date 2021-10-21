@@ -22,7 +22,7 @@ describe("src :: api :: services :: car", () => {
         await MongoDatabase.disconect()
     })
     afterEach(async () => {
-        //await CarModel.deleteMany()
+        await CarModel.deleteMany()
     })
 
     it("should create a car", async () => {
@@ -37,8 +37,14 @@ describe("src :: api :: services :: car", () => {
 
     it("should have at least one accessory", async () => {
         try {
-            carData.acessorios = []
-            const car = await CarService.create(carData)
+            const temp = {
+                modelo: "GM S10 2.8",
+                cor: "Verde",
+                ano: 2021, 
+                acessorios: [ ],
+                quantidadePassageiros: 5
+            }
+            const car = await CarService.create(temp)
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
             expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão")
@@ -47,9 +53,14 @@ describe("src :: api :: services :: car", () => {
 
     it("the year should not be greater than 2022", async () => {
         try {
-            carData.ano = 2023
-            carData.acessorios=  [ { descricao: "Ar-condicionado" }]
-            const car = await CarService.create(carData)
+            const temp = {
+                modelo: "GM S10 2.8",
+                cor: "Verde",
+                ano: 2023, 
+                acessorios: [ { descricao: "Ar-condicionado" }],
+                quantidadePassageiros: 5
+            }
+            const car = await CarService.create(temp)
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
             expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
@@ -58,8 +69,14 @@ describe("src :: api :: services :: car", () => {
 
     it("the year should not be least than 1950", async () => {
         try {
-            carData.ano = 1949 
-            const car = await CarService.create(carData)
+            const temp =  {
+                modelo: "GM S10 2.8",
+                cor: "Verde",
+                ano: 1949, 
+                acessorios: [ { descricao: "Ar-condicionado" }],
+                quantidadePassageiros: 5
+            }
+            const car = await CarService.create(temp)
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
             expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
@@ -67,14 +84,19 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should include just one if duplicated accessory", async () => {
-        carData.ano = 2021
-        carData.acessorios = [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] 
-        const car = await CarService.create(carData)
+        const temp = {
+            modelo: "GM S10 2.8",
+            cor: "Verde",
+            ano: 1949, 
+            acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
+        const car = await CarService.create(temp)
         expect(car.id).toBeDefined()
         expect(car.dataCriacao).toBeDefined()
-        expect(car.ano).toBe(carData.ano)
-        expect(car.cor).toBe(carData.cor)
-        expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros)
+        expect(car.ano).toBe(temp.ano)
+        expect(car.cor).toBe(temp.cor)
+        expect(car.quantidadePassageiros).toBe(temp.quantidadePassageiros)
         expect(car.acessorios.length).toEqual(1)
     })
 
@@ -267,8 +289,7 @@ describe("src :: api :: services :: car", () => {
 
     it("should not update", async () => {
         try {
-            const carData = await factory.create<Car>('Car')
-            const car = await CarService.create(carData)
+            const car = await factory.create<Car>('Car')
             if(car.id){
                 await CarService.update(car.id,{ })
             }
