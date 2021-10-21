@@ -60,10 +60,12 @@ class CarService {
         await this.getById(id)
         if(payload.acessorios){
             this.isValidAccessories(payload.acessorios)
+            payload.acessorios = this.deDuplicate(payload.acessorios)
         }
         if(payload.ano){
             this.isValidYear(payload.ano)
         }
+
         return await CarRepository.update(id, payload)
     }
 }
