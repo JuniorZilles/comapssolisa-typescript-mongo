@@ -38,7 +38,7 @@ export const UpdateValidation = async (req: Request, res: Response, next: NextFu
             quantidadePassageiros: Joi.number()
         });
 
-        const { error } = schema.validate(req.params, { abortEarly: true });
+        const { error } = schema.validate(req.body, { abortEarly: true });
         if (error) throw error
         return next();
     } catch (error) {
