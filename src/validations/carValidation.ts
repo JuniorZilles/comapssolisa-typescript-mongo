@@ -32,13 +32,33 @@ export const UpdateValidation = async (req: Request, res: Response, next: NextFu
             ano: Joi.number(),
             acessorios: Joi.array().items(
                 Joi.object({
-                    descricao: Joi.string().required()
+                    descricao: Joi.string()
                 })
-            ).has(Joi.object({ descricao: Joi.string().valid('descricao')})),
+            ),
             quantidadePassageiros: Joi.number()
         });
 
         const { error } = schema.validate(req.body, { abortEarly: true });
+        if (error) throw error
+        return next();
+    } catch (error) {
+        return res.status(400).json(error);
+    }
+}
+
+export const GetValidation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const schema = Joi.object({
+            modelo: Joi.string(),
+            cor: Joi.string(),
+            ano: Joi.number(),
+            acessorio: Joi.string(),
+            quantidadePassageiros: Joi.number(),
+            size: Joi.number(),
+            start: Joi.number()
+        });
+
+        const { error } = schema.validate(req.query, { abortEarly: true });
         if (error) throw error
         return next();
     } catch (error) {
