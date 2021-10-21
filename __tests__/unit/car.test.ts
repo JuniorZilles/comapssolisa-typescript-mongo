@@ -9,13 +9,13 @@ MongoDatabase.connect()
 
 describe("src :: api :: services :: car", () => {
     beforeAll(async () => {
-        await CarModel.deleteMany()
+        //await CarModel.deleteMany()
     })
     afterAll(async () => {
         await MongoDatabase.disconect()
     })
     afterEach(async () => {
-        await CarModel.deleteMany()
+        //await CarModel.deleteMany()
     })
 
     it("should create a car", async () => {
@@ -193,6 +193,77 @@ describe("src :: api :: services :: car", () => {
         } catch (e) {
             expect(e).toBeInstanceOf(NotFound)
             expect((<NotFound>e).message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
+        }
+    })
+
+    it("should update a car", async () => {
+        const carData = await factory.create<Car>('Car')
+        const car = await CarService.create(carData)
+        if(car.id){
+            const result = await CarService.update(car.id,{modelo: 'Abacaxi'})
+            expect(result).toBe(true)
+            const resultCar = await CarService.getById(car.id)
+            expect(resultCar.id).toBe(car.id)
+            expect(resultCar.acessorios).toStrictEqual(car.acessorios)
+            expect(resultCar.modelo).toBe('Abacaxi')
+            expect(resultCar.ano).toBe(car.ano)
+            expect(resultCar.cor).toBe(car.cor)
+        }
+    })
+
+    it("should have at least one accessory if is updating this field", async () => {
+        try {
+            const carData = await factory.create<Car>('Car')
+            const car = await CarService.create(carData)
+            if(car.id){
+                await CarService.update(car.id,{acessorios: []})
+            }
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão")
+        }
+    })
+
+    it("the year updated should not be greater than 2022 and throw a InvalidField error", async () => {
+        try {
+            const carData = await factory.create<Car>('Car')
+            const car = await CarService.create(carData)
+            if(car.id){
+                await CarService.update(car.id,{ ano: 2023 })
+            }
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
+        }
+    })
+
+    it("the year updated should not be least than 1950 and throw a InvalidField error", async () => {
+        try {
+            const carData = await factory.create<Car>('Car')
+            const car = await CarService.create(carData)
+            if(car.id){
+                await CarService.update(car.id,{ ano: 1949 })
+            }
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
+        }
+    })
+
+    it("should include just one if duplicated accessory", async () => {
+        const carData = await factory.create<Car>('Car')
+        const car = await CarService.create(carData)
+        if(car.id){
+            console.log(car.id)
+            const result = await CarService.update(car.id,{ acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] })
+            expect(result).toBe(true)
+            const resultCar = await CarService.getById(car.id)
+            expect(resultCar.id).toBe(car.id)
+            expect(resultCar.acessorios).toStrictEqual([{ descricao: "Ar-condicionado" }])
+            expect(resultCar.modelo).toBe(car.modelo)
+            expect(resultCar.ano).toBe(car.ano)
+            expect(resultCar.cor).toBe(car.cor)
+            
         }
     })
 })
