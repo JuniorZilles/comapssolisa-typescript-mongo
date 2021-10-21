@@ -8,7 +8,7 @@ export const CreateValidation = async (req: Request, res: Response, next: NextFu
             modelo: Joi.string().required(),
             cor: Joi.string().required(),
             ano: Joi.number().required(),
-            acessorios: Joi.array().items(
+            acessorios: Joi.array().min(1).items(
                 Joi.object({
                     descricao: Joi.string().required()
                 })
@@ -30,7 +30,7 @@ export const UpdateValidation = async (req: Request, res: Response, next: NextFu
             modelo: Joi.string(),
             cor: Joi.string(),
             ano: Joi.number(),
-            acessorios: Joi.array().items(
+            acessorios: Joi.array().min(1).items(
                 Joi.object({
                     descricao: Joi.string()
                 })
