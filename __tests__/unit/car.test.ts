@@ -87,7 +87,7 @@ describe("src :: api :: services :: car", () => {
         const temp = {
             modelo: "GM S10 2.8",
             cor: "Verde",
-            ano: 1949, 
+            ano: 2021, 
             acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }],
             quantidadePassageiros: 5
         }
