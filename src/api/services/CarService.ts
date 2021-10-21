@@ -1,4 +1,5 @@
 import { InvalidField } from '@errors/InvalidField'
+import { MissingBody } from '@errors/MissingBody'
 import { NotFound } from '@errors/NotFound'
 import { Accessory, Car, CarUpdateModel } from '@models/CarModel'
 import { CarSearch } from '@models/CarSearchModel'
@@ -56,8 +57,29 @@ class CarService {
         return await CarRepository.delete(id)
     }
 
+    isEmpty(car:CarUpdateModel):boolean{
+        let count = 0
+        if (car.modelo)
+            count ++
+        if(car.acessorios)
+            count ++
+        if(car.cor)
+            count ++
+        if(car.ano)
+            count ++
+        if(car.quantidadePassageiros)
+            count ++
+        if(count > 0)
+            return false
+        else
+            return true
+    }
+
     async update(id:string, payload:CarUpdateModel) { 
         await this.getById(id)
+        if(this.isEmpty(payload)){
+            throw new MissingBody()
+        }
         if(payload.acessorios){
             this.isValidAccessories(payload.acessorios)
             payload.acessorios = this.deDuplicate(payload.acessorios)
@@ -65,7 +87,6 @@ class CarService {
         if(payload.ano){
             this.isValidYear(payload.ano)
         }
-
         return await CarRepository.update(id, payload)
     }
 }
