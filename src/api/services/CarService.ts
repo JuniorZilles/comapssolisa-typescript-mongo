@@ -44,11 +44,22 @@ class CarService {
         return car
     }
 
-    async list(payload:CarSearch, start:number = 0, size:number=10) {
+    async list(payload:CarSearch) {
+        let start:number = 0
+        let size:number=10
         if (payload.acessorio){
             payload['acessorios.descricao'] = payload.acessorio
             payload.acessorio = undefined
         }
+        if(payload.size){
+            size = payload.size
+            payload.size = undefined
+        }
+        if(payload.start){
+            start = payload.start
+            payload.start = undefined
+        }
+
         return await CarRepository.findAll(payload, start, size)
     }
 
