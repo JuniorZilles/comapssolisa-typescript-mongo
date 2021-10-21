@@ -32,7 +32,9 @@ class CarService {
 
     getById() { }
 
-    list() { }
+    async list(payload:Object, start:number = 0, size:number=10) {
+        return await CarRepository.findAll(payload, start, size)
+    }
 
     delete() { }
 
