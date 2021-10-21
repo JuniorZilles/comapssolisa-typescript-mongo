@@ -6,7 +6,7 @@ export const CreateValidation = async (req: Request, res: Response, next: NextFu
     try {
         const schema = Joi.object({
             nome: Joi.string().required(),
-            cpf: Joi.string().required(),
+            cpf: Joi.string().required().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
             data_nascimento: Joi.date().required(),
             email: Joi.string().email().required(),
             senha: Joi.string().min(6).required(),
@@ -25,7 +25,7 @@ export const UpdateValidation = async (req: Request, res: Response, next: NextFu
     try {
         const schema = Joi.object({
             nome: Joi.string(),
-            cpf: Joi.string(),
+            cpf: Joi.string().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
             data_nascimento: Joi.date(),
             email: Joi.string().email(),
             senha: Joi.string().min(6),
@@ -44,7 +44,7 @@ export const GetValidation = async (req: Request, res: Response, next: NextFunct
     try {
         const schema = Joi.object({
             nome: Joi.string(),
-            cpf: Joi.string(),
+            cpf: Joi.string().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
             data_nascimento: Joi.date(),
             email: Joi.string().email(),
             senha: Joi.string().min(6),
