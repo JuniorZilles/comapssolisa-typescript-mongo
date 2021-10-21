@@ -7,7 +7,7 @@ const PersonSchema = new mongoose.Schema({
     data_nascimento: {type: Date, required:true },
     email: {type: String, required:true },
     senha:  {type: String, required:true },
-    habilitado:  {type: String, required:true },
+    habilitado:  {type: String, required:true,  enum: ['sim', 'não'] },
     dataCriacao: { type: Date, default: Date.now }
 })
 
