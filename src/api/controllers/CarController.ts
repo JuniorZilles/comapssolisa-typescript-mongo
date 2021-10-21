@@ -1,9 +1,11 @@
+import CarService from "@services/CarService"
 import {Request, Response, NextFunction } from "express"
 class CarController{
 
     async create(req:Request, res:Response, next: NextFunction) {
         try{
-            return res.status(201).send('ok')
+            const car = await CarService.create(req.body)
+            return res.status(201).json(car)
         }
         catch(e){
             next(e)
