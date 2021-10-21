@@ -10,6 +10,11 @@ class App {
         this.server = express()
         this.middlewares()
         this.routes()
+        this.errors()
+    }
+
+    errors(){
+        this.server.use()
     }
 
     middlewares() {
