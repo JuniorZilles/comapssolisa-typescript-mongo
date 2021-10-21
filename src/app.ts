@@ -1,5 +1,6 @@
 import express from 'express'
 import router from './routes'
+import errors from './errors'
 import MongoDatabase from './infra/mongo/index'
 MongoDatabase.connect()
 class App {
@@ -14,7 +15,7 @@ class App {
     }
 
     errors(){
-        this.server.use()
+        this.server.use(errors)
     }
 
     middlewares() {
