@@ -4,9 +4,16 @@ import CarModel, { Car } from "@models/CarModel"
 import factory from '../utils/CarFactory'
 import MongoDatabase from "../../src/infra/mongo/index"
 import { NotFound } from "@errors/NotFound"
+import { MissingBody } from "@errors/MissingBody"
 
 MongoDatabase.connect()
-
+const carData = {
+    modelo: "GM S10 2.8",
+    cor: "Verde",
+    ano: 2021, 
+    acessorios: [ { descricao: "Ar-condicionado" }],
+    quantidadePassageiros: 5
+}
 describe("src :: api :: services :: car", () => {
     beforeAll(async () => {
         await CarModel.deleteMany()
@@ -15,11 +22,11 @@ describe("src :: api :: services :: car", () => {
         await MongoDatabase.disconect()
     })
     afterEach(async () => {
-        await CarModel.deleteMany()
+        //await CarModel.deleteMany()
     })
 
     it("should create a car", async () => {
-        const carData = await factory.create<Car>('Car')
+        
         const car = await CarService.create(carData)
         expect(car.id).toBeDefined()
         expect(car.dataCriacao).toBeDefined()
@@ -30,9 +37,8 @@ describe("src :: api :: services :: car", () => {
 
     it("should have at least one accessory", async () => {
         try {
-            const carData = await factory.create<Car>('Car', { acessorios: [] })
+            carData.acessorios = []
             const car = await CarService.create(carData)
-            expect(car.id).toBeUndefined()
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
             expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão")
@@ -41,9 +47,9 @@ describe("src :: api :: services :: car", () => {
 
     it("the year should not be greater than 2022", async () => {
         try {
-            const carData = await factory.create<Car>('Car', { ano: 2023 })
+            carData.ano = 2023
+            carData.acessorios=  [ { descricao: "Ar-condicionado" }]
             const car = await CarService.create(carData)
-            expect(car.id).toBeUndefined()
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
             expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
@@ -52,9 +58,8 @@ describe("src :: api :: services :: car", () => {
 
     it("the year should not be least than 1950", async () => {
         try {
-            const carData = await factory.create<Car>('Car', { ano: 1949 })
+            carData.ano = 1949 
             const car = await CarService.create(carData)
-            expect(car.id).toBeUndefined()
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
             expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão")
@@ -62,9 +67,9 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should include just one if duplicated accessory", async () => {
-        const carData = await factory.create<Car>('Car', { acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] })
+        carData.ano = 2021
+        carData.acessorios = [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] 
         const car = await CarService.create(carData)
-
         expect(car.id).toBeDefined()
         expect(car.dataCriacao).toBeDefined()
         expect(car.ano).toBe(carData.ano)
@@ -102,42 +107,36 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should get all cars by modelo", async () => {
-        const carData = await factory.create<Car>('Car')
-        const car = await CarService.create(carData)
-        const result = await CarService.list({ modelo: carData.modelo })
+        const car = await factory.create<Car>('Car')
+        const result = await CarService.list({ modelo: car.modelo })
 
         expect(result.veiculos.length).toBeGreaterThan(0)
         result.veiculos.forEach(element => {
-            expect(element.modelo).toBe(carData.modelo)
+            expect(element.modelo).toBe(car.modelo)
         });
     })
 
     it("should get all cars", async () => {
         const carData = await factory.createMany<Car>('Car', 5)
-        carData.forEach(async (elemen) => {
-            const car = await CarService.create(elemen)
-        })
 
-        const result = await CarService.list({}, 0, 1)
+        const result = await CarService.list({}, 0, carData.length)
 
-        expect(result.veiculos.length).toEqual(1)
+        expect(result.veiculos.length).toEqual(carData.length)
     })
 
     it("should get all cars by accessory", async () => {
-        const carData = await factory.createMany<Car>('Car', 5)
-        carData.forEach(async (elemen) => {
-            const car = await CarService.create(elemen)
-        })
-        const result = await CarService.list({ acessorio: carData[0].acessorios[0].descricao as string })
+        const car = await factory.createMany<Car>('Car', 5)
+    
+        const result = await CarService.list({ acessorio: car[0].acessorios[0].descricao as string })
 
         result.veiculos.forEach(element => {
-            expect(element.acessorios[0].descricao).toBe(carData[0].acessorios[0].descricao)
+            expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao)
         });
     })
 
     it("should get a car by it's ID", async () => {
-        const carData = await factory.create<Car>('Car')
-        const car = await CarService.create(carData)
+        const car = await factory.create<Car>('Car')
+    
         if (car.id) {
             const result = await CarService.getById(car.id)
             expect(result.id).toBe(car.id)
@@ -168,8 +167,8 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should remove a car by it's ID", async () => {
-        const carData = await factory.create<Car>('Car')
-        const car = await CarService.create(carData)
+        const car = await factory.create<Car>('Car')
+        
         if (car.id) {
             const result = await CarService.delete(car.id)
             expect(result).toBe(true)
@@ -197,8 +196,8 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should update a car", async () => {
-        const carData = await factory.create<Car>('Car')
-        const car = await CarService.create(carData)
+        const car = await factory.create<Car>('Car')
+        
         if(car.id){
             const result = await CarService.update(car.id,{modelo: 'Abacaxi'})
             expect(result).toBe(true)
@@ -213,8 +212,8 @@ describe("src :: api :: services :: car", () => {
 
     it("should have at least one accessory if is updating this field", async () => {
         try {
-            const carData = await factory.create<Car>('Car')
-            const car = await CarService.create(carData)
+            const car = await factory.create<Car>('Car')
+            
             if(car.id){
                 await CarService.update(car.id,{acessorios: []})
             }
@@ -226,8 +225,8 @@ describe("src :: api :: services :: car", () => {
 
     it("the year updated should not be greater than 2022 and throw a InvalidField error", async () => {
         try {
-            const carData = await factory.create<Car>('Car')
-            const car = await CarService.create(carData)
+            const car = await factory.create<Car>('Car')
+            
             if(car.id){
                 await CarService.update(car.id,{ ano: 2023 })
             }
@@ -239,8 +238,8 @@ describe("src :: api :: services :: car", () => {
 
     it("the year updated should not be least than 1950 and throw a InvalidField error", async () => {
         try {
-            const carData = await factory.create<Car>('Car')
-            const car = await CarService.create(carData)
+            const car = await factory.create<Car>('Car')
+            
             if(car.id){
                 await CarService.update(car.id,{ ano: 1949 })
             }
@@ -250,9 +249,9 @@ describe("src :: api :: services :: car", () => {
         }
     })
 
-    it("should include just one if duplicated accessory", async () => {
-        const carData = await factory.create<Car>('Car')
-        const car = await CarService.create(carData)
+    it("should update and include just one if duplicated accessory", async () => {
+        const car = await factory.create<Car>('Car')
+        
         if(car.id){
             const result = await CarService.update(car.id,{ acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] })
             expect(result).toBe(true)
@@ -263,6 +262,19 @@ describe("src :: api :: services :: car", () => {
             expect(resultCar.ano).toBe(car.ano)
             expect(resultCar.cor).toBe(car.cor)
             
+        }
+    })
+
+    it("should not update", async () => {
+        try {
+            const carData = await factory.create<Car>('Car')
+            const car = await CarService.create(carData)
+            if(car.id){
+                await CarService.update(car.id,{ })
+            }
+        } catch (e) {
+            expect(e).toBeInstanceOf(MissingBody)
+            expect((<MissingBody>e).message).toBe("Corpo da requisição incompleto")
         }
     })
 })
