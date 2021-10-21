@@ -167,7 +167,6 @@ describe("src :: api :: services :: car", () => {
         }
     })
 
-
     it("should remove a car by it's ID", async () => {
         const carData = await factory.create<Car>('Car')
         const car = await CarService.create(carData)
