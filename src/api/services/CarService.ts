@@ -1,5 +1,7 @@
 import { InvalidField } from '@errors/InvalidField'
+import { NotFound } from '@errors/NotFound'
 import { Accessory, Car } from '@models/CarModel'
+import { CarSearch } from '@models/CarSearchModel'
 import CarRepository from '@repositories/CarRepository'
 class CarService {
 
@@ -30,15 +32,33 @@ class CarService {
             t.descricao === elem.descricao)) === index)
     }
 
-    getById() { }
+    async getById(id:string) { 
+        if (!CarRepository.validId(id)){
+            throw new InvalidField('id')
+        }
+        const car = await CarRepository.findById(id)
+        if(!car){
+            throw new NotFound(id)
+        }
+        return car
+    }
 
-    async list(payload:Object, start:number = 0, size:number=10) {
+    async list(payload:CarSearch, start:number = 0, size:number=10) {
+        if (payload.acessorio){
+            payload['acessorios.descricao'] = payload.acessorio
+            payload.acessorio = undefined
+        }
         return await CarRepository.findAll(payload, start, size)
     }
 
-    delete() { }
+    delete(id:string) { 
+        this.getById(id)
+        CarRepository.delete(id)
+    }
 
-    update() { }
+    update(id:string) { 
+        this.getById(id)
+    }
 }
 
 export default new CarService()
