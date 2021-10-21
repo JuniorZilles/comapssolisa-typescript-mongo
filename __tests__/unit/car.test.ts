@@ -1,8 +1,11 @@
 import CarService from "@services/CarService"
 import { InvalidField } from "@errors/InvalidField"
 import CarModel, { Car } from "@models/CarModel"
+import factory from '../utils/CarFactory'
 import MongoDatabase from "../../src/infra/mongo/index"
+
 MongoDatabase.connect()
+
 describe("src :: api :: services :: car", () => {
     beforeAll(async () => {
         await CarModel.deleteMany()
@@ -15,22 +18,7 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should create a car", async () => {
-        const carData = {
-            modelo: "GM S10 2.8",
-            cor: "branco",
-            ano: 2021,
-            acessorios: [
-                { descricao: "Ar-condicionado" },
-                { descricao: "Dir. Hidráulica" },
-                { descricao: "Cabine Dupla" },
-                { descricao: "Tração 4x4" },
-                { descricao: "4 portas" },
-                { descricao: "Diesel" },
-                { descricao: "Air bag" },
-                { descricao: "ABS" }
-            ],
-            quantidadePassageiros: 5
-        } as Car
+        const carData = await factory.create<Car>('Car')
         const car = await CarService.create(carData)
         expect(car.id).toBeDefined()
         expect(car.dataCriacao).toBeDefined()
@@ -41,13 +29,8 @@ describe("src :: api :: services :: car", () => {
 
     it("should have at least one accessory", async () => {
         try {
-            const car = await CarService.create({
-                modelo: "GM S10 2.8",
-                cor: "branco",
-                ano: 2021,
-                acessorios: [],
-                quantidadePassageiros: 5
-            })
+            const carData = await factory.create<Car>('Car', {acessorios: []})
+            const car = await CarService.create(carData)
             expect(car.id).toBeUndefined()
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
@@ -57,13 +40,8 @@ describe("src :: api :: services :: car", () => {
 
     it("the year should not be greater than 2022", async () => {
         try {
-            const car = await CarService.create({
-                modelo: "GM S10 2.8",
-                cor: "branco",
-                ano: 2023,
-                acessorios: [{ descricao: "Ar-condicionado" }],
-                quantidadePassageiros: 5
-            })
+            const carData = await factory.create<Car>('Car', {ano: 2023})
+            const car = await CarService.create(carData)
             expect(car.id).toBeUndefined()
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
@@ -73,13 +51,8 @@ describe("src :: api :: services :: car", () => {
 
     it("the year should not be least than 1950", async () => {
         try {
-            const car = await CarService.create({
-                modelo: "GM S10 2.8",
-                cor: "branco",
-                ano: 1949,
-                acessorios: [{ descricao: "Ar-condicionado" }],
-                quantidadePassageiros: 5
-            })
+            const carData = await factory.create<Car>('Car', {ano: 1949})
+            const car = await CarService.create(carData)
             expect(car.id).toBeUndefined()
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
@@ -88,13 +61,7 @@ describe("src :: api :: services :: car", () => {
     })
 
     it("should include just one if duplicated accessory", async () => {
-        const carData = {
-            modelo: "GM S10 2.8",
-            cor: "branco",
-            ano: 2019,
-            acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }],
-            quantidadePassageiros: 5
-        }
+        const carData = await factory.create<Car>('Car', {acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }]})
         const car = await CarService.create(carData)
 
         expect(car.id).toBeDefined()
@@ -131,5 +98,30 @@ describe("src :: api :: services :: car", () => {
             { descricao: "Air bag" },
             { descricao: "ABS" }
         ])
+    })
+
+    it("should get all cars by modelo", async () =>{
+        const carData = await factory.create<Car>('Car')
+        const car = await CarService.create(carData)
+        const result = await CarService.list({modelo:carData.modelo})
+
+        expect(result.veiculos.length).toBeGreaterThan(0)
+        result.veiculos.forEach(element => {
+            expect(element.modelo).toBe(carData.modelo)
+        });
+    })
+
+    it("should get all cars", async () =>{
+        const carData = await factory.createMany<Car>('Car', 5)
+        carData.forEach(async (elemen) =>{
+            const car = await CarService.create(elemen)
+        })
+        
+        const result = await CarService.list({}, 0, 1)
+
+        console.log(JSON.stringify(result))
+        
+
+        expect(result.veiculos.length).toEqual(1)
     })
 })
