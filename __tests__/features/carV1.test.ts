@@ -61,7 +61,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(value.details.length).toEqual(1)
     })
 
-    it("should return 400 with message, if has no accessory", async () => {
+    it("should return 400 with details, if has no accessory", async () => {
         const temp = {
             modelo: "GM S10 2.8",
             cor: "Verde",
@@ -74,7 +74,8 @@ describe("src :: api :: controllers :: car", () => {
             .send(temp)
         const value = response.body
         expect(response.status).toBe(400)
-        expect(value.message).toBe("O campo 'acessorios' está fora do formato padrão")
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
     })
 
     it("should return 400 with message if year greater than 2022", async () => {
@@ -291,7 +292,8 @@ describe("src :: api :: controllers :: car", () => {
             .send({acessorios: []})
 
         expect(response.status).toBe(400)
-        expect(response.body.message).toBe("O campo 'acessorios' está fora do formato padrão")
+        expect(response.body).toHaveProperty('details')
+        expect(response.body.details.length).toEqual(1)
     })
 
     it("should return 400 with message if year greater than 2022 when updating", async () => {
