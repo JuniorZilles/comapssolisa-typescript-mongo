@@ -78,7 +78,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(value.details.length).toEqual(1)
     })
 
-    it("should return 400 with message if year greater than 2022", async () => {
+    it("should return 400 with details if year greater than 2022", async () => {
         const temp = {
             modelo: "GM S10 2.8",
             cor: "Verde",
@@ -93,7 +93,8 @@ describe("src :: api :: controllers :: car", () => {
 
         const value = response.body
         expect(response.status).toBe(400)
-        expect(value.message).toBe("O campo 'ano' está fora do formato padrão")
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
     })
 
     it("should return 400 with message if year least than 1950", async () => {
@@ -111,7 +112,8 @@ describe("src :: api :: controllers :: car", () => {
 
         const value = response.body
         expect(response.status).toBe(400)
-        expect(value.message).toBe("O campo 'ano' está fora do formato padrão")
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
     })
 
     it("should include just one if duplicated accessory", async () => {
@@ -285,7 +287,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(temp.quantidadePassageiros).toBe(carget.quantidadePassageiros)
     })
 
-    it("should return 400 with message if no accessory item exists when updating", async () => {
+    it("should return 400 with details if no accessory item exists when updating", async () => {
         const temp = await factory.create<Car>('Car')
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
@@ -296,24 +298,26 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.body.details.length).toEqual(1)
     })
 
-    it("should return 400 with message if year greater than 2022 when updating", async () => {
+    it("should return 400 with details if year greater than 2022 when updating", async () => {
         const temp = await factory.create<Car>('Car')
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
             .send({ano: 2023})
 
         expect(response.status).toBe(400)
-        expect(response.body.message).toBe("O campo 'ano' está fora do formato padrão")
+        expect(response.body).toHaveProperty('details')
+        expect(response.body.details.length).toEqual(1)
     })
 
-    it("should return 400 with message if year least than 1950 when updating", async () => {
+    it("should return 400 with details if year least than 1950 when updating", async () => {
         const temp = await factory.create<Car>('Car')
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
             .send({ano: 1949})
 
         expect(response.status).toBe(400)
-        expect(response.body.message).toBe("O campo 'ano' está fora do formato padrão")
+        expect(response.body).toHaveProperty('details')
+        expect(response.body.details.length).toEqual(1)
     })
 
     it("should update if accessory has duplicated item but include just one when updating", async () => {
