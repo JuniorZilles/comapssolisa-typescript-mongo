@@ -141,7 +141,7 @@ describe("src :: api :: services :: car", () => {
     it("should get all cars", async () => {
         const carData = await factory.createMany<Car>('Car', 5)
 
-        const result = await CarService.list({}, 0, carData.length)
+        const result = await CarService.list({size:carData.length, start: 0})
 
         expect(result.veiculos.length).toEqual(carData.length)
     })
