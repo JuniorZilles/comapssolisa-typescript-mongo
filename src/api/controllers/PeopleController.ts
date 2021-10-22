@@ -34,7 +34,13 @@ class PeopleController{
 
     async update(req:Request, res:Response, next: NextFunction) {
         try{
-            return res.status(204).end()
+            const id = req.params.id
+            const updated = await PeopleService.update(id, req.body)
+            if(updated){
+                return res.status(204).end()
+            }else{
+                return res.status(400).send({message:"Something went wrong!"})
+            }
         }
         catch(e){
             next(e)
@@ -43,7 +49,13 @@ class PeopleController{
 
     async delete(req:Request, res:Response, next: NextFunction) {
         try{
-            return res.status(204).end()
+            const id = req.params.id
+            const removed = await PeopleService.delete(id)
+            if(removed){
+                return res.status(204).end()
+            }else{
+                return res.status(400).send({message:"Something went wrong!"})
+            }
         }
         catch(e){
             next(e)
