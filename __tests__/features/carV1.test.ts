@@ -44,7 +44,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros)
     })
 
-    it("should return 400 with message if missing an attribute", async () => {
+    it("should return 400 with details if missing an attribute", async () => {
         const temp = {
             modelo: "GM S10 2.8",
             ano: 2021,
@@ -59,6 +59,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(value).toHaveProperty('details')
         expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"cor" is required')
     })
 
     it("should return 400 with details, if has no accessory", async () => {
@@ -76,6 +77,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(value).toHaveProperty('details')
         expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"acessorios" must contain at least 1 items')
     })
 
     it("should return 400 with details if year greater than 2022", async () => {
@@ -95,9 +97,10 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(value).toHaveProperty('details')
         expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"ano" must be less than or equal to 2022')
     })
 
-    it("should return 400 with message if year least than 1950", async () => {
+    it("should return 400 with details if year least than 1950", async () => {
         const temp = {
             modelo: "GM S10 2.8",
             cor: "Verde",
@@ -114,6 +117,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(value).toHaveProperty('details')
         expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"ano" must be greater than or equal to 1950')
     })
 
     it("should include just one if duplicated accessory", async () => {
@@ -296,6 +300,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('details')
         expect(response.body.details.length).toEqual(1)
+        expect(response.body.details[0].message).toBe('"acessorios" must contain at least 1 items')
     })
 
     it("should return 400 with details if year greater than 2022 when updating", async () => {
@@ -307,6 +312,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('details')
         expect(response.body.details.length).toEqual(1)
+        expect(response.body.details[0].message).toBe('"ano" must be less than or equal to 2022')
     })
 
     it("should return 400 with details if year least than 1950 when updating", async () => {
@@ -318,6 +324,7 @@ describe("src :: api :: controllers :: car", () => {
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('details')
         expect(response.body.details.length).toEqual(1)
+        expect(response.body.details[0].message).toBe('"ano" must be greater than or equal to 1950')
     })
 
     it("should update if accessory has duplicated item but include just one when updating", async () => {
@@ -343,7 +350,6 @@ describe("src :: api :: controllers :: car", () => {
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
             .send({})
-        console.log(response.body);
         
         expect(response.status).toBe(400)
         expect(response.body.message).toBe("Corpo da requisição incompleto")
