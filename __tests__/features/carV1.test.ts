@@ -179,8 +179,26 @@ describe("src :: api :: controllers :: car", () => {
 
     it("should get all cars by modelo", async () => {
 
+        const carData = await factory.createMany<Car>('Car', 5)
         const response = await request(app)
-            .get(`${PREFIX}?modelo=${carData.modelo}`)
+            .get(`${PREFIX}?modelo=${carData[0].modelo}`)
+        const vehicles = response.body
+
+        expect(response.status).toBe(200)
+        expect(vehicles).toHaveProperty('veiculos')
+        expect(vehicles).toHaveProperty('total')
+        expect(vehicles).toHaveProperty('limit')
+        expect(vehicles).toHaveProperty('offset')
+        expect(vehicles).toHaveProperty('offsets')
+        expect(vehicles.veiculos.length).toEqual(5)
+    })
+
+
+    it("should not get any cars", async () => {
+
+        const carData = await factory.createMany<Car>('Car', 5)
+        const response = await request(app)
+            .get(`${PREFIX}?modelo=Chevy`)
         const vehicles = response.body
 
         expect(response.status).toBe(200)
@@ -191,6 +209,8 @@ describe("src :: api :: controllers :: car", () => {
         expect(vehicles).toHaveProperty('offsets')
         expect(vehicles.veiculos.length).toEqual(0)
     })
+
+    
 
     /**
      * GET BY ID
