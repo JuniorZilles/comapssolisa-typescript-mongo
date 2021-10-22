@@ -1,7 +1,9 @@
 import { InvalidField } from "@errors/InvalidField"
+import factory from '../utils/PeopleFactory'
 import PersonModel from "@models/PersonModel"
 import PeopleService from "@services/PeopleService"
 import MongoDatabase from "../../src/infra/mongo/index"
+import { PersonCreateModel } from "@models/PersonCreateModel"
 
 MongoDatabase.connect()
 
@@ -60,6 +62,13 @@ describe("src :: api :: services :: people", ()=>{
     /**
      * GET LIST
      */
+
+     it("should get all people", async ()=>{
+        const temp = await factory.createMany<PersonCreateModel>('People', 5)
+        const person = await PeopleService.list({})
+        
+        expect(person.people.length).toEqual(temp.length)
+    })
 
     /**
      * GET BY ID
