@@ -1,7 +1,7 @@
 
 import AuthenticateController from "@controllers/AuthenticateController"
 import { Router } from "express";
-import { AuthenticateValidation } from "../../src/validations/authentication/authenticationValidation";
+import { AuthenticateValidation } from "../validations/authentication/authenticationValidation";
 
 export default (prefix = '/authenticate'): Router => {
   const router = Router()
