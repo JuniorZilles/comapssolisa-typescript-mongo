@@ -1,9 +1,11 @@
+import PeopleService from "@services/PeopleService"
 import {Request, Response, NextFunction } from "express"
 class PeopleController{
 
     async create(req:Request, res:Response, next: NextFunction) {
         try{
-            return res.status(201).send('ok')
+            const car = await PeopleService.create(req.body)
+            return res.status(201).json(car)
         }
         catch(e){
             next(e)
