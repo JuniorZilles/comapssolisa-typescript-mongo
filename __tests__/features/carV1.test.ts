@@ -240,15 +240,17 @@ describe("src :: api :: controllers :: car", () => {
         const car = response.body
 
         expect(response.status).toBe(400)
+        expect(car).toHaveProperty('message')
         expect(car.message).toBe("O campo 'id' está fora do formato padrão")
     })
 
-    it("should return 400 with message if ID is not found when searching", async () => {
+    it("should return 404 with message if ID is not found when searching", async () => {
         const response = await request(app)
             .get(`${PREFIX}/6171508962f47a7a91938d30`)
         const car = response.body
 
         expect(response.status).toBe(404)
+        expect(car).toHaveProperty('message')
         expect(car.message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
     })
 
