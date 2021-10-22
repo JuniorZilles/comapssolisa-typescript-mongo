@@ -5,6 +5,7 @@ import PeopleService from "@services/PeopleService"
 import MongoDatabase from "../../src/infra/mongo/index"
 import { PersonCreateModel } from "@models/PersonCreateModel"
 import { NotFound } from "@errors/NotFound"
+import { MissingBody } from "@errors/MissingBody"
 
 MongoDatabase.connect()
 
@@ -28,7 +29,7 @@ describe("src :: api :: services :: people", () => {
     })
 
     /**
-     * POST CREATE
+     * INSERT CREATE
      */
 
     it("should create a person", async () => {
@@ -130,7 +131,7 @@ describe("src :: api :: services :: people", () => {
      * DELETE BY ID
      */
 
-     it("should remove a person by ID", async () => {
+    it("should remove a person by ID", async () => {
         const personGenerated = await factory.create<PersonCreateModel>('People')
         if (personGenerated.id) {
             const person = await PeopleService.delete(personGenerated.id)
@@ -159,6 +160,66 @@ describe("src :: api :: services :: people", () => {
     })
 
     /**
-     * PUT BY ID
+     * UPDATE BY ID
      */
+
+    it("should update a person by ID", async () => {
+        const personGenerated = await factory.create<PersonCreateModel>('People')
+        if (personGenerated.id) {
+            const personUpdate = await PeopleService.update(personGenerated.id, { habilitado: 'não' })
+            expect(personUpdate).toBe(true)
+
+            const person = await PeopleService.getById(personGenerated.id)
+            expect(person.id).toBe(personGenerated.id)
+            expect(person.dataCriacao).toEqual(personGenerated.dataCriacao)
+            expect(person.cpf).toBe(personGenerated.cpf)
+            expect(person.data_nascimento).toEqual(new Date(personGenerated.data_nascimento))
+            expect(person.email).toBe(personGenerated.email)
+            expect(person.nome).toBe(personGenerated.nome)
+            expect(person.habilitado).toBe('não')
+        }
+    })
+
+    it("should not update a person by ID and throw a InvalidField error", async () => {
+        try {
+            const person = await PeopleService.update("12", { habilitado: 'sim' })
+        } catch (e) {
+            expect(e).toBeInstanceOf(InvalidField)
+            expect((<InvalidField>e).message).toBe("O campo 'id' está fora do formato padrão")
+        }
+    })
+
+
+    it("should not update a person by ID and throw a NotFound error", async () => {
+        try {
+            const person = await PeopleService.update("6171508962f47a7a91938d30", { email: 'Teste@mail.com' })
+        } catch (e) {
+            expect(e).toBeInstanceOf(NotFound)
+            expect((<NotFound>e).message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
+        }
+    })
+
+    it("should not update a person by ID if empty payload", async () => {
+        const personGenerated = await factory.create<PersonCreateModel>('People')
+        if (personGenerated.id) {
+            try {
+                const personUpdate = await PeopleService.update(personGenerated.id, {})
+            } catch (e) {
+                expect(e).toBeInstanceOf(MissingBody)
+                expect((<MissingBody>e).message).toBe("Corpo da requisição incompleto")
+            }
+        }
+    })
+
+    it("should not update a person data_nascimento if not 18 years old by ID", async () => {
+        const personGenerated = await factory.create<PersonCreateModel>('People')
+        if (personGenerated.id) {
+            try {
+                const personUpdate = await PeopleService.update(personGenerated.id, { data_nascimento: '12/12/2020' })
+            } catch (e) {
+                expect(e).toBeInstanceOf(InvalidField)
+                expect((<InvalidField>e).message).toBe("O campo 'data_nascimento' está fora do formato padrão")
+            }
+        }
+    })
 })
