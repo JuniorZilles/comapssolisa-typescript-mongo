@@ -24,7 +24,8 @@ class PeopleController{
 
     async getById(req:Request, res:Response, next: NextFunction) {
         try{
-            return res.status(200).send('ok')
+            const people = await PeopleService.getById(req.params.id)
+            return res.status(200).json(people)
         }
         catch(e){
             next(e)
