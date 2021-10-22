@@ -37,13 +37,13 @@ class PeopleService {
     async list(payload: PersonSearch) {
         let start: number = 0
         let size: number = 10
-
+        
         if (payload.size) {
-            size = payload.size
+            size = parseInt(payload.size)
             payload.size = undefined
         }
         if (payload.start) {
-            start = payload.start
+            start = parseInt(payload.start)
             payload.start = undefined
         }
         if (payload.senha) {
