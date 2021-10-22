@@ -25,6 +25,10 @@ describe("src :: api :: services :: car", () => {
         await CarModel.deleteMany()
     })
 
+    /**
+     * POST CREATE
+     */
+
     it("should create a car", async () => {
         
         const car = await CarService.create(carData)
@@ -128,6 +132,10 @@ describe("src :: api :: services :: car", () => {
         ])
     })
 
+    /**
+     * GET LIST
+     */
+
     it("should get all cars by modelo", async () => {
         const car = await factory.create<Car>('Car')
         const result = await CarService.list({ modelo: car.modelo })
@@ -155,6 +163,10 @@ describe("src :: api :: services :: car", () => {
             expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao)
         });
     })
+
+    /**
+     * GET BY ID
+     */
 
     it("should get a car by it's ID", async () => {
         const car = await factory.create<Car>('Car')
@@ -188,6 +200,10 @@ describe("src :: api :: services :: car", () => {
         }
     })
 
+    /**
+     * DELETE BY ID
+     */
+
     it("should remove a car by it's ID", async () => {
         const car = await factory.create<Car>('Car')
         
@@ -217,6 +233,10 @@ describe("src :: api :: services :: car", () => {
         }
     })
 
+    /**
+     * PUT BY ID
+     */
+    
     it("should update a car", async () => {
         const car = await factory.create<Car>('Car')
         
