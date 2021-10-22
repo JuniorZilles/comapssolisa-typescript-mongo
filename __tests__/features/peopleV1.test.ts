@@ -273,4 +273,154 @@ describe("src :: api :: controllers :: car", () => {
         expect(person).toHaveProperty('message')
         expect(person.message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
     })
+
+    /**
+     * DELETE BY ID
+     */
+
+     it("should remove a person by it's ID", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+
+        const response = await request(app)
+            .delete(`${PREFIX}/${peopleData.id}`)
+
+        expect(response.status).toBe(204)
+        expect(response.body).toEqual({})
+    })
+
+    it("should return 400 with message if ID is invalid when removing", async () => {
+        const response = await request(app)
+            .delete(`${PREFIX}/12`)
+        const person = response.body
+
+        expect(response.status).toBe(400)
+        expect(person).toHaveProperty('message')
+        expect(person.message).toBe("O campo 'id' está fora do formato padrão")
+    })
+
+    it("should return 404 with message if ID is not found when removing", async () => {
+        const response = await request(app)
+            .delete(`${PREFIX}/6171508962f47a7a91938d30`)
+        const person = response.body
+
+        expect(response.status).toBe(404)
+        expect(person).toHaveProperty('message')
+        expect(person.message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
+    })
+
+    /**
+     * PUT BY ID
+     */
+
+     it("should update a person", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People', {habilitado: 'não'})
+        const responseput = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({habilitado: 'sim'})
+
+        const personput = responseput.body
+
+        expect(responseput.status).toBe(204)
+
+        const response = await request(app)
+            .get(`${PREFIX}/${peopleData.id}`)
+
+        const person = response.body
+        expect(person._id).toBe(peopleData.id)
+        expect(new Date(person.dataCriacao)).toEqual(peopleData.dataCriacao)
+        expect(person.nome).toBe(peopleData.nome)
+        expect(person.cpf).toBe(peopleData.cpf)
+        expect(new Date(person.data_nascimento)).toEqual(new Date(peopleData.data_nascimento))
+        expect(person.email).toBe(peopleData.email)
+        expect(person.habilitado).toBe('sim')
+    })
+
+    it("should return 400 with details if missing an attribute when trying to update", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({habilitado:''})
+        const value = response.body
+
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]')
+    })
+
+    it("should return 400 with message if has no argument on update", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({})
+        const value = response.body
+
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('message')
+        expect(value.message).toBe('Corpo da requisição incompleto')
+    })
+
+    it("should return 400 with message if age is less than 18 on update", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({data_nascimento: "03/03/2010",})
+        const value = response.body
+
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('message')
+        expect(value.message).toBe("O campo 'data_nascimento' está fora do formato padrão")
+    })
+
+    it("should return 400 with details if cpf is invalid on update", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({ cpf: "131.147."})
+        const value = response.body
+
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe(`"cpf" with value "131.147." fails to match the required pattern: /[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}/`)
+    })
+
+    it("should return 400 with details if senha has lenght less than 6 caracteres on update", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({senha: "1234"})
+        const value = response.body
+        
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"senha" length must be at least 6 characters long')
+    })
+
+    it("should return 400 with details if email is invalid", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({email: "joazinho"})
+        const value = response.body
+        
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"email" must be a valid email')
+    })
+
+    it("should return 400 with details if habilitado has other option than sim or não", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+        const response = await request(app)
+            .put(`${PREFIX}/${peopleData.id}`)
+            .send({habilitado: "talvez"})
+        const value = response.body
+        
+        expect(response.status).toBe(400)
+        expect(value).toHaveProperty('details')
+        expect(value.details.length).toEqual(1)
+        expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]')
+    })
 })

@@ -279,6 +279,7 @@ describe("src :: api :: controllers :: car", () => {
         const car = response.body
 
         expect(response.status).toBe(400)
+        expect(car).toHaveProperty('message')
         expect(car.message).toBe("O campo 'id' está fora do formato padrão")
     })
 
@@ -288,6 +289,7 @@ describe("src :: api :: controllers :: car", () => {
         const car = response.body
 
         expect(response.status).toBe(404)
+        expect(car).toHaveProperty('message')
         expect(car.message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
     })
 
@@ -374,6 +376,7 @@ describe("src :: api :: controllers :: car", () => {
             .send({})
         
         expect(response.status).toBe(400)
+        expect(response.body).toHaveProperty('message')
         expect(response.body.message).toBe("Corpo da requisição incompleto")
     })
 })
