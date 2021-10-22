@@ -4,6 +4,7 @@ import PeopleRepository from "@repositories/PeopleRepository"
 import { InvalidField } from '@errors/InvalidField'
 import { PersonUpdateModel } from '@models/PersonUpdateModel'
 import { PersonSearch } from '@models/PersonSearch'
+import { NotFound } from '@errors/NotFound'
 
 
 export class PeopleService {
@@ -22,8 +23,15 @@ export class PeopleService {
         }
     }
 
-    async getById(id: string) {
-
+    async getById(id: string):Promise<PersonUpdateModel> {
+        if (!PeopleRepository.validId(id)){
+            throw new InvalidField('id')
+        }
+        const person = await PeopleRepository.findById(id)
+        if (!person){
+            throw new NotFound(id)
+        }
+        return person
     }
 
     async list(payload: PersonSearch) {
@@ -47,6 +55,7 @@ export class PeopleService {
     async delete(id: string) {
         await this.getById(id)
 
+        return await PeopleRepository.delete(id)
     }
 
     async update(id: string, payload: PersonUpdateModel) {
