@@ -62,12 +62,29 @@ describe("src :: api :: services :: people", ()=>{
     /**
      * GET LIST
      */
-
-     it("should get all people", async ()=>{
+    
+    it("should get all people", async ()=>{
         const temp = await factory.createMany<PersonCreateModel>('People', 5)
         const person = await PeopleService.list({})
         
         expect(person.people.length).toEqual(temp.length)
+    })
+
+    it("should get all by nome people", async ()=>{
+        const temp = await factory.createMany<PersonCreateModel>('People', 5)
+        const person = await PeopleService.list({nome:temp[0].nome})
+        
+        expect(person.people.length).toEqual(temp.length)
+        person.people.forEach(element => {
+            expect(element.nome).toEqual(temp[0].nome)
+        });  
+    })
+
+    it("should get not get all people by password", async ()=>{
+        const temp = await factory.create<PersonCreateModel>('People')
+        const person = await PeopleService.list({nome:temp.senha})
+        
+        expect(person.people.length).toEqual(0)        
     })
 
     /**
