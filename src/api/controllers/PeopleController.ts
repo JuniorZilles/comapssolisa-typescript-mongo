@@ -4,8 +4,8 @@ class PeopleController{
 
     async create(req:Request, res:Response, next: NextFunction) {
         try{
-            const car = await PeopleService.create(req.body)
-            return res.status(201).json(car)
+            const people = await PeopleService.create(req.body)
+            return res.status(201).json(people)
         }
         catch(e){
             next(e)
@@ -14,7 +14,8 @@ class PeopleController{
 
     async get(req:Request, res:Response, next: NextFunction) {
         try{
-            return res.status(200).send('ok')
+            const people = await PeopleService.list(req.query)
+            return res.status(200).json(people)
         }
         catch(e){
             next(e)
