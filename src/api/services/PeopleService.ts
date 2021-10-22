@@ -7,8 +7,7 @@ import { PersonSearch } from '@models/PersonSearch'
 import { NotFound } from '@errors/NotFound'
 import { MissingBody } from '@errors/MissingBody'
 
-
-export class PeopleService {
+class PeopleService {
     async create(payload: PersonCreateModel): Promise<PersonCreateModel> {
         this.isOlder(payload.data_nascimento)
         return await PeopleRepository.create(payload)
