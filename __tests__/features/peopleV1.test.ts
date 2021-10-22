@@ -3,6 +3,7 @@ import PersonModel from "@models/PersonModel"
 import factory from '../utils/PeopleFactory'
 import MongoDatabase from "../../src/infra/mongo/index"
 import app from '../../src/app'
+import { PersonCreateModel } from "@models/PersonCreateModel"
 
 const PREFIX = '/api/v1/people'
 const personData = {
@@ -185,4 +186,29 @@ describe("src :: api :: controllers :: car", () => {
     /**
      * GET LIST
      */
+
+    it("should get all people", async () => {
+        const peopleData = await factory.createMany<PersonCreateModel>('People', 5)
+
+        const response = await request(app)
+            .get(`${PREFIX}?offset=0&limit=${peopleData.length}`)
+        const people = response.body
+
+        expect(response.status).toBe(200)
+        expect(people).toHaveProperty('people')
+        expect(people.people.length).toEqual(peopleData.length)
+    })
+
+    it("should get all people that by habilitado", async () => {
+        const peopleNoData = await factory.createMany<PersonCreateModel>('People', 5, {habilitado:'sim', nome: "joaozinho",})
+        const peopleYesData = await factory.createMany<PersonCreateModel>('People', 5, {habilitado:'sim'})
+
+        const response = await request(app)
+            .get(`${PREFIX}?offset=5&limit=5&habilitado=sim`)
+        const people = response.body
+        
+        expect(response.status).toBe(200)
+        expect(people).toHaveProperty('people')
+        expect(people.people.length).toEqual(5)
+    })
 })
