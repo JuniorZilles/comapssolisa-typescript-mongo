@@ -11,8 +11,8 @@ export const GetPeopleValidation = async (req: Request, res: Response, next: Nex
             email: Joi.string().email(),
             senha: Joi.string().min(6),
             habilitado:Joi.string().valid('sim', 'não'),
-            size: Joi.number(),
-            start: Joi.number()
+            limit: Joi.number(),
+            offset: Joi.number()
         });
 
         const { error } = schema.validate(req.query, { abortEarly: true });

@@ -35,21 +35,21 @@ class PeopleService {
     }
 
     async list(payload: PersonSearch) {
-        let start: number = 0
-        let size: number = 10
+        let offset: number = 0
+        let limit: number = 10
         
-        if (payload.size) {
-            size = parseInt(payload.size)
-            payload.size = undefined
+        if (payload.limit) {
+            limit = parseInt(payload.limit)
+            payload.limit = undefined
         }
-        if (payload.start) {
-            start = parseInt(payload.start)
-            payload.start = undefined
+        if (payload.offset) {
+            offset = parseInt(payload.offset)
+            payload.offset = undefined
         }
         if (payload.senha) {
             payload.senha = undefined
         }
-        return await PeopleRepository.findAll(payload, start, size)
+        return await PeopleRepository.findAll(payload, offset, limit)
     }
 
     isEmpty(person:PersonUpdateModel):boolean{

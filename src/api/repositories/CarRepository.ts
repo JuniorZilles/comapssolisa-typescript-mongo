@@ -7,11 +7,11 @@ class CarRepository  {
       return await CarModel.create(payload)
     }
 
-    async findAll(payload:CarSearch, start:number, size:number):Promise<VehiclesModel> {
+    async findAll(payload:CarSearch, offset:number, limit:number):Promise<VehiclesModel> {
       const count = await CarModel.countDocuments(payload)
-      const cars = await CarModel.find(payload).skip( start ).limit( size ).exec()
-      const offsets = Math.round(count/size)
-      return new VehiclesModel(cars, count, size, start, offsets)
+      const cars = await CarModel.find(payload).skip( offset ).limit( limit ).exec()
+      const offsets = Math.round(count/limit)
+      return new VehiclesModel(cars, count, limit, offset, offsets)
     }
 
     async delete(id:string):Promise<boolean>{

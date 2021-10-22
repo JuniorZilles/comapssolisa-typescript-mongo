@@ -5,6 +5,6 @@ export interface CarSearch {
     acessorio?: string
     quantidadePassageiros?: Number
     "acessorios.descricao"?: string
-    start?:number
-    size?:number
+    offset?:string
+    limit?:string
 }

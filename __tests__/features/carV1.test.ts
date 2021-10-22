@@ -150,7 +150,7 @@ describe("src :: api :: controllers :: car", () => {
         const carData = await factory.createMany<Car>('Car', 5)
 
         const response = await request(app)
-            .get(`${PREFIX}?start=0&size=${carData.length}`)
+            .get(`${PREFIX}?offset=0&limit=${carData.length}`)
         const vehicles = response.body
 
         expect(response.status).toBe(200)
@@ -162,7 +162,7 @@ describe("src :: api :: controllers :: car", () => {
         const carData = await factory.createMany<Car>('Car', 5, { acessorios: [{ descricao: "Ar-condicionado" }] })
 
         const response = await request(app)
-            .get(`${PREFIX}?start=0&size=${carData.length}&acessorio=Ar-condicionado`)
+            .get(`${PREFIX}?offset=0&limit=${carData.length}&acessorio=Ar-condicionado`)
         const vehicles = response.body
 
         expect(response.status).toBe(200)

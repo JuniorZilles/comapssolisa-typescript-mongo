@@ -9,11 +9,11 @@ class CarRepository  {
         return await PersonModel.create(payload)
     }
 
-    async findAll(payload:PersonSearch, start:number, size:number):Promise<PeopleModel> {
+    async findAll(payload:PersonSearch, offset:number, limit:number):Promise<PeopleModel> {
         const count = await PersonModel.countDocuments(payload)
-        const people = await PersonModel.find(payload).select('-senha').skip( start ).limit( size ).exec()
-        const offsets = Math.round(count/size)
-        return new PeopleModel(people, count, size, start, offsets)
+        const people = await PersonModel.find(payload, {senha:false},{skip:offset, limit:limit}).exec()
+        const offsets = Math.round(count/limit)
+        return new PeopleModel(people, count, limit, offset, offsets)
     }
 
     async delete(id:string):Promise<boolean>{

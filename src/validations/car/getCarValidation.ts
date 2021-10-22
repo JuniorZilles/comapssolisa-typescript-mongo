@@ -10,8 +10,8 @@ export const GetCarValidation = async (req: Request, res: Response, next: NextFu
             ano: Joi.number().min(1950).max(2022),
             acessorio: Joi.string(),
             quantidadePassageiros: Joi.number(),
-            size: Joi.number(),
-            start: Joi.number()
+            limit: Joi.number(),
+            offset: Joi.number()
         });
 
         const { error } = schema.validate(req.query, { abortEarly: true });

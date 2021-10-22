@@ -45,22 +45,22 @@ class CarService {
     }
 
     async list(payload: CarSearch) {
-        let start: number = 0
-        let size: number = 10
+        let offset: number = 0
+        let limit: number = 10
         if (payload.acessorio) {
             payload['acessorios.descricao'] = payload.acessorio
             payload.acessorio = undefined
         }
-        if (payload.size) {
-            size = parseInt(payload.size)
-            payload.size = undefined
+        if (payload.limit) {
+            limit = parseInt(payload.limit)
+            payload.limit = undefined
         }
-        if (payload.start) {
-            start = parseInt(payload.start)
-            payload.start = undefined
+        if (payload.offset) {
+            offset = parseInt(payload.offset)
+            payload.offset = undefined
         }
 
-        return await CarRepository.findAll(payload, start, size)
+        return await CarRepository.findAll(payload, offset, limit)
     }
 
     async delete(id: string) {
