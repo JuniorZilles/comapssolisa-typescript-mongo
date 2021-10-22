@@ -15,7 +15,7 @@ export const GetPeopleValidation = async (req: Request, res: Response, next: Nex
             start: Joi.number()
         });
 
-        const { error } = schema.validate(req.body, { abortEarly: true });
+        const { error } = schema.validate(req.query, { abortEarly: true });
         if (error) throw error
         return next();
     } catch (error) {
