@@ -38,6 +38,9 @@ export class PeopleService {
             start = payload.start
             payload.start = undefined
         }
+        if (payload.senha) {
+            payload.senha = undefined
+        }
         return await PeopleRepository.findAll(payload, start, size)
     }
 

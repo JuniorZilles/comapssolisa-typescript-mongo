@@ -11,7 +11,7 @@ class CarRepository  {
 
     async findAll(payload:PersonSearch, start:number, size:number):Promise<PeopleModel> {
         const count = await PersonModel.countDocuments(payload)
-        const people = await PersonModel.find(payload).skip( start ).limit( size ).exec()
+        const people = await PersonModel.find(payload).select('-senha').skip( start ).limit( size ).exec()
         const offsets = Math.round(count/size)
         return new PeopleModel(people, count, size, start, offsets)
     }
