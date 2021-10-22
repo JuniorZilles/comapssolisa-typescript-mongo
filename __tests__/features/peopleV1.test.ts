@@ -196,6 +196,10 @@ describe("src :: api :: controllers :: car", () => {
 
         expect(response.status).toBe(200)
         expect(people).toHaveProperty('people')
+        expect(people).toHaveProperty('total')
+        expect(people).toHaveProperty('limit')
+        expect(people).toHaveProperty('offset')
+        expect(people).toHaveProperty('offsets')
         expect(people.people.length).toEqual(peopleData.length)
     })
 
@@ -209,6 +213,31 @@ describe("src :: api :: controllers :: car", () => {
         
         expect(response.status).toBe(200)
         expect(people).toHaveProperty('people')
+        expect(people).toHaveProperty('total')
+        expect(people).toHaveProperty('limit')
+        expect(people).toHaveProperty('offset')
+        expect(people).toHaveProperty('offsets')
         expect(people.people.length).toEqual(5)
     })
+
+    it("should not get any people", async () => {
+
+        const response = await request(app)
+            .get(`${PREFIX}?offset=1&limit=5&habilitado=sim`)
+        const people = response.body
+        
+        expect(response.status).toBe(200)
+        expect(people).toHaveProperty('people')
+        expect(people).toHaveProperty('total')
+        expect(people).toHaveProperty('limit')
+        expect(people).toHaveProperty('offset')
+        expect(people).toHaveProperty('offsets')
+        expect(people.people.length).toEqual(0)
+    })
+
+    /**
+     * GET BY ID
+     */
+
+    
 })
