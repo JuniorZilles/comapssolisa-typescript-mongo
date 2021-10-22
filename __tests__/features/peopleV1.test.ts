@@ -239,5 +239,38 @@ describe("src :: api :: controllers :: car", () => {
      * GET BY ID
      */
 
-    
+    it("should get a person by ID", async () => {
+        const peopleData = await factory.create<PersonCreateModel>('People')
+
+        const response = await request(app)
+            .get(`${PREFIX}/${peopleData.id}`)
+        const person = response.body
+
+        expect(response.status).toBe(200)
+        expect(person.nome).toBe(peopleData.nome)
+        expect(person.cpf).toBe(peopleData.cpf)
+        expect(new Date(person.data_nascimento)).toEqual(new Date(peopleData.data_nascimento))
+        expect(person.email).toBe(peopleData.email)
+        expect(person.habilitado).toBe(peopleData.habilitado)
+    })
+
+    it("should return 400 with message if ID is invalid when searching", async () => {
+        const response = await request(app)
+            .get(`${PREFIX}/12`)
+        const person = response.body
+
+        expect(response.status).toBe(400)
+        expect(person).toHaveProperty('message')
+        expect(person.message).toBe("O campo 'id' está fora do formato padrão")
+    })
+
+    it("should return 404 with message if ID is not found when searching", async () => {
+        const response = await request(app)
+            .get(`${PREFIX}/6171508962f47a7a91938d30`)
+        const person = response.body
+
+        expect(response.status).toBe(404)
+        expect(person).toHaveProperty('message')
+        expect(person.message).toBe("Valor 6171508962f47a7a91938d30 não encontrado")
+    })
 })
