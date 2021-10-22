@@ -1,9 +1,9 @@
 
 import PeopleController from "@controllers/PeopleController"
 import { Router } from "express"
-import { CreatePeopleValidation } from "src/validations/people/createPeopleValidation"
-import { GetPeopleValidation } from "src/validations/people/getPeopleValidation"
-import { UpdatePeopleValidation } from "src/validations/people/updatePeopleValidation"
+import { CreatePeopleValidation } from "../../src/validations/people/createPeopleValidation"
+import { GetPeopleValidation } from "../../src/validations/people/getPeopleValidation"
+import { UpdatePeopleValidation } from "../../src/validations/people/updatePeopleValidation"
 
 
 export default (prefix = '/people'): Router => {

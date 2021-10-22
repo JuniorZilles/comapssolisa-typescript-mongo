@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import Joi from 'joi';
 
-export const CreateValidation = async (req: Request, res: Response, next: NextFunction) => {
+export const CreateCarValidation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const schema = Joi.object({
             modelo: Joi.string().required(),
