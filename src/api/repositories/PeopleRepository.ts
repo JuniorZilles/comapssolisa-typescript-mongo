@@ -21,8 +21,8 @@ class CarRepository  {
         return true
     }
 
-    async findById(id:string):Promise<PersonUpdateModel>{
-        return await PersonModel.findById(id) as PersonUpdateModel
+    async findById(id:string):Promise<PersonCreateModel>{
+        return await PersonModel.findById(id) as PersonCreateModel
     } 
 
     validId(id:string):boolean{
