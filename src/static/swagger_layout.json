@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Desafio Compasso Parte 1",
-    "description": "API da compassolisa um seguimento carros para alugar de luxo e semi luxo",
+    "description": "API da compassolisa um seguimento aluguel de carros de luxo e semi luxo",
     "contact": {
       "name": "Junior Zilles",
       "email": "junior_zilles@hotmail.com",
@@ -22,6 +22,10 @@
     {
       "name": "People",
       "description": "CRUD de pessoas da Compassolisa"
+    },
+    {
+      "name": "Authenticate",
+      "description": "Autenticação das pessoas da Compassolisa"
     }
   ],
   "servers": [
@@ -587,10 +591,100 @@
           }
         }
       }
+    },
+    "/v1/authenticate": {
+      "post": {
+        "tags": [
+          "Authenticate"
+        ],
+        "summary": "Autenticação de usuários da Compassolisa",
+        "description": "Authentica um usuário e retorna o email e se está habilitado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth-request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auth-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro-validacao"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
+      "auth-request": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "senha": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "auth-response": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "habilitado": {
+            "type": "string",
+            "enum": [
+              "sim",
+              "não"
+            ]
+          }
+        }
+      },
       "person-request": {
         "type": "object",
         "properties": {
