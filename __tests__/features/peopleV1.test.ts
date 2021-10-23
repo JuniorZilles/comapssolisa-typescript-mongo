@@ -195,12 +195,12 @@ describe("src :: api :: controllers :: car", () => {
         const people = response.body
 
         expect(response.status).toBe(200)
-        expect(people).toHaveProperty('people')
+        expect(people).toHaveProperty('pessoas')
         expect(people).toHaveProperty('total')
         expect(people).toHaveProperty('limit')
         expect(people).toHaveProperty('offset')
         expect(people).toHaveProperty('offsets')
-        expect(people.people.length).toEqual(peopleData.length)
+        expect(people.pessoas.length).toEqual(peopleData.length)
     })
 
     it("should get all people that by habilitado", async () => {
@@ -212,12 +212,12 @@ describe("src :: api :: controllers :: car", () => {
         const people = response.body
         
         expect(response.status).toBe(200)
-        expect(people).toHaveProperty('people')
+        expect(people).toHaveProperty('pessoas')
         expect(people).toHaveProperty('total')
         expect(people).toHaveProperty('limit')
         expect(people).toHaveProperty('offset')
         expect(people).toHaveProperty('offsets')
-        expect(people.people.length).toEqual(5)
+        expect(people.pessoas.length).toEqual(5)
     })
 
     it("should not get any people", async () => {
@@ -227,12 +227,12 @@ describe("src :: api :: controllers :: car", () => {
         const people = response.body
         
         expect(response.status).toBe(200)
-        expect(people).toHaveProperty('people')
+        expect(people).toHaveProperty('pessoas')
         expect(people).toHaveProperty('total')
         expect(people).toHaveProperty('limit')
         expect(people).toHaveProperty('offset')
         expect(people).toHaveProperty('offsets')
-        expect(people.people.length).toEqual(0)
+        expect(people.pessoas.length).toEqual(0)
     })
 
     /**

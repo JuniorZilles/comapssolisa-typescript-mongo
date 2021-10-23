@@ -69,15 +69,15 @@ describe("src :: api :: services :: people", () => {
         const temp = await factory.createMany<PersonCreateModel>('People', 5)
         const person = await PeopleService.list({})
 
-        expect(person.people.length).toEqual(temp.length)
+        expect(person.pessoas.length).toEqual(temp.length)
     })
 
     it("should get all by nome people", async () => {
         const temp = await factory.createMany<PersonCreateModel>('People', 5)
         const person = await PeopleService.list({ nome: temp[0].nome })
 
-        expect(person.people.length).toEqual(temp.length)
-        person.people.forEach(element => {
+        expect(person.pessoas.length).toEqual(temp.length)
+        person.pessoas.forEach(element => {
             expect(element.nome).toEqual(temp[0].nome)
         });
     })
@@ -86,7 +86,7 @@ describe("src :: api :: services :: people", () => {
         const temp = await factory.create<PersonCreateModel>('People')
         const person = await PeopleService.list({ nome: temp.senha })
 
-        expect(person.people.length).toEqual(0)
+        expect(person.pessoas.length).toEqual(0)
     })
 
     /**
