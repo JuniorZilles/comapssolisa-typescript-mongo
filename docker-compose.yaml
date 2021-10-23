@@ -5,6 +5,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: MongoDB2021
+      MONGO_INITDB_DATABASE: compassolisa
     ports:
       - 27017:27017
     volumes:
@@ -20,6 +21,27 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: junior
       ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2021
       ME_CONFIG_MONGODB_URL: "mongodb://root:MongoDB2021@projeto_final_parte_1_mongo_1:27017/"
+    links:
+      - mongo
+    depends_on:
+      - "mongo"
+    networks:
+      - mongo-compose-network
+  app:
+    build: .
+    ports:
+        - "3000:3000"
+    environment:
+      MONGO_HOST: projeto_final_parte_1_mongo_1:27017
+      MONGO_USER: root
+      MONGO_PASSWORD: MongoDB2021
+      MONGO_COLLECTION: compassolisa
+      NODE_ENV: prod
+      PORT: 3000
+    entrypoint:
+      - npm
+      - run
+      - start
     links:
       - mongo
     depends_on:
