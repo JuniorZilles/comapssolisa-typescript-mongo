@@ -1,4 +1,4 @@
-export interface PersonUpdateModel {
+export interface PersonPatchModel {
     id?: string
     nome?: string
     cpf?: string

@@ -1,6 +1,6 @@
-import { PersonUpdateModel } from "./PersonUpdateModel";
+import { PersonPatchModel } from "./PersonPatchModel";
 
-export interface PersonSearch extends PersonUpdateModel{
+export interface PersonSearch extends PersonPatchModel{
     offset?:string
     limit?:string
 }

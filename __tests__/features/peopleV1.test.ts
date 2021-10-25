@@ -314,32 +314,43 @@ describe("src :: api :: controllers :: car", () => {
 
      it("should update a person", async () => {
         const peopleData = await factory.create<PersonCreateModel>('People', {habilitado: 'não'})
+        const tempData = {
+            nome: "joaozinho ciclano",
+            cpf: "131.147.860-49",
+            data_nascimento: "03/03/2000",
+            email: "joazinho@email.com",
+            senha: "123456",
+            habilitado: "sim"
+        }
         const responseput = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({habilitado: 'sim'})
+            .send(tempData)
 
         const personput = responseput.body
 
-        expect(responseput.status).toBe(204)
+        expect(responseput.status).toBe(200)
 
-        const response = await request(app)
-            .get(`${PREFIX}/${peopleData.id}`)
-
-        const person = response.body
-        expect(person._id).toBe(peopleData.id)
-        expect(new Date(person.dataCriacao)).toEqual(peopleData.dataCriacao)
-        expect(person.nome).toBe(peopleData.nome)
-        expect(person.cpf).toBe(peopleData.cpf)
-        expect(new Date(person.data_nascimento)).toEqual(new Date(peopleData.data_nascimento))
-        expect(person.email).toBe(peopleData.email)
-        expect(person.habilitado).toBe('sim')
+        expect(personput._id).toBe(peopleData.id)
+        expect(new Date(personput.dataCriacao)).toEqual(peopleData.dataCriacao)
+        expect(personput.nome).toBe(tempData.nome)
+        expect(personput.cpf).toBe(tempData.cpf)
+        expect(new Date(personput.data_nascimento)).toEqual(new Date(tempData.data_nascimento))
+        expect(personput.email).toBe(tempData.email)
+        expect(personput.habilitado).toBe('sim')
     })
 
     it("should return 400 with details if missing an attribute when trying to update", async () => {
         const peopleData = await factory.create<PersonCreateModel>('People')
         const response = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({habilitado:''})
+            .send({
+                nome: "joaozinho ciclano",
+                cpf: "131.147.860-49",
+                data_nascimento: "03/03/2000",
+                email: "joazinho@email.com",
+                senha: "123456",
+                habilitado: ""
+            })
         const value = response.body
 
         expect(response.status).toBe(400)
@@ -348,23 +359,18 @@ describe("src :: api :: controllers :: car", () => {
         expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]')
     })
 
-    it("should return 400 with message if has no argument on update", async () => {
-        const peopleData = await factory.create<PersonCreateModel>('People')
-        const response = await request(app)
-            .put(`${PREFIX}/${peopleData.id}`)
-            .send({})
-        const value = response.body
-
-        expect(response.status).toBe(400)
-        expect(value).toHaveProperty('message')
-        expect(value.message).toBe('Corpo da requisição incompleto')
-    })
-
     it("should return 400 with message if age is less than 18 on update", async () => {
         const peopleData = await factory.create<PersonCreateModel>('People')
         const response = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({data_nascimento: "03/03/2010",})
+            .send({
+                nome: "joaozinho ciclano",
+                cpf: "131.147.860-49",
+                data_nascimento: "03/03/2010",
+                email: "joazinho@email.com",
+                senha: "123456",
+                habilitado: "sim"
+            })
         const value = response.body
 
         expect(response.status).toBe(400)
@@ -376,7 +382,14 @@ describe("src :: api :: controllers :: car", () => {
         const peopleData = await factory.create<PersonCreateModel>('People')
         const response = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({ cpf: "131.147."})
+            .send({
+                nome: "joaozinho ciclano",
+                cpf: "131.147.",
+                data_nascimento: "03/03/2000",
+                email: "joazinho@email.com",
+                senha: "123456",
+                habilitado: "sim"
+            })
         const value = response.body
 
         expect(response.status).toBe(400)
@@ -389,7 +402,14 @@ describe("src :: api :: controllers :: car", () => {
         const peopleData = await factory.create<PersonCreateModel>('People')
         const response = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({senha: "1234"})
+            .send({
+                nome: "joaozinho ciclano",
+                cpf: "131.147.860-49",
+                data_nascimento: "03/03/2000",
+                email: "joazinho@email.com",
+                senha: "1234",
+                habilitado: "sim"
+            })
         const value = response.body
         
         expect(response.status).toBe(400)
@@ -402,7 +422,14 @@ describe("src :: api :: controllers :: car", () => {
         const peopleData = await factory.create<PersonCreateModel>('People')
         const response = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({email: "joazinho"})
+            .send({
+                nome: "joaozinho ciclano",
+                cpf: "131.147.860-49",
+                data_nascimento: "03/03/2000",
+                email: "joazinho",
+                senha: "123456",
+                habilitado: "sim"
+            })
         const value = response.body
         
         expect(response.status).toBe(400)
@@ -415,7 +442,14 @@ describe("src :: api :: controllers :: car", () => {
         const peopleData = await factory.create<PersonCreateModel>('People')
         const response = await request(app)
             .put(`${PREFIX}/${peopleData.id}`)
-            .send({habilitado: "talvez"})
+            .send({
+                nome: "joaozinho ciclano",
+                cpf: "131.147.860-49",
+                data_nascimento: "03/03/2000",
+                email: "joazinho@email.com",
+                senha: "123456",
+                habilitado: "talvez"
+            })
         const value = response.body
         
         expect(response.status).toBe(400)

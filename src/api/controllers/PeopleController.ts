@@ -37,7 +37,7 @@ class PeopleController{
             const id = req.params.id
             const updated = await PeopleService.update(id, req.body)
             if(updated){
-                return res.status(204).end()
+                return res.status(200).json(updated)
             }else{
                 return res.status(400).send({message:"Something went wrong!"})
             }

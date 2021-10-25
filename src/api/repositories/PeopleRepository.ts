@@ -2,7 +2,6 @@ import { PeopleModel } from "@models/PeopleModel";
 import { PersonCreateModel } from "@models/PersonCreateModel";
 import PersonModel, { isValid } from "@models/PersonModel";
 import { PersonSearch } from "@models/PersonSearch";
-import { PersonUpdateModel } from "@models/PersonUpdateModel";
 
 class CarRepository  {
     async create(payload:PersonCreateModel):Promise<PersonCreateModel> {
@@ -29,9 +28,8 @@ class CarRepository  {
       return isValid(id);
     }
 
-    async update(id:string, payload:PersonUpdateModel){
-        await PersonModel.findByIdAndUpdate(id, payload).exec()
-        return true
+    async update(id:string, payload:PersonCreateModel){
+        return await PersonModel.findByIdAndUpdate(id, payload, {returnOriginal: false}).exec() as PersonCreateModel
     }
   }
 

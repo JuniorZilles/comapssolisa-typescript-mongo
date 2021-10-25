@@ -1,8 +1,8 @@
-import { PersonUpdateModel } from "./PersonUpdateModel";
+import { PersonPatchModel } from "./PersonPatchModel";
 
 export class PeopleModel{
     constructor(
-    public pessoas: PersonUpdateModel[],
+    public pessoas: PersonPatchModel[],
     public total: Number,
     public limit: Number,
     public offset: Number,
