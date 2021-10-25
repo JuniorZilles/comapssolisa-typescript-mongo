@@ -4,14 +4,6 @@ export interface Accessory {
     descricao: String
 }
 
-export interface CarUpdateModel {
-    modelo?: string
-    cor?: string
-    ano?: Number
-    acessorios?: Accessory[]
-    quantidadePassageiros?: Number
-}
-
 export interface Car {
     id?: string
     modelo: string

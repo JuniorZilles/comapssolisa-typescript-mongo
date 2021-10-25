@@ -4,7 +4,6 @@ import CarModel, { Car } from "@models/CarModel"
 import factory from '../utils/CarFactory'
 import MongoDatabase from "../../src/infra/mongo/index"
 import { NotFound } from "@errors/NotFound"
-import { MissingBody } from "@errors/MissingBody"
 
 MongoDatabase.connect()
 const carData = {
@@ -239,25 +238,36 @@ describe("src :: api :: services :: car", () => {
     
     it("should update a car", async () => {
         const car = await factory.create<Car>('Car')
-        
+        const tempData = {
+            modelo: 'Abacaxi',
+            cor: "Verde",
+            ano: 2021, 
+            acessorios: [ { descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
         if(car.id){
-            const result = await CarService.update(car.id,{modelo: 'Abacaxi'})
-            expect(result).toBe(true)
-            const resultCar = await CarService.getById(car.id)
-            expect(resultCar.id).toBe(car.id)
-            expect(resultCar.acessorios).toStrictEqual(car.acessorios)
-            expect(resultCar.modelo).toBe('Abacaxi')
-            expect(resultCar.ano).toBe(car.ano)
-            expect(resultCar.cor).toBe(car.cor)
+            const result = await CarService.update(car.id, tempData)
+            
+            expect(result.id).toBe(car.id)
+            expect(result.acessorios).toStrictEqual(tempData.acessorios)
+            expect(result.modelo).toBe('Abacaxi')
+            expect(result.ano).toBe(tempData.ano)
+            expect(result.cor).toBe(tempData.cor)
         }
     })
 
     it("should have at least one accessory if is updating this field", async () => {
         try {
             const car = await factory.create<Car>('Car')
-            
+            const tempData = {
+                modelo: "GM S10 2.8",
+                cor: "Verde",
+                ano: 2023, 
+                acessorios:[],
+                quantidadePassageiros: 5
+            }
             if(car.id){
-                await CarService.update(car.id,{acessorios: []})
+                await CarService.update(car.id,tempData)
             }
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
@@ -268,9 +278,15 @@ describe("src :: api :: services :: car", () => {
     it("the year updated should not be greater than 2022 and throw a InvalidField error", async () => {
         try {
             const car = await factory.create<Car>('Car')
-            
+            const tempData = {
+                modelo: "GM S10 2.8",
+                cor: "Verde",
+                ano: 2023, 
+                acessorios:[{ descricao: "Ar-condicionado" }],
+                quantidadePassageiros: 5
+            }
             if(car.id){
-                await CarService.update(car.id,{ ano: 2023 })
+                await CarService.update(car.id,tempData)
             }
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
@@ -281,9 +297,15 @@ describe("src :: api :: services :: car", () => {
     it("the year updated should not be least than 1950 and throw a InvalidField error", async () => {
         try {
             const car = await factory.create<Car>('Car')
-            
+            const tempData = {
+                modelo: "GM S10 2.8",
+                cor: "Verde",
+                ano: 1949, 
+                acessorios:[{ descricao: "Ar-condicionado" }],
+                quantidadePassageiros: 5
+            }
             if(car.id){
-                await CarService.update(car.id,{ ano: 1949 })
+                await CarService.update(car.id,tempData)
             }
         } catch (e) {
             expect(e).toBeInstanceOf(InvalidField)
@@ -293,29 +315,22 @@ describe("src :: api :: services :: car", () => {
 
     it("should update and include just one if duplicated accessory", async () => {
         const car = await factory.create<Car>('Car')
+        const tempData = {
+            modelo: "GM S10 2.8",
+            cor: "Verde",
+            ano: 2021, 
+            acessorios:[{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
         
         if(car.id){
-            const result = await CarService.update(car.id,{ acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }] })
-            expect(result).toBe(true)
-            const resultCar = await CarService.getById(car.id)
-            expect(resultCar.id).toBe(car.id)
-            expect(resultCar.acessorios).toStrictEqual([{ descricao: "Ar-condicionado" }])
-            expect(resultCar.modelo).toBe(car.modelo)
-            expect(resultCar.ano).toBe(car.ano)
-            expect(resultCar.cor).toBe(car.cor)
+            const result = await CarService.update(car.id,tempData)
+            expect(result.id).toBe(car.id)
+            expect(result.acessorios).toStrictEqual([{ descricao: "Ar-condicionado" }])
+            expect(result.modelo).toBe(tempData.modelo)
+            expect(result.ano).toBe(tempData.ano)
+            expect(result.cor).toBe(tempData.cor)
             
-        }
-    })
-
-    it("should not update", async () => {
-        try {
-            const car = await factory.create<Car>('Car')
-            if(car.id){
-                await CarService.update(car.id,{ })
-            }
-        } catch (e) {
-            expect(e).toBeInstanceOf(MissingBody)
-            expect((<MissingBody>e).message).toBe("Corpo da requisição incompleto")
         }
     })
 })

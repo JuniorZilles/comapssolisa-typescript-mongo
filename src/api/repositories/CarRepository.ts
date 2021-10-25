@@ -1,4 +1,4 @@
-import CarModel, { Car, CarUpdateModel, isValid }  from "@models/CarModel";
+import CarModel, { Car, isValid }  from "@models/CarModel";
 import { CarSearch } from "@models/CarSearchModel";
 import { VehiclesModel } from "@models/VehicleModel";
 
@@ -27,9 +27,8 @@ class CarRepository  {
       return isValid(id);
     }
 
-    async update(id:string, payload:CarUpdateModel){
-      await CarModel.findByIdAndUpdate(id, payload).exec()
-      return true
+    async update(id:string, payload:Car){
+      return await CarModel.findByIdAndUpdate(id, payload, {returnOriginal: false}).exec() as Car
     }
   }
 

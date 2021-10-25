@@ -162,7 +162,7 @@ describe("src :: api :: controllers :: car", () => {
         const carData = await factory.createMany<Car>('Car', 5, { acessorios: [{ descricao: "Ar-condicionado" }] })
 
         const response = await request(app)
-            .get(`${PREFIX}?offset=0&limit=${carData.length}&acessorio=Ar-condicionado`)
+            .get(`${PREFIX}?offset=0&limit=${carData.length}&descricao=Ar-condicionado`)
         const vehicles = response.body
 
         expect(response.status).toBe(200)
@@ -301,25 +301,30 @@ describe("src :: api :: controllers :: car", () => {
         const temp = await factory.create<Car>('Car')
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
-            .send({ modelo: 'Abacaxi' })
-
-        const responseget = await request(app)
-            .get(`${PREFIX}/${temp.id}`)
-        const carget = responseget.body        
-
-        expect(response.status).toBe(204)
-        expect(temp.acessorios).toEqual(carget.acessorios)
-        expect(temp.ano).toBe(carget.ano)
-        expect(carget.modelo).toBe('Abacaxi')
-        expect(temp.cor).toBe(carget.cor)
-        expect(temp.quantidadePassageiros).toBe(carget.quantidadePassageiros)
+            .send(carData)
+        const result = response.body
+        
+        expect(response.status).toBe(200)
+        expect(carData.acessorios).toEqual(result.acessorios)
+        expect(carData.ano).toBe(result.ano)
+        expect(carData.modelo).toBe(result.modelo)
+        expect(carData.cor).toBe(result.cor)
+        expect(carData.acessorios).toEqual(result.acessorios)
+        expect(carData.quantidadePassageiros).toBe(result.quantidadePassageiros)
     })
 
     it("should return 400 with details if no accessory item exists when updating", async () => {
         const temp = await factory.create<Car>('Car')
+        const tempData =  {
+            modelo: "GM S10 2.8",
+            cor: "Verde",
+            ano: 2021,
+            acessorios: [],
+            quantidadePassageiros: 5
+        }
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
-            .send({acessorios: []})
+            .send(tempData)
 
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('details')
@@ -329,9 +334,16 @@ describe("src :: api :: controllers :: car", () => {
 
     it("should return 400 with details if year greater than 2022 when updating", async () => {
         const temp = await factory.create<Car>('Car')
+        const tempData = {
+            modelo: "GM S10 2.8",
+            cor: "Verde",
+            ano: 2023,
+            acessorios: [{ descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
-            .send({ano: 2023})
+            .send(tempData)
 
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('details')
@@ -341,9 +353,16 @@ describe("src :: api :: controllers :: car", () => {
 
     it("should return 400 with details if year least than 1950 when updating", async () => {
         const temp = await factory.create<Car>('Car')
+        const tempData = {
+            modelo: "GM S10 2.8",
+            cor: "Verde",
+            ano: 1949,
+            acessorios: [{ descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
-            .send({ano: 1949})
+            .send(tempData)
 
         expect(response.status).toBe(400)
         expect(response.body).toHaveProperty('details')
@@ -353,20 +372,24 @@ describe("src :: api :: controllers :: car", () => {
 
     it("should update if accessory has duplicated item but include just one when updating", async () => {
         const temp = await factory.create<Car>('Car')
+        const tempData = {
+            modelo: "GM S10 2.8",
+            cor: "Verde",
+            ano: 2018,
+            acessorios:  [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }],
+            quantidadePassageiros: 5
+        }
         const response = await request(app)
             .put(`${PREFIX}/${temp.id}`)
-            .send({acessorios: [{ descricao: "Ar-condicionado" }, { descricao: "Ar-condicionado" }]})
-
-        const responseget = await request(app)
-            .get(`${PREFIX}/${temp.id}`)
-        const carget = responseget.body        
-
-        expect(response.status).toBe(204)
-        expect(carget.acessorios).toEqual([ { descricao: "Ar-condicionado" }])
-        expect(temp.ano).toBe(carget.ano)
-        expect(temp.modelo).toBe(carget.modelo)
-        expect(temp.cor).toBe(carget.cor)
-        expect(temp.quantidadePassageiros).toBe(carget.quantidadePassageiros)
+            .send(tempData)   
+        const getted = response.body
+        
+        expect(response.status).toBe(200)
+        expect(getted.acessorios).toEqual([ { descricao: "Ar-condicionado" }])
+        expect(getted.ano).toBe(tempData.ano)
+        expect(getted.modelo).toBe(tempData.modelo)
+        expect(getted.cor).toBe(tempData.cor)
+        expect(getted.quantidadePassageiros).toBe(tempData.quantidadePassageiros)
     })
 
     it("should return 400 with message if empty body when updating", async () => {
@@ -376,7 +399,8 @@ describe("src :: api :: controllers :: car", () => {
             .send({})
         
         expect(response.status).toBe(400)
-        expect(response.body).toHaveProperty('message')
-        expect(response.body.message).toBe("Corpo da requisição incompleto")
+        expect(response.body).toHaveProperty('details')
+        expect(response.body.details.length).toEqual(1)
+        expect(response.body.details[0].message).toBe('"modelo" is required')
     })
 })
