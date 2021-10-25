@@ -47,9 +47,9 @@ class CarService {
     async list(payload: CarSearch) {
         let offset: number = 0
         let limit: number = 10
-        if (payload.acessorio) {
-            payload['acessorios.descricao'] = payload.acessorio
-            payload.acessorio = undefined
+        if (payload.descricao) {
+            payload['acessorios.descricao'] = payload.descricao
+            payload.descricao = undefined
         }
         if (payload.limit) {
             limit = parseInt(payload.limit)

@@ -2,7 +2,7 @@ export interface CarSearch {
     modelo?: string
     cor?: string
     ano?: Number
-    acessorio?: string
+    descricao?: string
     quantidadePassageiros?: Number
     "acessorios.descricao"?: string
     offset?:string

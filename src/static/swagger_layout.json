@@ -92,7 +92,7 @@
         "description": "A consulta retorna uma lista de veículos que atendem aos parametros informados",
         "parameters": [
           {
-            "name": "acessorio",
+            "name": "descricao",
             "in": "query",
             "schema": {
               "type": "string"

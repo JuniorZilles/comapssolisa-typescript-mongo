@@ -157,7 +157,7 @@ describe("src :: api :: services :: car", () => {
     it("should get all cars by accessory", async () => {
         const car = await factory.createMany<Car>('Car', 5)
     
-        const result = await CarService.list({ acessorio: car[0].acessorios[0].descricao as string })
+        const result = await CarService.list({ descricao: car[0].acessorios[0].descricao as string })
 
         result.veiculos.forEach(element => {
             expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao)
