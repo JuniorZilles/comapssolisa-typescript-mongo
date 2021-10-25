@@ -8,7 +8,7 @@ export const GetCarValidation = async (req: Request, res: Response, next: NextFu
             modelo: Joi.string(),
             cor: Joi.string(),
             ano: Joi.number().min(1950).max(2022),
-            acessorio: Joi.string(),
+            descricao: Joi.string(),
             quantidadePassageiros: Joi.number(),
             limit: Joi.number(),
             offset: Joi.number()

@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 import Joi from 'joi';
 
-export const CreatePeopleValidation = async (req: Request, res: Response, next: NextFunction) => {
+export const PostPutPeopleValidation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const schema = Joi.object({
             nome: Joi.string().required(),
-            cpf: Joi.string().required().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
+            cpf: Joi.string().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/).required(),
             data_nascimento: Joi.date().required(),
             email: Joi.string().email().required(),
             senha: Joi.string().min(6).required(),

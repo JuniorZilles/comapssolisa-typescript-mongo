@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import Joi from 'joi';
 
-export const UpdatePeopleValidation = async (req: Request, res: Response, next: NextFunction) => {
+export const PatchPeopleValidation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const schema = Joi.object({
             nome: Joi.string(),
