@@ -14,7 +14,7 @@ const personData = {
     senha: "123456",
     habilitado: "sim"
 }
-describe("src :: api :: controllers :: car", () => {
+describe("src :: api :: controllers :: people", () => {
     beforeAll(async () => {
         await PersonModel.deleteMany()
     })
