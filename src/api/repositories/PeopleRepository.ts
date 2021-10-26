@@ -33,8 +33,8 @@ class CarRepository  {
         return await PersonModel.findByIdAndUpdate(id, payload, {returnOriginal: false}).exec() as PersonCreateModel
     }
 
-    async findUser(email:string){      
-        return await PersonModel.findOne({email:email}, {senha:true, habilitado:true, email:true}).exec() as PersonCreateModel
+    async findUser(payload:any){      
+        return await PersonModel.findOne(payload, {senha:true, habilitado:true, email:true}).exec() as PersonCreateModel
     }
   }
 

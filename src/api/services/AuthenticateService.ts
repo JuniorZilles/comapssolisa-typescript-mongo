@@ -5,7 +5,7 @@ import PeopleRepository from "@repositories/PeopleRepository"
 import { InvalidValue } from '@errors/InvalidValue';
 class AuthenticateService{
     async authenticate(email:string, senha:string){
-        const user = await PeopleRepository.findUser(email)
+        const user = await PeopleRepository.findUser({email: email})
         
         if (!user){
             throw new NotFound(email)
