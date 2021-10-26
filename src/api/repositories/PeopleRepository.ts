@@ -1,6 +1,7 @@
 import { PeopleModel } from "@models/PeopleModel";
 import { PersonCreateModel } from "@models/PersonCreateModel";
 import PersonModel, { isValid } from "@models/PersonModel";
+import { PersonPatchModel } from "@models/PersonPatchModel";
 import { PersonSearch } from "@models/PersonSearch";
 
 class CarRepository  {
@@ -10,7 +11,7 @@ class CarRepository  {
 
     async findAll(payload:PersonSearch, offset:number, limit:number):Promise<PeopleModel> {
         const count = await PersonModel.countDocuments(payload)
-        const people = await PersonModel.find(payload, {senha:false},{skip:offset, limit:limit}).exec()
+        const people = await PersonModel.find(payload, null,{skip:offset, limit:limit}).exec()
         const offsets = Math.round(count/limit)
         return new PeopleModel(people, count, limit, offset, offsets)
     }
@@ -30,6 +31,10 @@ class CarRepository  {
 
     async update(id:string, payload:PersonCreateModel){
         return await PersonModel.findByIdAndUpdate(id, payload, {returnOriginal: false}).exec() as PersonCreateModel
+    }
+
+    async findUser(email:string){      
+        return await PersonModel.findOne({email:email}, {senha:true, habilitado:true, email:true}).exec() as PersonCreateModel
     }
   }
 

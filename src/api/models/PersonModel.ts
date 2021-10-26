@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import bcrypt from 'bcryptjs';
 import {PersonCreateModel} from './PersonCreateModel'
 
 const PersonSchema = new mongoose.Schema({
@@ -11,6 +12,12 @@ const PersonSchema = new mongoose.Schema({
     dataCriacao: { type: Date, default: Date.now }
 })
 //unique: true,
+PersonSchema.pre('save', async function(next){
+    const hash = await bcrypt.hash(this.senha, 10)
+    this.senha = hash
+    next()
+})
+
 const PersonModel = mongoose.model<PersonCreateModel>('People', PersonSchema)
 
 export const isValid = (id: string) => {
