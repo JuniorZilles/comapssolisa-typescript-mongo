@@ -4,11 +4,14 @@ import PeopleRepository from "@repositories/PeopleRepository"
 import { InvalidField } from '@errors/InvalidField'
 import { PersonSearch } from '@models/PersonSearch'
 import { NotFound } from '@errors/NotFound'
+import { PersonPatchModel } from '@models/PersonPatchModel'
 
 class PeopleService {
-    async create(payload: PersonCreateModel): Promise<PersonCreateModel> {
+    async create(payload: PersonCreateModel): Promise<PersonPatchModel> {
         this.isOlder(payload.data_nascimento)
-        return await PeopleRepository.create(payload)
+        const person =  await PeopleRepository.create(payload) as PersonPatchModel
+        person.senha = undefined
+        return person
     }
 
     isOlder(date: string) {
