@@ -39,6 +39,7 @@ describe("src :: api :: services :: people", () => {
         expect(person.data_nascimento).toEqual(new Date(personData.data_nascimento))
         expect(person.email).toBe(personData.email)
         expect(person.nome).toBe(personData.nome)
+        expect(person.senha).toBeUndefined()
         expect(person.habilitado).toBe(personData.habilitado)
 
     })

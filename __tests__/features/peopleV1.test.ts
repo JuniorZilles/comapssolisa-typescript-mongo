@@ -39,6 +39,7 @@ describe("src :: api :: controllers :: people", () => {
         expect(person._id).toBeDefined()
         expect(person.dataCriacao).toBeDefined()
         expect(person.nome).toBe(personData.nome)
+        expect(person.senha).toBeUndefined()
         expect(person.cpf).toBe(personData.cpf)
         expect(new Date(person.data_nascimento)).toEqual(new Date(personData.data_nascimento))
         expect(person.email).toBe(personData.email)
