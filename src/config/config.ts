@@ -5,11 +5,10 @@ dotenv.config({
 });
 
 export default {
-  database:{
+  database: {
     host: process.env.MONGO_HOST,
     username: process.env.MONGO_USER,
     password: process.env.MONGO_PASSWORD,
-    collection: process.env.MONGO_COLLECTION
-  }
-    
-}
+    collection: process.env.MONGO_COLLECTION,
+  },
+};

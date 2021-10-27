@@ -1,10 +1,9 @@
-export class InvalidValue extends Error{
+export default class InvalidValue extends Error {
+  public status:number;
 
-    public status:number
-    
-    constructor(field:string){
-        super(`O valor do campo '${field}' informado está inválido`)
-        this.name = 'InvalidField'
-        this.status = 400
-    }
+  constructor(field:string) {
+    super(`O valor do campo '${field}' informado está inválido`);
+    this.name = 'InvalidField';
+    this.status = 400;
+  }
 }

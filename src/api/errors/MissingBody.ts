@@ -1,8 +1,9 @@
-export class MissingBody extends Error{
-    public status:number
-    constructor(){
-        super(`Corpo da requisição incompleto`)
-        this.name = 'MissingBody'
-        this.status = 400
-    }
+export default class MissingBody extends Error {
+  public status:number;
+
+  constructor() {
+    super('Corpo da requisição incompleto');
+    this.name = 'MissingBody';
+    this.status = 400;
+  }
 }

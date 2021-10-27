@@ -1,10 +1,11 @@
-import { Car } from "./CarModel";
+import { Car } from './CarModel';
 
-export class VehiclesModel{
-    constructor(
+export default class VehiclesModel {
+  constructor(
     public veiculos: Car[],
     public total: Number,
     public limit: Number,
     public offset: Number,
-    public offsets:Number){}
+    public offsets:Number,
+  ) {}
 }

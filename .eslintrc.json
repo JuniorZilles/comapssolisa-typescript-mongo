@@ -1,20 +1,23 @@
 {
     "env": {
-        "node": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
-        "standard",
-        "jest"
+        "airbnb-base",
+        "airbnb-typescript/base"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 12,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
         "@typescript-eslint"
     ],
     "rules": {
+        "import/extensions": "off",
+        "import/no-unresolved": "off"
     }
 }

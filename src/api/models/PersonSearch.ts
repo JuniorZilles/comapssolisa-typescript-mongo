@@ -1,6 +1,6 @@
-import { PersonPatchModel } from "./PersonPatchModel";
+import PersonPatchModel from './PersonPatchModel';
 
 export interface PersonSearch extends PersonPatchModel{
-    offset?:string
-    limit?:string
+  offset?:string
+  limit?:string
 }
