@@ -17,9 +17,13 @@ class AuthenticateService {
       throw new InvalidValue('senha');
     }
 
-    const token = generateToken(user.id as string);
+    const token = generateToken({
+      id: user.id,
+      email: user.email as string,
+      habilitado: user.habilitado as string,
+    });
 
-    return { email: user.email as string, habilitado: user.habilitado as string, token };
+    return token;
   }
 }
 

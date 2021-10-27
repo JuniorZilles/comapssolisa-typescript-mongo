@@ -4,6 +4,8 @@ import NotFound from '@errors/NotFound';
 import { PersonCreateModel } from '@models/PersonCreateModel';
 import PersonModel from '@models/PersonModel';
 import AuthenticateService from '@services/AuthenticateService';
+import { verifyToken } from '@services/TokenService';
+import { JwtPayload } from 'jsonwebtoken';
 import MongoDatabase from '../../src/infra/mongo/index';
 import factory from '../utils/PeopleFactory';
 
@@ -25,9 +27,14 @@ describe('src :: api :: services :: authenticate', () => {
 
     const result = await AuthenticateService.authenticate(temp.email, '123456');
 
-    expect(result.email).toBe(temp.email);
-    expect(result.habilitado).toBe(temp.habilitado);
-    expect(result.token).toBeDefined();
+    expect(result).toBeDefined();
+    const content = verifyToken(result) as JwtPayload;
+
+    const tempContent = content.content;
+
+    expect(tempContent.id).toBe(temp.id);
+    expect(tempContent.email).toBe(temp.email);
+    expect(tempContent.habilitado).toBe(temp.habilitado);
   });
 
   it('should throw invalid value error when trying to authenticate', async () => {

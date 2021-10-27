@@ -7,7 +7,8 @@ class AuthenticateController {
     try {
       const { email, senha } = req.body;
       const result = await AuthenticateService.authenticate(email, senha);
-      return res.status(200).json(result);
+      res.setHeader('token', result);
+      return res.status(204).end();
     } catch (e) {
       return next(e);
     }

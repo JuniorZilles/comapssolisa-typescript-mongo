@@ -24,12 +24,10 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: personData.email as string, senha: '123456' });
 
-    const person = response.body;
+    const header = response.headers;
 
-    expect(response.status).toBe(200);
-    expect(person.email).toBe(personData.email);
-    expect(person.habilitado).toBe(personData.habilitado);
-    expect(person.token).toBeDefined();
+    expect(response.status).toBe(204);
+    expect(header.token).toBeDefined();
   });
 
   it('Should not authenticate and return status 400 with invalid field', async () => {
