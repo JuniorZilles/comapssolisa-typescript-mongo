@@ -1,6 +1,7 @@
 version: '3.4'
 services:
   mongo:
+    container_name: mongo-svc
     image: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -14,13 +15,14 @@ services:
       - mongo-compose-network
   
   mongo-express:
+    container_name: express-svc
     image: mongo-express
     ports:
       - 8081:8081
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: junior
       ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2021
-      ME_CONFIG_MONGODB_URL: "mongodb://root:MongoDB2021@projeto_final_parte_1_mongo_1:27017/"
+      ME_CONFIG_MONGODB_URL: "mongodb://root:MongoDB2021@mongo-svc:27017/"
     links:
       - mongo
     depends_on:
@@ -28,11 +30,12 @@ services:
     networks:
       - mongo-compose-network
   app:
+    container_name: api-svc
     build: .
     ports:
         - "3000:3000"
     environment:
-      MONGO_HOST: projeto_final_parte_1_mongo_1:27017
+      MONGO_HOST: mongo-svc:27017
       MONGO_USER: root
       MONGO_PASSWORD: MongoDB2021
       MONGO_COLLECTION: compassolisa
