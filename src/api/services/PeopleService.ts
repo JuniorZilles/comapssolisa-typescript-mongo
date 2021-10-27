@@ -8,20 +8,13 @@ import { PersonSearch } from '@models/PersonSearch';
 import NotFound from '@errors/NotFound';
 import PersonPatchModel from '@models/PersonPatchModel';
 
+moment.locale('pt-BR');
 class PeopleService {
   async create(payload: PersonCreateModel): Promise<PersonPatchModel> {
     this.isOlder(payload.data_nascimento);
     const person = await PeopleRepository.create(payload) as PersonPatchModel;
     person.senha = undefined;
-    // person.data_nascimento = this.toFormatedDate(person.data_nascimento as string);
     return person;
-  }
-
-  toFormatedDate(date:string) {
-    const temp = moment(date).format(
-      'DD/MM/YYYY',
-    );
-    return temp.toString();
   }
 
   isOlder(date: string) {
@@ -34,7 +27,7 @@ class PeopleService {
     }
   }
 
-  async getById(id: string):Promise<PersonCreateModel> {
+  async getById(id: string):Promise<PersonPatchModel> {
     if (!PeopleRepository.validId(id)) {
       throw new InvalidField('id');
     }
@@ -74,7 +67,6 @@ class PeopleService {
       this.isOlder(payload.data_nascimento);
     }
     const person = await PeopleRepository.update(id, payload);
-    // person.data_nascimento = this.toFormatedDate(person.data_nascimento as string);
     return person;
   }
 }

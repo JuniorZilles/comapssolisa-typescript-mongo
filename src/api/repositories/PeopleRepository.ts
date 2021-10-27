@@ -2,6 +2,7 @@
 import PeopleModel from '@models/PeopleModel';
 import { PersonCreateModel } from '@models/PersonCreateModel';
 import PersonModel, { isValid } from '@models/PersonModel';
+import PersonPatchModel from '@models/PersonPatchModel';
 import { PersonSearch } from '@models/PersonSearch';
 
 class PeopleRepository {
@@ -12,6 +13,10 @@ class PeopleRepository {
   async findAll(payload:PersonSearch, offset:number, limit:number):Promise<PeopleModel> {
     const count = await PersonModel.countDocuments(payload);
     const people = await PersonModel.find(payload, {
+      nome: true,
+      email: true,
+      cpf: true,
+      habilitado: true,
       data_nascimento: {
         $dateToString: {
           format: '%d/%m/%Y',
@@ -28,15 +33,8 @@ class PeopleRepository {
     return true;
   }
 
-  async findById(id:string):Promise<PersonCreateModel> {
-    return await PersonModel.findById(id, null, {
-      data_nascimento: {
-        $dateToString: {
-          format: '%d/%m/%Y',
-          date: '$data_nascimento',
-        },
-      },
-    }) as PersonCreateModel;
+  async findById(id:string):Promise<PersonPatchModel> {
+    return await PersonModel.findById(id) as PersonPatchModel;
   }
 
   validId(id:string):boolean {
@@ -47,12 +45,6 @@ class PeopleRepository {
     return await PersonModel.findByIdAndUpdate(id, payload,
       {
         returnOriginal: false,
-        data_nascimento: {
-          $dateToString: {
-            format: '%d/%m/%Y',
-            date: '$data_nascimento',
-          },
-        },
       }).exec() as PersonCreateModel;
   }
 

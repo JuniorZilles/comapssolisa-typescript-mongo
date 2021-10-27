@@ -242,15 +242,17 @@ describe('src :: api :: controllers :: people', () => {
      */
 
   it('should get a person by ID', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<PersonCreateModel>('People', { data_nascimento: '2020-10-30' });
 
     const response = await request(app)
       .get(`${PREFIX}/${peopleData.id}`);
+
     const person = response.body;
     expect(response.status).toBe(200);
     expect(person.nome).toBe(peopleData.nome);
     expect(person.cpf).toBe(peopleData.cpf);
-    expect(person.data_nascimento).toEqual(moment(peopleData.data_nascimento).format(
+    const date = new Date(peopleData.data_nascimento);
+    expect(person.data_nascimento).toEqual(moment(date, 'YYYY-MM-DD HH:mm:ss').format(
       'DD/MM/YYYY',
     ));
     expect(person.email).toBe(peopleData.email);

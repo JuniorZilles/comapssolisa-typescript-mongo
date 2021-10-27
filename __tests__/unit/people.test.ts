@@ -37,7 +37,9 @@ describe('src :: api :: services :: people', () => {
     expect(person.id).toBeDefined();
     expect(person.dataCriacao).toBeDefined();
     expect(person.cpf).toBe(personData.cpf);
-    expect(person.data_nascimento).toEqual(new Date(personData.data_nascimento));
+    expect(person.data_nascimento).toEqual(
+      new Date(personData.data_nascimento),
+    );
     expect(person.email).toBe(personData.email);
     expect(person.nome).toBe(personData.nome);
     expect(person.senha).toBeUndefined();
@@ -97,11 +99,12 @@ describe('src :: api :: services :: people', () => {
     const personGenerated = await factory.create<PersonCreateModel>('People');
     if (personGenerated.id) {
       const person = await PeopleService.getById(personGenerated.id);
-
       expect(person.id).toBe(personGenerated.id);
       expect(person.dataCriacao).toEqual(personGenerated.dataCriacao);
       expect(person.cpf).toBe(personGenerated.cpf);
-      expect(person.data_nascimento).toEqual(new Date(personGenerated.data_nascimento));
+      expect(person.data_nascimento).toEqual(
+        personGenerated.data_nascimento,
+      );
       expect(person.email).toBe(personGenerated.email);
       expect(person.nome).toBe(personGenerated.nome);
       expect(person.habilitado).toBe(personGenerated.habilitado);
@@ -177,7 +180,9 @@ describe('src :: api :: services :: people', () => {
       expect(person.id).toBe(personGenerated.id);
       expect(person.dataCriacao).toEqual(personGenerated.dataCriacao);
       expect(person.cpf).toBe(tempData.cpf);
-      expect(person.data_nascimento).toEqual(new Date(tempData.data_nascimento));
+      expect(person.data_nascimento).toEqual(
+        new Date(tempData.data_nascimento),
+      );
       expect(person.email).toBe(tempData.email);
       expect(person.nome).toBe(tempData.nome);
       expect(person.habilitado).toBe('não');
