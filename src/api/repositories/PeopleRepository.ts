@@ -12,18 +12,7 @@ class PeopleRepository {
 
   async findAll(payload:PersonSearch, offset:number, limit:number):Promise<PeopleModel> {
     const count = await PersonModel.countDocuments(payload);
-    const people = await PersonModel.find(payload, {
-      nome: true,
-      email: true,
-      cpf: true,
-      habilitado: true,
-      data_nascimento: {
-        $dateToString: {
-          format: '%d/%m/%Y',
-          date: '$data_nascimento',
-        },
-      },
-    }, { skip: offset * limit, limit }).exec();
+    const people = await PersonModel.find(payload, null, { skip: offset * limit, limit }).exec();
     const offsets = Math.round(count / limit);
     return new PeopleModel(people, count, limit, offset, offsets);
   }
