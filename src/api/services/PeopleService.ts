@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import moment from 'moment';
+import bcrypt from 'bcryptjs';
 import { PersonCreateModel } from '@models/PersonCreateModel';
 import PeopleRepository from '@repositories/PeopleRepository';
 import InvalidField from '@errors/InvalidField';
@@ -75,6 +76,9 @@ class PeopleService {
     await this.getById(id);
     if (payload.data_nascimento) {
       payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento);
+    }
+    if (payload.senha) {
+      payload.senha = await bcrypt.hash(payload.senha, 10);
     }
     const person = await PeopleRepository.update(id, payload);
     return person;
