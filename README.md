@@ -1,6 +1,6 @@
 # Projeto Final Parte 1
 
-Desenvolvimento da primeira etapa da API da compassolisa
+Development of the first stage of the API Compassolisa
 
 ## Summary 
 
@@ -14,7 +14,7 @@ Desenvolvimento da primeira etapa da API da compassolisa
 
 [Routes](#routes)
 
-[Licença](#licença)
+[License](#license)
 
 ### Example for .ENV and .ENV.TEST
 
@@ -85,7 +85,7 @@ if you are runnig locally it should be found on `localhost:3000`
     - POST http://localhost:3000/api/v1/authenticate
 
 
-## Licença 
+## License 
 
 The [MIT License]() (MIT)
 
