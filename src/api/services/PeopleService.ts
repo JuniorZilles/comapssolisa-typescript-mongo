@@ -17,15 +17,21 @@ class PeopleService {
     return person;
   }
 
-  isOlderAndTransfromToDateString(date: string) {
+  private isOlderAndTransfromToDateString(date: string) {
     const birthday = moment(date, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD HH:mm:ss',
+      'YYYY-MM-DD',
     );
     const age = moment().diff(birthday, 'years', false);
     if (age < 18) {
       throw new InvalidField('data_nascimento');
     }
     return birthday;
+  }
+
+  private transfromToDateString(date: string) {
+    return moment(date, 'DD/MM/YYYY').format(
+      'YYYY-MM-DD',
+    );
   }
 
   async getById(id: string):Promise<PersonPatchModel> {
@@ -53,6 +59,9 @@ class PeopleService {
     }
     if (payload.senha) {
       payload.senha = undefined;
+    }
+    if (payload.data_nascimento) {
+      payload.data_nascimento = this.transfromToDateString(payload.data_nascimento);
     }
     return PeopleRepository.findAll(payload, offset, limit);
   }
