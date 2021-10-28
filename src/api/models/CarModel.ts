@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import mongoose from 'mongoose';
 
 export interface Accessory {
@@ -12,6 +13,7 @@ export interface Car {
   acessorios: Accessory[]
   quantidadePassageiros: Number
   dataCriacao?: Date
+  dataAtualizacao?: Date
 }
 
 const CarSchema = new mongoose.Schema({
@@ -20,7 +22,13 @@ const CarSchema = new mongoose.Schema({
   ano: { type: Number, required: true },
   acessorios: { type: Array, required: true },
   quantidadePassageiros: { type: Number, required: true },
-  dataCriacao: { type: Date, default: Date.now },
+  dataCriacao: { type: Date, default: Date.now, immutable: true },
+  dataAtualizacao: { type: Date, default: Date.now },
+});
+
+CarSchema.pre('findOneAndUpdate', async function onSave(next) {
+  this.set('dataAtualizacao', new Date());
+  next();
 });
 
 const CarModel = mongoose.model<Car>('Car', CarSchema);

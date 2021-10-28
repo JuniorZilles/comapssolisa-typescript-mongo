@@ -7,4 +7,5 @@ export interface PersonCreateModel {
   senha: string
   habilitado: string
   dataCriacao?: Date
+  dataAtualizacao?: Date
 }

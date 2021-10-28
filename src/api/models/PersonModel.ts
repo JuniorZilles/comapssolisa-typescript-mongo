@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import mongoose from 'mongoose';
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
@@ -18,7 +17,7 @@ const PersonSchema = new mongoose.Schema({
   senha: { type: String, required: true, select: false },
   habilitado: { type: String, required: true, enum: ['sim', 'não'] },
   dataCriacao: { type: Date, default: Date.now, immutable: true },
-  dataAtualizacao: { type: Date, default: Date.now, immutable: true },
+  dataAtualizacao: { type: Date, default: Date.now },
 });
 
 PersonSchema.pre('save', async function onSave(next) {
@@ -28,9 +27,7 @@ PersonSchema.pre('save', async function onSave(next) {
 });
 
 PersonSchema.pre('findOneAndUpdate', async function onSave(next) {
-  const docToUpdate = this._update;
-  docToUpdate.senha = await bcrypt.hash(docToUpdate.senha, 10);
-  docToUpdate.dataAtualizacao = new Date();
+  this.set('dataAtualizacao', new Date());
   next();
 });
 
