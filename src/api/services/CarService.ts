@@ -12,7 +12,7 @@ class CarService {
 
     this.isValidYear(payload.ano);
 
-    payload.acessorios = this.deDuplicate(payload.acessorios);
+    this.hasDuplicate(payload.acessorios);
 
     return CarRepository.create(payload);
   }
@@ -29,9 +29,12 @@ class CarService {
     }
   }
 
-  deDuplicate(list: Accessory[]): Accessory[] {
-    return list.filter((elem, index, arr) => arr.findIndex((t) => (
+  hasDuplicate(list: Accessory[]) {
+    const newList = list.filter((elem, index, arr) => arr.findIndex((t) => (
       t.descricao === elem.descricao)) === index);
+    if (newList.length !== list.length) {
+      throw new InvalidField('acessorios');
+    }
   }
 
   async getById(id: string) {
@@ -73,7 +76,7 @@ class CarService {
     await this.getById(id);
     if (payload.acessorios) {
       this.isValidAccessories(payload.acessorios);
-      payload.acessorios = this.deDuplicate(payload.acessorios);
+      this.hasDuplicate(payload.acessorios);
     }
     if (payload.ano) {
       this.isValidYear(payload.ano);

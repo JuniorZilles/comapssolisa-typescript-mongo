@@ -265,8 +265,9 @@ describe('src :: api :: controllers :: people', () => {
     const person = response.body;
 
     expect(response.status).toBe(400);
-    expect(person).toHaveProperty('message');
-    expect(person.message).toBe("O campo 'id' está fora do formato padrão");
+    expect(person).toHaveProperty('details');
+    expect(person.details.length).toEqual(1);
+    expect(person.details[0].message).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 404 with message if ID is not found when searching', async () => {
@@ -299,8 +300,9 @@ describe('src :: api :: controllers :: people', () => {
     const person = response.body;
 
     expect(response.status).toBe(400);
-    expect(person).toHaveProperty('message');
-    expect(person.message).toBe("O campo 'id' está fora do formato padrão");
+    expect(person).toHaveProperty('details');
+    expect(person.details.length).toEqual(1);
+    expect(person.details[0].message).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 404 with message if ID is not found when removing', async () => {
@@ -445,6 +447,7 @@ describe('src :: api :: controllers :: people', () => {
 
   it('should return 400 with details if habilitado has other option than sim or não', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
+
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
       .send({

@@ -12,7 +12,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         Joi.object({
           descricao: Joi.string(),
         }),
-      ),
+      ).unique(),
       quantidadePassageiros: Joi.number(),
     });
 

@@ -87,48 +87,19 @@ describe('src :: api :: services :: car', () => {
   });
 
   it('should include just one if duplicated accessory', async () => {
-    const temp = {
-      modelo: 'GM S10 2.8',
-      cor: 'Verde',
-      ano: 2021,
-      acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
-      quantidadePassageiros: 5,
-    };
-    const car = await CarService.create(temp);
-    expect(car.id).toBeDefined();
-    expect(car.dataCriacao).toBeDefined();
-    expect(car.ano).toBe(temp.ano);
-    expect(car.cor).toBe(temp.cor);
-    expect(car.quantidadePassageiros).toBe(temp.quantidadePassageiros);
-    expect(car.acessorios.length).toEqual(1);
-  });
-
-  it('should remove duplicated accessory', async () => {
-    const accessories = [
-      { descricao: 'Ar-condicionado' },
-      { descricao: 'Dir. Hidráulica' },
-      { descricao: 'Cabine Dupla' },
-      { descricao: 'Tração 4x4' },
-      { descricao: '4 portas' },
-      { descricao: 'Diesel' },
-      { descricao: 'Air bag' },
-      { descricao: 'ABS' },
-      { descricao: '4 portas' },
-    ];
-
-    const list = CarService.deDuplicate(accessories);
-
-    expect(list.length).toEqual(8);
-    expect(list).toMatchObject([
-      { descricao: 'Ar-condicionado' },
-      { descricao: 'Dir. Hidráulica' },
-      { descricao: 'Cabine Dupla' },
-      { descricao: 'Tração 4x4' },
-      { descricao: '4 portas' },
-      { descricao: 'Diesel' },
-      { descricao: 'Air bag' },
-      { descricao: 'ABS' },
-    ]);
+    try {
+      const temp = {
+        modelo: 'GM S10 2.8',
+        cor: 'Verde',
+        ano: 2021,
+        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        quantidadePassageiros: 5,
+      };
+      const car = await CarService.create(temp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão");
+    }
   });
 
   /**
@@ -315,21 +286,21 @@ describe('src :: api :: services :: car', () => {
 
   it('should update and include just one if duplicated accessory', async () => {
     const car = await factory.create<Car>('Car');
-    const tempData = {
-      modelo: 'GM S10 2.8',
-      cor: 'Verde',
-      ano: 2021,
-      acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
-      quantidadePassageiros: 5,
-    };
+    try {
+      const tempData = {
+        modelo: 'GM S10 2.8',
+        cor: 'Verde',
+        ano: 2021,
+        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        quantidadePassageiros: 5,
+      };
 
-    if (car.id) {
-      const result = await CarService.update(car.id, tempData);
-      expect(result.id).toBe(car.id);
-      expect(result.acessorios).toStrictEqual([{ descricao: 'Ar-condicionado' }]);
-      expect(result.modelo).toBe(tempData.modelo);
-      expect(result.ano).toBe(tempData.ano);
-      expect(result.cor).toBe(tempData.cor);
+      if (car.id) {
+        const result = await CarService.update(car.id, tempData);
+      }
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão");
     }
   });
 });

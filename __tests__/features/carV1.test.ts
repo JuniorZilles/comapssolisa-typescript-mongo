@@ -133,13 +133,10 @@ describe('src :: api :: controllers :: car', () => {
       .send(temp);
 
     const car = response.body;
-    expect(response.status).toBe(201);
-    expect(car._id).toBeDefined();
-    expect(car.dataCriacao).toBeDefined();
-    expect(car.acessorios.length).toEqual(1);
-    expect(car.ano).toBe(carData.ano);
-    expect(car.cor).toBe(carData.cor);
-    expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
+    expect(response.status).toBe(400);
+    expect(car).toHaveProperty('details');
+    expect(car.details.length).toBeGreaterThanOrEqual(1);
+    expect(car.details[0].message).toBe('"acessorios[1]" contains a duplicate value');
   });
 
   /**
@@ -235,8 +232,9 @@ describe('src :: api :: controllers :: car', () => {
     const car = response.body;
 
     expect(response.status).toBe(400);
-    expect(car).toHaveProperty('message');
-    expect(car.message).toBe("O campo 'id' está fora do formato padrão");
+    expect(car).toHaveProperty('details');
+    expect(car.details.length).toEqual(1);
+    expect(car.details[0].message).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 404 with message if ID is not found when searching', async () => {
@@ -274,8 +272,9 @@ describe('src :: api :: controllers :: car', () => {
     const car = response.body;
 
     expect(response.status).toBe(400);
-    expect(car).toHaveProperty('message');
-    expect(car.message).toBe("O campo 'id' está fora do formato padrão");
+    expect(car).toHaveProperty('details');
+    expect(car.details.length).toEqual(1);
+    expect(car.details[0].message).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 404 with message if ID is notfound when removing', async () => {
@@ -377,14 +376,12 @@ describe('src :: api :: controllers :: car', () => {
     const response = await request(app)
       .put(`${PREFIX}/${temp.id}`)
       .send(tempData);
-    const getted = response.body;
+    const car = response.body;
 
-    expect(response.status).toBe(200);
-    expect(getted.acessorios).toEqual([{ descricao: 'Ar-condicionado' }]);
-    expect(getted.ano).toBe(tempData.ano);
-    expect(getted.modelo).toBe(tempData.modelo);
-    expect(getted.cor).toBe(tempData.cor);
-    expect(getted.quantidadePassageiros).toBe(tempData.quantidadePassageiros);
+    expect(response.status).toBe(400);
+    expect(car).toHaveProperty('details');
+    expect(car.details.length).toBeGreaterThanOrEqual(1);
+    expect(car.details[0].message).toBe('"acessorios[1]" contains a duplicate value');
   });
 
   it('should return 400 with message if empty body when updating', async () => {
