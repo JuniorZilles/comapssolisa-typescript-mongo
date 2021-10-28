@@ -12,21 +12,21 @@ import PersonPatchModel from '@models/PersonPatchModel';
 moment.locale('pt-BR');
 class PeopleService {
   async create(payload: PersonCreateModel): Promise<PersonPatchModel> {
-    payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento);
+    payload.data_nascimento = this.isOlderAndTransfromToDateString(
+      payload.data_nascimento as string,
+    );
     const person = await PeopleRepository.create(payload) as PersonPatchModel;
     person.senha = undefined;
     return person;
   }
 
   private isOlderAndTransfromToDateString(date: string) {
-    const birthday = moment(date, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD',
-    );
+    const birthday = moment(date, 'DD/MM/YYYY');
     const age = moment().diff(birthday, 'years', false);
     if (age < 18) {
       throw new InvalidField('data_nascimento');
     }
-    return birthday;
+    return birthday.toDate();
   }
 
   private transfromToDateString(date: string) {
@@ -62,7 +62,7 @@ class PeopleService {
       payload.senha = undefined;
     }
     if (payload.data_nascimento) {
-      payload.data_nascimento = this.transfromToDateString(payload.data_nascimento);
+      payload.data_nascimento = this.transfromToDateString(payload.data_nascimento as string);
     }
     return PeopleRepository.findAll(payload, offset, limit);
   }
@@ -74,9 +74,9 @@ class PeopleService {
 
   async update(id: string, payload: PersonCreateModel) {
     await this.getById(id);
-    if (payload.data_nascimento) {
-      payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento);
-    }
+    payload.data_nascimento = this.isOlderAndTransfromToDateString(
+      payload.data_nascimento as string,
+    );
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }

@@ -6,6 +6,7 @@ class PeopleController {
   async create(req:Request, res:Response, next: NextFunction) {
     try {
       const people = await PeopleService.create(req.body);
+
       return res.status(201).json(people);
     } catch (e) {
       return next(e);
