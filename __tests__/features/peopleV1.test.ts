@@ -211,7 +211,7 @@ describe('src :: api :: controllers :: people', () => {
     const peopleYesData = await factory.createMany<PersonCreateModel>('People', 5, { habilitado: 'sim' });
 
     const response = await request(app)
-      .get(`${PREFIX}?offset=5&limit=5&habilitado=sim`);
+      .get(`${PREFIX}?offset=1&limit=5&habilitado=sim`);
     const people = response.body;
 
     expect(response.status).toBe(200);
