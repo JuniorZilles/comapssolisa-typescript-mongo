@@ -10,7 +10,7 @@ class CarRepository {
 
   async findAll(payload:CarSearch, offset:number, limit:number):Promise<VehiclesModel> {
     const count = await CarModel.countDocuments(payload);
-    const cars = await CarModel.find(payload).skip(offset).limit(limit).exec();
+    const cars = await CarModel.find(payload).skip(offset * limit).limit(limit).exec();
     const offsets = Math.round(count / limit);
     return new VehiclesModel(cars, count, limit, offset, offsets);
   }

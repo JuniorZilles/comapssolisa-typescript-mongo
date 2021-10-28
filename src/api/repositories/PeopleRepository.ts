@@ -23,7 +23,7 @@ class PeopleRepository {
           date: '$data_nascimento',
         },
       },
-    }, { skip: offset, limit }).exec();
+    }, { skip: offset * limit, limit }).exec();
     const offsets = Math.round(count / limit);
     return new PeopleModel(people, count, limit, offset, offsets);
   }
