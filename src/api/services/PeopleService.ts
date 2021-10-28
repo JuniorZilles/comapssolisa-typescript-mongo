@@ -11,13 +11,13 @@ import PersonPatchModel from '@models/PersonPatchModel';
 moment.locale('pt-BR');
 class PeopleService {
   async create(payload: PersonCreateModel): Promise<PersonPatchModel> {
-    this.isOlder(payload.data_nascimento);
+    payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento);
     const person = await PeopleRepository.create(payload) as PersonPatchModel;
     person.senha = undefined;
     return person;
   }
 
-  isOlder(date: string) {
+  isOlderAndTransfromToDateString(date: string) {
     const birthday = moment(date, 'DD/MM/YYYY').format(
       'YYYY-MM-DD HH:mm:ss',
     );
@@ -25,6 +25,7 @@ class PeopleService {
     if (age < 18) {
       throw new InvalidField('data_nascimento');
     }
+    return birthday;
   }
 
   async getById(id: string):Promise<PersonPatchModel> {
@@ -64,7 +65,7 @@ class PeopleService {
   async update(id: string, payload: PersonCreateModel) {
     await this.getById(id);
     if (payload.data_nascimento) {
-      this.isOlder(payload.data_nascimento);
+      payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento);
     }
     const person = await PeopleRepository.update(id, payload);
     return person;
