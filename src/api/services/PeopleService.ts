@@ -8,6 +8,7 @@ import InvalidField from '@errors/InvalidField';
 import { PersonSearch } from '@models/PersonSearch';
 import NotFound from '@errors/NotFound';
 import PersonPatchModel from '@models/PersonPatchModel';
+import InvalidValue from '@errors/InvalidValue';
 
 moment.locale('pt-BR');
 class PeopleService {
@@ -15,9 +16,17 @@ class PeopleService {
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
       payload.data_nascimento as string,
     );
+    await this.isUnique(payload.email);
     const person = await PeopleRepository.create(payload) as PersonPatchModel;
     person.senha = undefined;
     return person;
+  }
+
+  private async isUnique(email:string) {
+    const result = await PeopleRepository.getUserEmail({ email });
+    if (result) {
+      throw new InvalidValue('email já existe, use outro', true);
+    }
   }
 
   private isOlderAndTransfromToDateString(date: string) {
@@ -72,6 +81,15 @@ class PeopleService {
     return PeopleRepository.delete(id);
   }
 
+  private async isUniqueOrNotSamePerson(email:string, id:string) {
+    const result = await PeopleRepository.getUserEmail({ email });
+    if (result) {
+      if (result.id !== id) {
+        throw new InvalidValue('email já existe, use outro', true);
+      }
+    }
+  }
+
   async update(id: string, payload: PersonCreateModel) {
     await this.getById(id);
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
@@ -80,6 +98,7 @@ class PeopleService {
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }
+    await this.isUniqueOrNotSamePerson(payload.email, id);
     const person = await PeopleRepository.update(id, payload);
     return person;
   }

@@ -4,6 +4,7 @@ import PersonModel from '@models/PersonModel';
 import PeopleService from '@services/PeopleService';
 import { PersonCreateModel } from '@models/PersonCreateModel';
 import NotFound from '@errors/NotFound';
+import InvalidValue from '@errors/InvalidValue';
 import MongoDatabase from '../../src/infra/mongo/index';
 import factory from '../utils/PeopleFactory';
 
@@ -60,6 +61,24 @@ describe('src :: api :: services :: people', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).message).toBe("O campo 'data_nascimento' está fora do formato padrão");
+    }
+  });
+
+  it('should not create a person with same email', async () => {
+    const temp = {
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    };
+    try {
+      const person1 = await PeopleService.create(temp);
+      const person2 = await PeopleService.create(temp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).message).toBe('email já existe, use outro');
     }
   });
 
@@ -203,6 +222,27 @@ describe('src :: api :: services :: people', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).message).toBe("O campo 'id' está fora do formato padrão");
+    }
+  });
+
+  it('should not update a person if exists another with the same email', async () => {
+    try {
+      const personWithEmail = await factory.create<PersonCreateModel>('People', { email: 'joazinho@email.com' });
+      const personGenerated = await factory.create<PersonCreateModel>('People');
+      if (personGenerated.id) {
+        const tempData = {
+          nome: 'joaozinho ciclano',
+          cpf: '131.147.860-49',
+          data_nascimento: '03/03/2000',
+          email: 'joazinho@email.com',
+          senha: '123456',
+          habilitado: 'não',
+        };
+        const person = await PeopleService.update(personGenerated.id, tempData);
+      }
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).message).toBe('email já existe, use outro');
     }
   });
 

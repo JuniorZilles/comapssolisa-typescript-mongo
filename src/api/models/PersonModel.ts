@@ -12,7 +12,7 @@ const PersonSchema = new mongoose.Schema({
     transform: (val:Date) => moment(val).format('DD/MM/YYYY'),
   },
   email: {
-    type: String, required: true, lowercase: true,
+    type: String, required: true, lowercase: true, unique: true,
   },
   senha: { type: String, required: true, select: false },
   habilitado: { type: String, required: true, enum: ['sim', 'não'] },

@@ -41,6 +41,11 @@ class PeopleRepository {
     return await PersonModel.findOne(payload,
       { senha: true, habilitado: true, email: true }).exec() as PersonCreateModel;
   }
+
+  async getUserEmail(payload:any) {
+    return await PersonModel.findOne(payload,
+      { email: true }).exec() as PersonCreateModel;
+  }
 }
 
 export default new PeopleRepository();
