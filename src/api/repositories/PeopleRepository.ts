@@ -49,7 +49,7 @@ class PeopleRepository {
     }
     return await PersonModel.findOne(
       filter,
-      { email: true },
+      { email: true, cpf: true },
     ).exec() as PersonCreateModel;
   }
 }

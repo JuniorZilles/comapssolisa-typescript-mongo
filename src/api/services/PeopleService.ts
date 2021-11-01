@@ -25,7 +25,11 @@ class PeopleService {
   private async isUnique(email:string, cpf:string) {
     const result = await PeopleRepository.getUserEmailOrCpf(email, cpf);
     if (result) {
-      throw new InvalidValue('cpf or email already exists, use another', true);
+      if (result.cpf === cpf) {
+        throw new InvalidValue('conflict', `CPF ${cpf} already in use`, true);
+      } else if (result.email === email) {
+        throw new InvalidValue('conflict', `Email ${cpf} already in use`, true);
+      }
     }
   }
 
@@ -85,7 +89,7 @@ class PeopleService {
     const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
     if (result) {
       if (result.id !== id) {
-        throw new InvalidValue('cpf or email already exists, use another', true);
+        throw new InvalidValue('conflict', 'cpf or email already exists, use another', true);
       }
     }
   }
