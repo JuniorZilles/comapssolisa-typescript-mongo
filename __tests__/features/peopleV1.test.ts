@@ -206,6 +206,26 @@ describe('src :: api :: controllers :: people', () => {
     expect(value.message).toBe('cpf or email already exists, use another');
   });
 
+  it('should return 400 with details if nome has withe spaces', async () => {
+    const tempCreate = {
+      nome: '  ',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'talvez',
+    };
+    const response = await request(app)
+      .post(PREFIX)
+      .send(tempCreate);
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value).toHaveProperty('details');
+    expect(value.details.length).toBeGreaterThanOrEqual(1);
+    expect(value.details[0].message).toBe('"nome" is not allowed to be empty');
+  });
+
   /**
      * GET LIST
      */
@@ -505,5 +525,26 @@ describe('src :: api :: controllers :: people', () => {
     expect(response.status).toBe(400);
     expect(value).toHaveProperty('message');
     expect(value.message).toBe('cpf or email already exists, use another');
+  });
+
+  it('should return 400 with details if nome is empty', async () => {
+    const peopleData = await factory.create<PersonCreateModel>('People');
+
+    const response = await request(app)
+      .put(`${PREFIX}/${peopleData.id}`)
+      .send({
+        nome: '   ',
+        cpf: '131.147.860-49',
+        data_nascimento: '03/03/2000',
+        email: 'joazinho@email.com',
+        senha: '123456',
+        habilitado: 'talvez',
+      });
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value).toHaveProperty('details');
+    expect(value.details.length).toBeGreaterThanOrEqual(1);
+    expect(value.details[0].message).toBe('"nome" is not allowed to be empty');
   });
 });
