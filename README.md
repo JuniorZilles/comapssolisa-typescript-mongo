@@ -76,7 +76,7 @@ if you are runnig locally it should be found on `localhost:3000`
 ### Routes
 
 1. docs
-    - http://localhost:3000/api/docs
+    - http://localhost:3000/api/v1/api-docs
 2. car
     - POST http://localhost:3000/api/v1/car
     - GET http://localhost:3000/api/v1/car
