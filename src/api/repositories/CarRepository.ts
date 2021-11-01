@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import CarModel, { Car, isValid } from '@models/CarModel';
-import { CarSearch } from '@models/CarSearchModel';
+import { CarSearch } from '@interfaces/CarSearchModel';
 import VehiclesModel from '@models/VehicleModel';
 
 class CarRepository {

@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import PeopleModel from '@models/PeopleModel';
-import { PersonCreateModel } from '@models/PersonCreateModel';
+import { PersonCreateModel } from '@interfaces/PersonCreateModel';
 import PersonModel, { isValid } from '@models/PersonModel';
-import PersonPatchModel from '@models/PersonPatchModel';
-import { PersonSearch } from '@models/PersonSearch';
+import PersonPatchModel from '@interfaces/PersonPatchModel';
+import { PersonSearch } from '@interfaces/PersonSearch';
 
 class PeopleRepository {
   async create(payload:PersonCreateModel):Promise<PersonCreateModel> {

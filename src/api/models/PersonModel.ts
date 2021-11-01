@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
-import { PersonCreateModel } from './PersonCreateModel';
+import { PersonCreateModel } from '@interfaces/PersonCreateModel';
 
 const PersonSchema = new mongoose.Schema({
   nome: { type: String, required: true },

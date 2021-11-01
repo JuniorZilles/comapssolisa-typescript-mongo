@@ -3,7 +3,7 @@
 import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
 import { Accessory, Car } from '@models/CarModel';
-import { CarSearch } from '@models/CarSearchModel';
+import { CarSearch } from '@interfaces/CarSearchModel';
 import CarRepository from '@repositories/CarRepository';
 
 class CarService {

@@ -2,12 +2,12 @@
 /* eslint-disable class-methods-use-this */
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
-import { PersonCreateModel } from '@models/PersonCreateModel';
+import { PersonCreateModel } from 'src/api/interfaces/PersonCreateModel';
 import PeopleRepository from '@repositories/PeopleRepository';
 import InvalidField from '@errors/InvalidField';
-import { PersonSearch } from '@models/PersonSearch';
+import { PersonSearch } from '@interfaces/PersonSearch';
 import NotFound from '@errors/NotFound';
-import PersonPatchModel from '@models/PersonPatchModel';
+import PersonPatchModel from 'src/api/interfaces/PersonPatchModel';
 import InvalidValue from '@errors/InvalidValue';
 
 moment.locale('pt-BR');

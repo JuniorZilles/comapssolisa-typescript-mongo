@@ -22,7 +22,8 @@ module.exports = {
           '@services': './src/api/services',
           '@errors': './src/api/errors',
           '@validations': './src/api/validations',
-          '@middlewares': './src/api/middlewares'
+          '@middlewares': './src/api/middlewares',
+          '@interfaces': './src/api/interfaces'
         }
       }
     ]

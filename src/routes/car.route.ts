@@ -6,6 +6,7 @@ import IdValidation from '@validations/idValidation';
 
 export default (prefix = '/car'): Router => {
   const router = Router();
+
   router.post(`${prefix}/`, PostPutCarValidation, CarController.create);
   router.get(`${prefix}/`, GetCarValidation, CarController.get);
   router.get(`${prefix}/:id`, IdValidation, CarController.getById);

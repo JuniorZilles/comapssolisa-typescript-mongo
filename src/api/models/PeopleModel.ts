@@ -1,4 +1,4 @@
-import PersonPatchModel from './PersonPatchModel';
+import PersonPatchModel from '@interfaces/PersonPatchModel';
 
 export default class PeopleModel {
   constructor(

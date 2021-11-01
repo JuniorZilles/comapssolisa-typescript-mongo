@@ -32,10 +32,14 @@
       ],
       "@middlewares/*": [
         "./src/api/middlewares/*"
+      ],
+      "@interfaces/*": [
+        "./src/api/interfaces/*"
       ]
     },
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./src/@types"
     ],
     "resolveJsonModule": true,
     "allowJs": true,

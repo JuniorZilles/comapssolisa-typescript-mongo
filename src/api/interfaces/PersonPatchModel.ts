@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import moment from 'moment';
-
 export default interface PersonPatchModel {
   id?: string
   nome?: string
