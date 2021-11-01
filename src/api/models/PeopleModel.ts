@@ -1,8 +1,8 @@
-import PersonPatchModel from '@interfaces/PersonPatchModel';
+import PersonSearch from '@interfaces/PersonSearch';
 
 export default class PeopleModel {
   constructor(
-    public pessoas: PersonPatchModel[],
+    public pessoas: PersonSearch[],
     public total: Number,
     public limit: Number,
     public offset: Number,

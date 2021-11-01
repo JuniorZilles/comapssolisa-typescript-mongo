@@ -1,6 +1,6 @@
 import request from 'supertest';
 import PersonModel from '@models/PersonModel';
-import { PersonCreateModel } from '@interfaces/PersonCreateModel';
+import { Person } from '@interfaces/Person';
 import factory from '../utils/PeopleFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';
@@ -19,7 +19,7 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   it('Should authenticate and return token, email, habilitado', async () => {
-    const personData = await factory.create<PersonCreateModel>('People', { senha: '123456' });
+    const personData = await factory.create<Person>('People', { senha: '123456' });
     const response = await request(app)
       .post(PREFIX)
       .send({ email: personData.email as string, senha: '123456' });
@@ -31,7 +31,7 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   it('Should not authenticate and return status 400 with invalid field', async () => {
-    const personData = await factory.create<PersonCreateModel>('People');
+    const personData = await factory.create<Person>('People');
     const response = await request(app)
       .post(PREFIX)
       .send({ email: personData.email, senha: '123456' });

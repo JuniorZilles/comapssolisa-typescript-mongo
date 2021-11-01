@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import request from 'supertest';
-import CarModel, { Car } from '@models/CarModel';
+import CarModel from '@models/CarModel';
 
 import { generateToken } from '@services/TokenService';
+import Car from '@interfaces/Car';
 import factory from '../utils/CarFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';

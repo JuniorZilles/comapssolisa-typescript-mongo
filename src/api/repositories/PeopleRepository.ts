@@ -1,12 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import PeopleModel from '@models/PeopleModel';
-import { PersonCreateModel } from '@interfaces/PersonCreateModel';
+import { Person } from '@interfaces/Person';
 import PersonModel, { isValid } from '@models/PersonModel';
-import PersonPatchModel from '@interfaces/PersonPatchModel';
-import { PersonSearch } from '@interfaces/PersonSearch';
+import PersonSearch from '@interfaces/PersonSearch';
 
 class PeopleRepository {
-  async create(payload:PersonCreateModel):Promise<PersonCreateModel> {
+  async create(payload:Person):Promise<Person> {
     return PersonModel.create(payload);
   }
 
@@ -22,24 +21,24 @@ class PeopleRepository {
     return true;
   }
 
-  async findById(id:string):Promise<PersonPatchModel> {
-    return await PersonModel.findById(id) as PersonPatchModel;
+  async findById(id:string):Promise<PersonSearch> {
+    return await PersonModel.findById(id) as PersonSearch;
   }
 
   validId(id:string):boolean {
     return isValid(id);
   }
 
-  async update(id:string, payload:PersonCreateModel) {
+  async update(id:string, payload:Person) {
     return await PersonModel.findByIdAndUpdate(id, payload,
       {
         returnOriginal: false,
-      }).exec() as PersonCreateModel;
+      }).exec() as Person;
   }
 
   async findUser(payload:any) {
     return await PersonModel.findOne(payload,
-      { senha: true, habilitado: true, email: true }).exec() as PersonCreateModel;
+      { senha: true, habilitado: true, email: true }).exec() as Person;
   }
 
   async getUserEmailOrCpf(email:string, cpf:string, id?:string) {
@@ -50,7 +49,7 @@ class PeopleRepository {
     return await PersonModel.findOne(
       filter,
       { email: true, cpf: true },
-    ).exec() as PersonCreateModel;
+    ).exec() as Person;
   }
 }
 

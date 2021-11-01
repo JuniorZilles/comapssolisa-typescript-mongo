@@ -1,4 +1,4 @@
-import { Car } from './CarModel';
+import Car from '@interfaces/Car';
 
 export default class VehiclesModel {
   constructor(

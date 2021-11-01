@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
-import { PersonCreateModel } from '@interfaces/PersonCreateModel';
+import { Person } from '@interfaces/Person';
 import PersonModel from '@models/PersonModel';
 import AuthenticateService from '@services/AuthenticateService';
 import { verifyToken } from '@services/TokenService';
@@ -23,7 +23,7 @@ describe('src :: api :: services :: authenticate', () => {
   });
 
   it('should authenticate', async () => {
-    const temp = await factory.create<PersonCreateModel>('People', { senha: '123456' });
+    const temp = await factory.create<Person>('People', { senha: '123456' });
 
     const result = await AuthenticateService.authenticate(temp.email, '123456');
 
@@ -38,7 +38,7 @@ describe('src :: api :: services :: authenticate', () => {
   });
 
   it('should throw invalid value error when trying to authenticate', async () => {
-    const temp = await factory.create<PersonCreateModel>('People');
+    const temp = await factory.create<Person>('People');
     try {
       const result = await AuthenticateService.authenticate(temp.email, '123456');
     } catch (e) {

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import CarService from '@services/CarService';
 import InvalidField from '@errors/InvalidField';
-import CarModel, { Car } from '@models/CarModel';
+import CarModel from '@models/CarModel';
 import NotFound from '@errors/NotFound';
+import Car from '@interfaces/Car';
 import factory from '../utils/CarFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 

@@ -2,8 +2,9 @@
 /* eslint-disable no-param-reassign */
 import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
-import { Accessory, Car } from '@models/CarModel';
-import { CarSearch } from '@interfaces/CarSearchModel';
+import Car from '@interfaces/Car';
+import Accessory from '@interfaces/Accessory';
+import { CarSearch } from '@interfaces/CarSearch';
 import CarRepository from '@repositories/CarRepository';
 
 class CarService {

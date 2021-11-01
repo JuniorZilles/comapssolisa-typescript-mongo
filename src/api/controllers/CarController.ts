@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { CarSearch } from '@interfaces/CarSearchModel';
+import { CarSearch } from '@interfaces/CarSearch';
 import CarService from '@services/CarService';
 import { Request, Response, NextFunction } from 'express';
 

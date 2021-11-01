@@ -2,22 +2,21 @@
 /* eslint-disable class-methods-use-this */
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
-import { PersonCreateModel } from 'src/api/interfaces/PersonCreateModel';
+import { Person } from '@interfaces/Person';
 import PeopleRepository from '@repositories/PeopleRepository';
 import InvalidField from '@errors/InvalidField';
-import { PersonSearch } from '@interfaces/PersonSearch';
 import NotFound from '@errors/NotFound';
-import PersonPatchModel from 'src/api/interfaces/PersonPatchModel';
+import PersonSearch from '@interfaces/PersonSearch';
 import InvalidValue from '@errors/InvalidValue';
 
 moment.locale('pt-BR');
 class PeopleService {
-  async create(payload: PersonCreateModel): Promise<PersonPatchModel> {
+  async create(payload: Person): Promise<PersonSearch> {
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
       payload.data_nascimento as string,
     );
     await this.isUnique(payload.email, payload.cpf);
-    const person = await PeopleRepository.create(payload) as PersonPatchModel;
+    const person = await PeopleRepository.create(payload) as PersonSearch;
     person.senha = undefined;
     return person;
   }
@@ -48,7 +47,7 @@ class PeopleService {
     );
   }
 
-  async getById(id: string):Promise<PersonPatchModel> {
+  async getById(id: string):Promise<PersonSearch> {
     if (!PeopleRepository.validId(id)) {
       throw new InvalidField('id');
     }
@@ -94,7 +93,7 @@ class PeopleService {
     }
   }
 
-  async update(id: string, payload: PersonCreateModel) {
+  async update(id: string, payload: Person) {
     await this.getById(id);
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
       payload.data_nascimento as string,

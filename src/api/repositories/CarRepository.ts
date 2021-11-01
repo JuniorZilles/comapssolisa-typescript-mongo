@@ -1,7 +1,8 @@
 /* eslint-disable class-methods-use-this */
-import CarModel, { Car, isValid } from '@models/CarModel';
-import { CarSearch } from '@interfaces/CarSearchModel';
+import CarModel, { isValid } from '@models/CarModel';
+import { CarSearch } from '@interfaces/CarSearch';
 import VehiclesModel from '@models/VehicleModel';
+import Car from '@interfaces/Car';
 
 class CarRepository {
   async create(payload:Car):Promise<Car> {

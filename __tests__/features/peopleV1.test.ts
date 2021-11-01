@@ -3,7 +3,7 @@
 import request from 'supertest';
 import moment from 'moment';
 import PersonModel from '@models/PersonModel';
-import { PersonCreateModel } from '@interfaces/PersonCreateModel';
+import { Person } from '@interfaces/Person';
 import factory from '../utils/PeopleFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';
@@ -188,7 +188,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if cpf or email already exists', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: peopleData.cpf,
@@ -233,7 +233,7 @@ describe('src :: api :: controllers :: people', () => {
      */
 
   it('should get all people', async () => {
-    const peopleData = await factory.createMany<PersonCreateModel>('People', 5);
+    const peopleData = await factory.createMany<Person>('People', 5);
 
     const response = await request(app)
       .get(`${PREFIX}?offset=0&limit=${peopleData.length}`);
@@ -249,8 +249,8 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should get all people that by habilitado', async () => {
-    const peopleNoData = await factory.createMany<PersonCreateModel>('People', 5, { habilitado: 'sim', nome: 'joaozinho' });
-    const peopleYesData = await factory.createMany<PersonCreateModel>('People', 5, { habilitado: 'sim' });
+    const peopleNoData = await factory.createMany<Person>('People', 5, { habilitado: 'sim', nome: 'joaozinho' });
+    const peopleYesData = await factory.createMany<Person>('People', 5, { habilitado: 'sim' });
 
     const response = await request(app)
       .get(`${PREFIX}?offset=1&limit=5&habilitado=sim`);
@@ -284,7 +284,7 @@ describe('src :: api :: controllers :: people', () => {
      */
 
   it('should get a person by ID', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People', { data_nascimento: '2020-10-30' });
+    const peopleData = await factory.create<Person>('People', { data_nascimento: '2020-10-30' });
 
     const response = await request(app)
       .get(`${PREFIX}/${peopleData.id}`);
@@ -328,7 +328,7 @@ describe('src :: api :: controllers :: people', () => {
      */
 
   it("should remove a person by it's ID", async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
 
     const response = await request(app)
       .delete(`${PREFIX}/${peopleData.id}`);
@@ -364,7 +364,7 @@ describe('src :: api :: controllers :: people', () => {
      */
 
   it('should update a person', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People', { habilitado: 'não' });
+    const peopleData = await factory.create<Person>('People', { habilitado: 'não' });
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -391,7 +391,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if missing an attribute when trying to update', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
       .send({
@@ -411,7 +411,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if age is less than 18 on update', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
       .send({
@@ -431,7 +431,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if cpf is invalid on update', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
       .send({
@@ -451,7 +451,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
       .send({
@@ -471,7 +471,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if email is invalid', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
       .send({
@@ -491,7 +491,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if habilitado has other option than sim or não', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
 
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
@@ -512,8 +512,8 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if cpf or email are already used by naother person', async () => {
-    const peopleData1 = await factory.create<PersonCreateModel>('People');
-    const peopleData2 = await factory.create<PersonCreateModel>('People');
+    const peopleData1 = await factory.create<Person>('People');
+    const peopleData2 = await factory.create<Person>('People');
 
     const response = await request(app)
       .put(`${PREFIX}/${peopleData1.id}`)
@@ -534,7 +534,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if nome is empty', async () => {
-    const peopleData = await factory.create<PersonCreateModel>('People');
+    const peopleData = await factory.create<Person>('People');
 
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)

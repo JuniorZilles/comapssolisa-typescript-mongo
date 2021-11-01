@@ -1,21 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import Car from '@interfaces/Car';
 import mongoose from 'mongoose';
-
-export interface Accessory {
-  descricao: String
-  id?: String
-}
-
-export interface Car {
-  id?: string
-  modelo: string
-  cor: string
-  ano: Number
-  acessorios: Accessory[]
-  quantidadePassageiros: Number
-  dataCriacao?: Date
-  dataAtualizacao?: Date
-}
 
 const CarSchema = new mongoose.Schema({
   modelo: { type: String, required: true },

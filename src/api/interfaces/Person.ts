@@ -1,4 +1,4 @@
-export interface PersonCreateModel {
+export interface Person {
   id?: string
   nome: string
   cpf: string

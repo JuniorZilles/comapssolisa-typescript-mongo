@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
-import { PersonCreateModel } from '@interfaces/PersonCreateModel';
+import { Person } from '@interfaces/Person';
 
 const PersonSchema = new mongoose.Schema({
   nome: { type: String, required: true },
@@ -31,7 +31,7 @@ PersonSchema.pre('findOneAndUpdate', async function onSave(next) {
   next();
 });
 
-const PersonModel = mongoose.model<PersonCreateModel>('People', PersonSchema);
+const PersonModel = mongoose.model<Person>('People', PersonSchema);
 
 export const isValid = (id: string) => mongoose.isValidObjectId(id);
 
