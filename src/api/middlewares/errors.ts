@@ -16,5 +16,5 @@ export default (error:any, req:Request, res:Response, next:NextFunction) => {
     description = error.description;
   }
 
-  return res.status(status).json({ description, name: error.message });
+  return res.status(status).json([{ description, name: error.message }]);
 };

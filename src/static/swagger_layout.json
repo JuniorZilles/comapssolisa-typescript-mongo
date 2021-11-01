@@ -67,7 +67,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/erro-validacao"
+                  "$ref": "#/components/schemas/erro"
                 }
               }
             }
@@ -255,7 +255,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/erro-validacao"
+                  "$ref": "#/components/schemas/erro"
                 }
               }
             }
@@ -348,7 +348,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/erro-validacao"
+                  "$ref": "#/components/schemas/erro"
                 }
               }
             }
@@ -548,7 +548,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/erro-validacao"
+                  "$ref": "#/components/schemas/erro"
                 }
               }
             }
@@ -642,7 +642,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/erro-validacao"
+                  "$ref": "#/components/schemas/erro"
                 }
               }
             }
@@ -890,50 +890,16 @@
         }
       },
       "erro": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "erro-validacao": {
-        "type": "object",
-        "properties": {
-          "_original": {
-            "type": "object",
-            "description": "entrada da requisição"
-          },
-          "details": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "description": "erro de validação"
-                },
-                "path": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "type": {
-                  "type": "string"
-                },
-                "context": {
-                  "type": "object",
-                  "properties": {
-                    "label": {
-                      "type": "string"
-                    },
-                    "key": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "erro de validação"
+            },
+            "description": {
+              "type": "string"
             }
           }
         }
