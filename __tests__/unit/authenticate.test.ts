@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
-import { PersonCreateModel } from '@models/PersonCreateModel';
+import { PersonCreateModel } from '@interfaces/PersonCreateModel';
 import PersonModel from '@models/PersonModel';
 import AuthenticateService from '@services/AuthenticateService';
 import { verifyToken } from '@services/TokenService';

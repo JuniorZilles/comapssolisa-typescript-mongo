@@ -3,7 +3,7 @@
 import request from 'supertest';
 import moment from 'moment';
 import PersonModel from '@models/PersonModel';
-import { PersonCreateModel } from '@models/PersonCreateModel';
+import { PersonCreateModel } from '@interfaces/PersonCreateModel';
 import factory from '../utils/PeopleFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';

@@ -2,7 +2,7 @@
 import InvalidField from '@errors/InvalidField';
 import PersonModel from '@models/PersonModel';
 import PeopleService from '@services/PeopleService';
-import { PersonCreateModel } from '@models/PersonCreateModel';
+import { PersonCreateModel } from '@interfaces/PersonCreateModel';
 import NotFound from '@errors/NotFound';
 import InvalidValue from '@errors/InvalidValue';
 import MongoDatabase from '../../src/infra/mongo/index';
