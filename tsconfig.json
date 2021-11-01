@@ -4,14 +4,13 @@
     "__tests__/**/*"
   ],
   "compilerOptions": {
-    "target": "ES2021", 
+    "target": "ES2021",
     "lib": [
       "ES6"
-    ], 
-    "module": "commonjs", 
-    "rootDir": "./", 
-   
-    "baseUrl": ".", 
+    ],
+    "module": "commonjs",
+    "rootDir": "./",
+    "baseUrl": ".",
     "paths": {
       "@controllers/*": [
         "./src/api/controllers/*"
@@ -27,21 +26,27 @@
       ],
       "@errors/*": [
         "./src/api/errors/*"
+      ],
+      "@validations/*": [
+        "./src/api/validations/*"
+      ],
+      "@middlewares/*": [
+        "./src/api/middlewares/*"
       ]
-    }, 
+    },
     "typeRoots": [
       "./node_modules/@types"
-    ], 
-    "resolveJsonModule": true,                       
-    "allowJs": true, 
-    "outDir": "./dist", 
-    "removeComments": true, 
-    "noEmitOnError": true, 
-    "esModuleInterop": true, 
-    "forceConsistentCasingInFileNames": true, 
-    "strict": true, 
-    "noImplicitAny": true, 
-    "strictNullChecks": true, 
-    "skipLibCheck": true 
+    ],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "noEmitOnError": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true
   }
 }

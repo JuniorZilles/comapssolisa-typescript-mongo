@@ -1,8 +1,8 @@
 import PeopleController from '@controllers/PeopleController';
 import { Router } from 'express';
-import PostPutPeopleValidation from '../validations/people/postPutPeopleValidation';
-import GetPeopleValidation from '../validations/people/getPeopleValidation';
-import IdValidation from '../validations/idValidation';
+import PostPutPeopleValidation from '@validations/people/postPutPeopleValidation';
+import GetPeopleValidation from '@validations/people/getPeopleValidation';
+import IdValidation from '@validations/idValidation';
 
 export default (prefix = '/people'): Router => {
   const router = Router();

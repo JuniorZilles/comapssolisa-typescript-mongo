@@ -20,7 +20,9 @@ module.exports = {
           '@models': './src/api/models',
           '@repositories': './src/api/repositories',
           '@services': './src/api/services',
-          '@errors': './src/api/errors'
+          '@errors': './src/api/errors',
+          '@validations': './src/api/validations',
+          '@middlewares': './src/api/middlewares'
         }
       }
     ]

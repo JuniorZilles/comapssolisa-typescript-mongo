@@ -1,6 +1,6 @@
 import express from 'express';
+import errors from '@middlewares/errors';
 import router from './routes';
-import errors from './errors';
 import MongoDatabase from './infra/mongo/index';
 
 MongoDatabase.connect();

@@ -1,8 +1,8 @@
 import CarController from '@controllers/CarController';
 import { Router } from 'express';
-import GetCarValidation from '../validations/car/getCarValidation';
-import PostPutCarValidation from '../validations/car/postPutCarValidation';
-import IdValidation from '../validations/idValidation';
+import GetCarValidation from '@validations/car/getCarValidation';
+import PostPutCarValidation from '@validations/car/postPutCarValidation';
+import IdValidation from '@validations/idValidation';
 
 export default (prefix = '/car'): Router => {
   const router = Router();
