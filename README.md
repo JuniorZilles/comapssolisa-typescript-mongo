@@ -75,19 +75,21 @@ if you are runnig locally it should be found on `localhost:3000`
 
 ### Routes
 
-1. car
+1. docs
+    - http://localhost:3000/api/docs
+2. car
     - POST http://localhost:3000/api/v1/car
     - GET http://localhost:3000/api/v1/car
     - PUT http://localhost:3000/api/v1/car/:id
     - GET http://localhost:3000/api/v1/car/:id
     - DELETE http://localhost:3000/api/v1/car/:id
-2. people
+3. people
     - POST http://localhost:3000/api/v1/people
     - GET http://localhost:3000/api/v1/people
     - PUT http://localhost:3000/api/v1/people/:id
     - GET http://localhost:3000/api/v1/people/:id
     - DELETE http://localhost:3000/api/v1/people/:id
-3. authenticate
+4. authenticate
     - POST http://localhost:3000/api/v1/authenticate
 
 
