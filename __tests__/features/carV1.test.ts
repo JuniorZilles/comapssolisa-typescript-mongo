@@ -46,7 +46,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
-  it('should return 400 with details if missing an attribute', async () => {
+  it('should return 400 with errors if missing an attribute', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       ano: 2021,
@@ -59,12 +59,12 @@ describe('src :: api :: controllers :: car', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"cor" is required');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('cor');
+    expect(value[0].name).toBe('"cor" is required');
   });
 
-  it('should return 400 with details, if has no accessory', async () => {
+  it('should return 400 with errors, if has no accessory', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -77,12 +77,12 @@ describe('src :: api :: controllers :: car', () => {
       .send(temp);
     const value = response.body;
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"acessorios" must contain at least 1 items');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('acessorios');
+    expect(value[0].name).toBe('"acessorios" must contain at least 1 items');
   });
 
-  it('should return 400 with details if year greater than 2022', async () => {
+  it('should return 400 with errors if year greater than 2022', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -96,12 +96,12 @@ describe('src :: api :: controllers :: car', () => {
 
     const value = response.body;
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"ano" must be less than or equal to 2022');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('ano');
+    expect(value[0].name).toBe('"ano" must be less than or equal to 2022');
   });
 
-  it('should return 400 with details if year least than 1950', async () => {
+  it('should return 400 with errors if year least than 1950', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -115,12 +115,12 @@ describe('src :: api :: controllers :: car', () => {
 
     const value = response.body;
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"ano" must be greater than or equal to 1950');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('ano');
+    expect(value[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
 
-  it('should include just one if duplicated accessory', async () => {
+  it('should not include if duplicated accessory', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -132,11 +132,11 @@ describe('src :: api :: controllers :: car', () => {
       .post(PREFIX)
       .send(temp);
 
-    const car = response.body;
+    const value = response.body;
     expect(response.status).toBe(400);
-    expect(car).toHaveProperty('details');
-    expect(car.details.length).toBeGreaterThanOrEqual(1);
-    expect(car.details[0].message).toBe('"acessorios[1]" contains a duplicate value');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('acessorios.1');
+    expect(value[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
 
   /**
@@ -189,7 +189,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(vehicles.veiculos.length).toEqual(5);
   });
 
-  it('should not get any cars', async () => {
+  it('should not get any cars when doesnt have any register for the query', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
     const response = await request(app)
       .get(`${PREFIX}?modelo=Chevy`);
@@ -226,18 +226,18 @@ describe('src :: api :: controllers :: car', () => {
     }
   });
 
-  it('should return 400 with message if ID is invalid when searching', async () => {
+  it('should return 400 with errors if ID is invalid when searching', async () => {
     const response = await request(app)
       .get(`${PREFIX}/12`);
-    const car = response.body;
+    const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(car).toHaveProperty('details');
-    expect(car.details.length).toEqual(1);
-    expect(car.details[0].message).toBe('"id" length must be 24 characters long');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('id');
+    expect(value[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with message if ID is not found when searching', async () => {
+  it('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app)
       .get(`${PREFIX}/6171508962f47a7a91938d30`);
     const car = response.body;
@@ -267,18 +267,18 @@ describe('src :: api :: controllers :: car', () => {
     }
   });
 
-  it('should return 400 with message if ID is invalid when removing', async () => {
+  it('should return 400 with errors if ID is invalid when removing', async () => {
     const response = await request(app)
       .delete(`${PREFIX}/12`);
-    const car = response.body;
+    const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(car).toHaveProperty('details');
-    expect(car.details.length).toEqual(1);
-    expect(car.details[0].message).toBe('"id" length must be 24 characters long');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('id');
+    expect(value[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with message if ID is notfound when removing', async () => {
+  it('should return 404 with error if ID is notfound when removing', async () => {
     const response = await request(app)
       .delete(`${PREFIX}/6171508962f47a7a91938d30`);
     const car = response.body;
@@ -309,7 +309,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(carData.quantidadePassageiros).toBe(result.quantidadePassageiros);
   });
 
-  it('should return 400 with details if no accessory item exists when updating', async () => {
+  it('should return 400 with errors if no accessory item exists when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -322,13 +322,15 @@ describe('src :: api :: controllers :: car', () => {
       .put(`${PREFIX}/${temp.id}`)
       .send(tempData);
 
+    const value = response.body;
+
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('details');
-    expect(response.body.details.length).toBeGreaterThanOrEqual(1);
-    expect(response.body.details[0].message).toBe('"acessorios" must contain at least 1 items');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('acessorios');
+    expect(value[0].name).toBe('"acessorios" must contain at least 1 items');
   });
 
-  it('should return 400 with details if year greater than 2022 when updating', async () => {
+  it('should return 400 with errors if year greater than 2022 when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -341,13 +343,15 @@ describe('src :: api :: controllers :: car', () => {
       .put(`${PREFIX}/${temp.id}`)
       .send(tempData);
 
+    const value = response.body;
+
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('details');
-    expect(response.body.details.length).toBeGreaterThanOrEqual(1);
-    expect(response.body.details[0].message).toBe('"ano" must be less than or equal to 2022');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('ano');
+    expect(value[0].name).toBe('"ano" must be less than or equal to 2022');
   });
 
-  it('should return 400 with details if year least than 1950 when updating', async () => {
+  it('should return 400 with errors if year least than 1950 when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -360,13 +364,15 @@ describe('src :: api :: controllers :: car', () => {
       .put(`${PREFIX}/${temp.id}`)
       .send(tempData);
 
+    const value = response.body;
+
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('details');
-    expect(response.body.details.length).toBeGreaterThanOrEqual(1);
-    expect(response.body.details[0].message).toBe('"ano" must be greater than or equal to 1950');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('ano');
+    expect(value[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
 
-  it('should update if accessory has duplicated item but include just one when updating', async () => {
+  it('should not update if accessory has duplicated item when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -378,23 +384,26 @@ describe('src :: api :: controllers :: car', () => {
     const response = await request(app)
       .put(`${PREFIX}/${temp.id}`)
       .send(tempData);
-    const car = response.body;
+
+    const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(car).toHaveProperty('details');
-    expect(car.details.length).toBeGreaterThanOrEqual(1);
-    expect(car.details[0].message).toBe('"acessorios[1]" contains a duplicate value');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('acessorios.1');
+    expect(value[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
 
-  it('should return 400 with message if empty body when updating', async () => {
+  it('should return 400 with errors if empty body when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .put(`${PREFIX}/${temp.id}`)
       .send({});
 
+    const value = response.body;
+
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('details');
-    expect(response.body.details.length).toBeGreaterThanOrEqual(1);
-    expect(response.body.details[0].message).toBe('"modelo" is required');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('modelo');
+    expect(value[0].name).toBe('"modelo" is required');
   });
 });

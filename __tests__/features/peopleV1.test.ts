@@ -48,7 +48,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(person.habilitado).toBe(personData.habilitado);
   });
 
-  it('should return 400 with details if missing an attribute', async () => {
+  it('should return 400 with errors if missing an attribute', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -62,12 +62,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toEqual(1);
-    expect(value.details[0].message).toBe('"habilitado" is required');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('habilitado');
+    expect(value[0].name).toBe('"habilitado" is required');
   });
 
-  it('should return 400 with details if attribute is empty', async () => {
+  it('should return 400 with errors if attribute is empty', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -82,12 +82,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toEqual(1);
-    expect(value.details[0].message).toBe('"senha" is not allowed to be empty');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('senha');
+    expect(value[0].name).toBe('"senha" is not allowed to be empty');
   });
 
-  it('should return 400 with message if age is less than 18', async () => {
+  it('should return 400 with errors if age is less than 18', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -107,7 +107,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(value[0].name).toBe("The field 'data_nascimento' is out of the standard format");
   });
 
-  it('should return 400 with details if cpf is invalid', async () => {
+  it('should return 400 with errors if cpf is invalid', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147',
@@ -122,12 +122,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toEqual(1);
-    expect(value.details[0].message).toBe(`"cpf" with value "${tempCreate.cpf}" fails to match the required pattern: /[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}/`);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('cpf');
+    expect(value[0].name).toBe('Invalid CPF');
   });
 
-  it('should return 400 with details if senha has lenght less than 6 caracteres', async () => {
+  it('should return 400 with errors if senha has lenght less than 6 caracteres', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -142,12 +142,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toEqual(1);
-    expect(value.details[0].message).toBe('"senha" length must be at least 6 characters long');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('senha');
+    expect(value[0].name).toBe('"senha" length must be at least 6 characters long');
   });
 
-  it('should return 400 with details if email is invalid', async () => {
+  it('should return 400 with errors if email is invalid', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -162,12 +162,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toEqual(1);
-    expect(value.details[0].message).toBe('"email" must be a valid email');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('email');
+    expect(value[0].name).toBe('"email" must be a valid email');
   });
 
-  it('should return 400 with details if habilitado has other option than sim or não', async () => {
+  it('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -182,12 +182,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toEqual(1);
-    expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('habilitado');
+    expect(value[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  it('should return 400 with message if cpf or email already exists', async () => {
+  it('should return 400 with errors if cpf or email already exists', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
     const tempCreate = {
       nome: 'joaozinho ciclano',
@@ -208,7 +208,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(value[0].name).toBe(`CPF ${peopleData.cpf} already in use`);
   });
 
-  it('should return 400 with details if nome has withe spaces', async () => {
+  it('should return 400 with errors if nome has withe spaces', async () => {
     const tempCreate = {
       nome: '  ',
       cpf: '131.147.860-49',
@@ -223,9 +223,9 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"nome" is not allowed to be empty');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('nome');
+    expect(value[0].name).toBe('"nome" is not allowed to be empty');
   });
 
   /**
@@ -301,18 +301,18 @@ describe('src :: api :: controllers :: people', () => {
     expect(person.habilitado).toBe(peopleData.habilitado);
   });
 
-  it('should return 400 with message if ID is invalid when searching', async () => {
+  it('should return 400 with errors if ID is invalid when searching', async () => {
     const response = await request(app)
       .get(`${PREFIX}/12`);
-    const person = response.body;
+    const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(person).toHaveProperty('details');
-    expect(person.details.length).toEqual(1);
-    expect(person.details[0].message).toBe('"id" length must be 24 characters long');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('id');
+    expect(value[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with message if ID is not found when searching', async () => {
+  it('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app)
       .get(`${PREFIX}/6171508962f47a7a91938d30`);
     const person = response.body;
@@ -337,18 +337,18 @@ describe('src :: api :: controllers :: people', () => {
     expect(response.body).toEqual({});
   });
 
-  it('should return 400 with message if ID is invalid when removing', async () => {
+  it('should return 400 with errors if ID is invalid when removing', async () => {
     const response = await request(app)
       .delete(`${PREFIX}/12`);
-    const person = response.body;
+    const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(person).toHaveProperty('details');
-    expect(person.details.length).toEqual(1);
-    expect(person.details[0].message).toBe('"id" length must be 24 characters long');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('id');
+    expect(value[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with message if ID is not found when removing', async () => {
+  it('should return 404 with error if ID is not found when removing', async () => {
     const response = await request(app)
       .delete(`${PREFIX}/6171508962f47a7a91938d30`);
     const person = response.body;
@@ -390,7 +390,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(personput.habilitado).toBe('sim');
   });
 
-  it('should return 400 with details if missing an attribute when trying to update', async () => {
+  it('should return 400 with errors if missing an attribute when trying to update', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
@@ -405,12 +405,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('habilitado');
+    expect(value[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  it('should return 400 with message if age is less than 18 on update', async () => {
+  it('should return 400 with errors if age is less than 18 on update', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
@@ -430,7 +430,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(value[0].name).toBe("The field 'data_nascimento' is out of the standard format");
   });
 
-  it('should return 400 with details if cpf is invalid on update', async () => {
+  it('should return 400 with errors if cpf is invalid on update', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
@@ -445,12 +445,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"cpf" with value "131.147." fails to match the required pattern: /[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}/');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('cpf');
+    expect(value[0].name).toBe('Invalid CPF');
   });
 
-  it('should return 400 with details if senha has lenght less than 6 caracteres on update', async () => {
+  it('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
@@ -465,12 +465,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"senha" length must be at least 6 characters long');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('senha');
+    expect(value[0].name).toBe('"senha" length must be at least 6 characters long');
   });
 
-  it('should return 400 with details if email is invalid', async () => {
+  it('should return 400 with errors if email is invalid', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
     const response = await request(app)
       .put(`${PREFIX}/${peopleData.id}`)
@@ -485,12 +485,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"email" must be a valid email');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('email');
+    expect(value[0].name).toBe('"email" must be a valid email');
   });
 
-  it('should return 400 with details if habilitado has other option than sim or não', async () => {
+  it('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
 
     const response = await request(app)
@@ -506,12 +506,12 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('habilitado');
+    expect(value[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  it('should return 400 with message if cpf or email are already used by naother person', async () => {
+  it('should return 400 with errors if cpf or email are already used by naother person', async () => {
     const peopleData1 = await factory.create<PersonCreateModel>('People');
     const peopleData2 = await factory.create<PersonCreateModel>('People');
 
@@ -533,7 +533,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(value[0].name).toBe('cpf or email already exists, use another');
   });
 
-  it('should return 400 with details if nome is empty', async () => {
+  it('should return 400 with errors if nome is empty', async () => {
     const peopleData = await factory.create<PersonCreateModel>('People');
 
     const response = await request(app)
@@ -549,8 +549,8 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('details');
-    expect(value.details.length).toBeGreaterThanOrEqual(1);
-    expect(value.details[0].message).toBe('"nome" is not allowed to be empty');
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('nome');
+    expect(value[0].name).toBe('"nome" is not allowed to be empty');
   });
 });

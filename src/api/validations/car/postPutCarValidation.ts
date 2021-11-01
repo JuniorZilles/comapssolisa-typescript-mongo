@@ -1,3 +1,4 @@
+import transformToArray from '@validations/utils/transformJoiResult';
 import { NextFunction, Request, Response } from 'express';
 
 import Joi from 'joi';
@@ -20,6 +21,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (error) throw error;
     return next();
   } catch (error) {
-    return res.status(400).json(error);
+    return res.status(400).json(transformToArray(error));
   }
 };
