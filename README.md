@@ -2,6 +2,12 @@
 
 Development of the first stage of the API Compassolisa
 
+<p align="center">
+  <img src="http://img.shields.io/static/v1?label=License&message=MIT&color=green&style=for-the-badge"/>
+  <img src="http://img.shields.io/static/v1?label=Node&message=14.18.1&color=green&style=for-the-badge&logo=node"/>
+   <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/>
+</p>
+
 ## Summary 
 
 [Example for .ENV and .ENV.TEST](#example-for-.env-and-.env.test)
