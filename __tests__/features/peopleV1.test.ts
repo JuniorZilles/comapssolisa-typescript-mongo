@@ -102,8 +102,9 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('message');
-    expect(value.message).toBe("O campo 'data_nascimento' está fora do formato padrão");
+    expect(value.length).toEqual(1);
+    expect(value[0].description).toBe('data_nascimento');
+    expect(value[0].name).toBe("The field 'data_nascimento' is out of the standard format");
   });
 
   it('should return 400 with details if cpf is invalid', async () => {
@@ -202,8 +203,9 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('message');
-    expect(value.message).toBe('cpf or email already exists, use another');
+    expect(value.length).toEqual(1);
+    expect(value[0].description).toBe('conflict');
+    expect(value[0].name).toBe(`CPF ${peopleData.cpf} already in use`);
   });
 
   it('should return 400 with details if nome has withe spaces', async () => {
@@ -316,8 +318,9 @@ describe('src :: api :: controllers :: people', () => {
     const person = response.body;
 
     expect(response.status).toBe(404);
-    expect(person).toHaveProperty('message');
-    expect(person.message).toBe('Valor 6171508962f47a7a91938d30 não encontrado');
+    expect(person.length).toEqual(1);
+    expect(person[0].description).toBe('Not Found');
+    expect(person[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
 
   /**
@@ -351,8 +354,9 @@ describe('src :: api :: controllers :: people', () => {
     const person = response.body;
 
     expect(response.status).toBe(404);
-    expect(person).toHaveProperty('message');
-    expect(person.message).toBe('Valor 6171508962f47a7a91938d30 não encontrado');
+    expect(person.length).toEqual(1);
+    expect(person[0].description).toBe('Not Found');
+    expect(person[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
 
   /**
@@ -421,8 +425,9 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('message');
-    expect(value.message).toBe("O campo 'data_nascimento' está fora do formato padrão");
+    expect(value.length).toEqual(1);
+    expect(value[0].description).toBe('data_nascimento');
+    expect(value[0].name).toBe("The field 'data_nascimento' is out of the standard format");
   });
 
   it('should return 400 with details if cpf is invalid on update', async () => {
@@ -523,8 +528,9 @@ describe('src :: api :: controllers :: people', () => {
     const value = response.body;
 
     expect(response.status).toBe(400);
-    expect(value).toHaveProperty('message');
-    expect(value.message).toBe('cpf or email already exists, use another');
+    expect(value.length).toEqual(1);
+    expect(value[0].description).toBe('conflict');
+    expect(value[0].name).toBe('cpf or email already exists, use another');
   });
 
   it('should return 400 with details if nome is empty', async () => {

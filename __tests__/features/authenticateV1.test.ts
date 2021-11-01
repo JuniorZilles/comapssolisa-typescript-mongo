@@ -39,8 +39,9 @@ describe('src :: api :: controllers :: authenticate', () => {
     const person = response.body;
 
     expect(response.status).toBe(400);
-    expect(person).toHaveProperty('message');
-    expect(person.message).toBe("O valor do campo 'senha' informado está inválido");
+    expect(person.length).toEqual(1);
+    expect(person[0].description).toBe('senha');
+    expect(person[0].name).toBe('The value ****** for senha is invalid');
   });
 
   it('Should not authenticate and return status 404 with not found value', async () => {
@@ -51,8 +52,9 @@ describe('src :: api :: controllers :: authenticate', () => {
     const person = response.body;
 
     expect(response.status).toBe(404);
-    expect(person).toHaveProperty('message');
-    expect(person.message).toBe('Valor joazinho@mail.com não encontrado');
+    expect(person.length).toEqual(1);
+    expect(person[0].description).toBe('Not Found');
+    expect(person[0].name).toBe('Value joazinho@mail.com not found');
   });
 
   it('Should return 400 with validation details for missing email', async () => {

@@ -28,7 +28,7 @@ class PeopleService {
       if (result.cpf === cpf) {
         throw new InvalidValue('conflict', `CPF ${cpf} already in use`, true);
       } else if (result.email === email) {
-        throw new InvalidValue('conflict', `Email ${cpf} already in use`, true);
+        throw new InvalidValue('conflict', `Email ${email} already in use`, true);
       }
     }
   }

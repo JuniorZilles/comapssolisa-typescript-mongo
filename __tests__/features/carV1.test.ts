@@ -243,8 +243,9 @@ describe('src :: api :: controllers :: car', () => {
     const car = response.body;
 
     expect(response.status).toBe(404);
-    expect(car).toHaveProperty('message');
-    expect(car.message).toBe('Valor 6171508962f47a7a91938d30 não encontrado');
+    expect(car.length).toEqual(1);
+    expect(car[0].description).toBe('Not Found');
+    expect(car[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
 
   /**
@@ -283,8 +284,9 @@ describe('src :: api :: controllers :: car', () => {
     const car = response.body;
 
     expect(response.status).toBe(404);
-    expect(car).toHaveProperty('message');
-    expect(car.message).toBe('Valor 6171508962f47a7a91938d30 não encontrado');
+    expect(car.length).toEqual(1);
+    expect(car[0].description).toBe('Not Found');
+    expect(car[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
 
   /**

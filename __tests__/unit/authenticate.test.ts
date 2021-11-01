@@ -43,7 +43,7 @@ describe('src :: api :: services :: authenticate', () => {
       const result = await AuthenticateService.authenticate(temp.email, '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe("The value '******' is invalid");
+      expect((<InvalidValue>e).message).toBe('The value ****** for senha is invalid');
     }
   });
 
