@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 export interface Accessory {
   descricao: String
+  id: String
 }
 
 export interface Car {
@@ -20,7 +21,12 @@ const CarSchema = new mongoose.Schema({
   modelo: { type: String, required: true },
   cor: { type: String, required: true },
   ano: { type: Number, required: true },
-  acessorios: { type: Array, required: true },
+  acessorios: [{
+    descricao: {
+      type: String,
+      required: true,
+    },
+  }],
   quantidadePassageiros: { type: Number, required: true },
   dataCriacao: { type: Date, default: Date.now, immutable: true },
   dataAtualizacao: { type: Date, default: Date.now },
