@@ -50,7 +50,7 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -66,7 +66,7 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -82,7 +82,7 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -98,7 +98,7 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -157,7 +157,7 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'id' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -166,7 +166,7 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Valor 6171508962f47a7a91938d30 não encontrado');
+      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -190,7 +190,7 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'id' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -199,7 +199,7 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Valor 6171508962f47a7a91938d30 não encontrado');
+      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -242,7 +242,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -261,7 +261,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -280,7 +280,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'ano' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -300,7 +300,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("O campo 'acessorios' está fora do formato padrão");
+      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 });

@@ -43,7 +43,7 @@ describe('src :: api :: services :: authenticate', () => {
       const result = await AuthenticateService.authenticate(temp.email, '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe("O valor do campo 'senha' informado está inválido");
+      expect((<InvalidValue>e).message).toBe("The value '******' is invalid");
     }
   });
 
@@ -52,7 +52,7 @@ describe('src :: api :: services :: authenticate', () => {
       const result = await AuthenticateService.authenticate('Joazinho@mail.com', '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Valor Joazinho@mail.com não encontrado');
+      expect((<NotFound>e).message).toBe('Value Joazinho@mail.com not found');
     }
   });
 });
