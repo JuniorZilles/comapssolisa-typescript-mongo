@@ -220,7 +220,7 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.update(car.id, tempData);
 
       expect(result.id).toBe(car.id);
-      expect(result.acessorios).toStrictEqual(tempData.acessorios);
+      expect(result.acessorios[0].descricao).toBe(tempData.acessorios[0].descricao);
       expect(result.modelo).toBe('Abacaxi');
       expect(result.ano).toBe(tempData.ano);
       expect(result.cor).toBe(tempData.cor);

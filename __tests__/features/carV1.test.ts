@@ -182,7 +182,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(vehicles).toHaveProperty('offsets');
     expect(vehicles.veiculos.length).toEqual(carTemp.length);
     vehicles.veiculos.forEach((element: Car) => {
-      expect(element.acessorios).toEqual([{ descricao: 'Ar-condicionado' }]);
+      expect(element.acessorios[0].descricao).toBe('Ar-condicionado');
     });
   });
 
@@ -315,11 +315,10 @@ describe('src :: api :: controllers :: car', () => {
     const result = response.body;
 
     expect(response.status).toBe(200);
-    expect(carData.acessorios).toEqual(result.acessorios);
+    expect(carData.acessorios[0].descricao).toEqual(result.acessorios[0].descricao);
     expect(carData.ano).toBe(result.ano);
     expect(carData.modelo).toBe(result.modelo);
     expect(carData.cor).toBe(result.cor);
-    expect(carData.acessorios).toEqual(result.acessorios);
     expect(carData.quantidadePassageiros).toBe(result.quantidadePassageiros);
   });
 

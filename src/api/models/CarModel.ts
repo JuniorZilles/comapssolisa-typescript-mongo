@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 export interface Accessory {
   descricao: String
-  id: String
+  id?: String
 }
 
 export interface Car {
