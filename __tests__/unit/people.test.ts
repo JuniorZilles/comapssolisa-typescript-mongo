@@ -64,7 +64,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not create a person with same email', async () => {
+  it('should not create a person with same email or cpf', async () => {
     const temp = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -78,7 +78,7 @@ describe('src :: api :: services :: people', () => {
       const person2 = await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe('email já existe, use outro');
+      expect((<InvalidValue>e).message).toBe('cpf or email already exists, use another');
     }
   });
 
@@ -225,9 +225,9 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not update a person if exists another with the same email', async () => {
+  it('should not update a person if exists another with the same email or cpf', async () => {
     try {
-      const personWithEmail = await factory.create<PersonCreateModel>('People', { email: 'joazinho@email.com' });
+      const personWithEmail = await factory.create<PersonCreateModel>('People', { email: 'joazinho@email.com', cpf: '131.147.860-49' });
       const personGenerated = await factory.create<PersonCreateModel>('People');
       if (personGenerated.id) {
         const tempData = {
@@ -242,7 +242,7 @@ describe('src :: api :: services :: people', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe('email já existe, use outro');
+      expect((<InvalidValue>e).message).toBe('cpf or email already exists, use another');
     }
   });
 

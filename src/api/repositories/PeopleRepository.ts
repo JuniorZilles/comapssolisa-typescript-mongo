@@ -42,9 +42,15 @@ class PeopleRepository {
       { senha: true, habilitado: true, email: true }).exec() as PersonCreateModel;
   }
 
-  async getUserEmail(payload:any) {
-    return await PersonModel.findOne(payload,
-      { email: true }).exec() as PersonCreateModel;
+  async getUserEmailOrCpf(email:string, cpf:string, id?:string) {
+    let filter:any = { $or: [{ email }, { cpf }] };
+    if (id) {
+      filter = { $and: [{ $or: [{ email }, { cpf }] }, { _id: { $ne: id } }] };
+    }
+    return await PersonModel.findOne(
+      filter,
+      { email: true },
+    ).exec() as PersonCreateModel;
   }
 }
 

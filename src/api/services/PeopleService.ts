@@ -16,16 +16,16 @@ class PeopleService {
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
       payload.data_nascimento as string,
     );
-    await this.isUnique(payload.email);
+    await this.isUnique(payload.email, payload.cpf);
     const person = await PeopleRepository.create(payload) as PersonPatchModel;
     person.senha = undefined;
     return person;
   }
 
-  private async isUnique(email:string) {
-    const result = await PeopleRepository.getUserEmail({ email });
+  private async isUnique(email:string, cpf:string) {
+    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf);
     if (result) {
-      throw new InvalidValue('email já existe, use outro', true);
+      throw new InvalidValue('cpf or email already exists, use another', true);
     }
   }
 
@@ -81,11 +81,11 @@ class PeopleService {
     return PeopleRepository.delete(id);
   }
 
-  private async isUniqueOrNotSamePerson(email:string, id:string) {
-    const result = await PeopleRepository.getUserEmail({ email });
+  private async isUniqueOrNotSamePerson(email:string, id:string, cpf:string) {
+    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
     if (result) {
       if (result.id !== id) {
-        throw new InvalidValue('email já existe, use outro', true);
+        throw new InvalidValue('cpf or email already exists, use another', true);
       }
     }
   }
@@ -98,7 +98,7 @@ class PeopleService {
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }
-    await this.isUniqueOrNotSamePerson(payload.email, id);
+    await this.isUniqueOrNotSamePerson(payload.email, id, payload.cpf);
     const person = await PeopleRepository.update(id, payload);
     return person;
   }

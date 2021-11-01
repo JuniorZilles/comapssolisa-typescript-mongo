@@ -186,6 +186,26 @@ describe('src :: api :: controllers :: people', () => {
     expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]');
   });
 
+  it('should return 400 with message if cpf or email already exists', async () => {
+    const peopleData = await factory.create<PersonCreateModel>('People');
+    const tempCreate = {
+      nome: 'joaozinho ciclano',
+      cpf: peopleData.cpf,
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    };
+    const response = await request(app)
+      .post(PREFIX)
+      .send(tempCreate);
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value).toHaveProperty('message');
+    expect(value.message).toBe('cpf or email already exists, use another');
+  });
+
   /**
      * GET LIST
      */
@@ -464,5 +484,26 @@ describe('src :: api :: controllers :: people', () => {
     expect(value).toHaveProperty('details');
     expect(value.details.length).toBeGreaterThanOrEqual(1);
     expect(value.details[0].message).toBe('"habilitado" must be one of [sim, não]');
+  });
+
+  it('should return 400 with message if cpf or email are already used by naother person', async () => {
+    const peopleData1 = await factory.create<PersonCreateModel>('People');
+    const peopleData2 = await factory.create<PersonCreateModel>('People');
+
+    const response = await request(app)
+      .put(`${PREFIX}/${peopleData1.id}`)
+      .send({
+        nome: 'joaozinho ciclano',
+        cpf: peopleData2.cpf,
+        data_nascimento: '03/03/2000',
+        email: 'joazinho@email.com',
+        senha: '123456',
+        habilitado: 'sim',
+      });
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value).toHaveProperty('message');
+    expect(value.message).toBe('cpf or email already exists, use another');
   });
 });
