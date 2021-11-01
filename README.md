@@ -97,4 +97,4 @@ if you are runnig locally it should be found on `localhost:3000`
 
 The [MIT License]() (MIT)
 
-Copyright :copyright: 2021 - Projeto Final Parte 1
+Copyright :copyright: 2021 - Projeto Final
