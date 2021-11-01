@@ -9,12 +9,12 @@ const JoiDate = Joi.extend(Extension);
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      nome: Joi.string(),
-      cpf: Joi.string().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
+      nome: Joi.string().trim(),
+      cpf: Joi.string().trim().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/),
       data_nascimento: JoiDate.date().format('DD/MM/YYYY'),
-      email: Joi.string().email(),
-      senha: Joi.string().min(6),
-      habilitado: Joi.string().valid('sim', 'não'),
+      email: Joi.string().trim().email(),
+      senha: Joi.string().trim().min(6),
+      habilitado: Joi.string().trim().valid('sim', 'não'),
       limit: Joi.number(),
       offset: Joi.number(),
     });

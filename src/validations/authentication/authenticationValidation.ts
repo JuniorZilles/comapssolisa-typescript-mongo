@@ -5,8 +5,10 @@ import Joi from 'joi';
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      email: Joi.string().email().required(),
-      senha: Joi.string().min(6).required(),
+      email: Joi.string().trim().email()
+        .required(),
+      senha: Joi.string().trim().min(6)
+        .required(),
     });
 
     const { error } = schema.validate(req.body, { abortEarly: false });

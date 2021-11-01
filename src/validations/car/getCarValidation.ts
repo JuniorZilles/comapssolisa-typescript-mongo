@@ -5,10 +5,10 @@ import Joi from 'joi';
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      modelo: Joi.string(),
-      cor: Joi.string(),
+      modelo: Joi.string().trim(),
+      cor: Joi.string().trim(),
       ano: Joi.number().min(1950).max(2022),
-      descricao: Joi.string(),
+      descricao: Joi.string().trim(),
       quantidadePassageiros: Joi.number(),
       limit: Joi.number(),
       offset: Joi.number(),

@@ -5,7 +5,8 @@ import Joi from 'joi';
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      id: Joi.string().alphanum().length(24).required(),
+      id: Joi.string().trim().alphanum().length(24)
+        .required(),
     });
 
     const { error } = schema.validate(req.params, { abortEarly: false });
