@@ -10,7 +10,7 @@ Development of the first stage of the API Compassolisa
 
 ## Summary
 
-[Resources](#:floppy_disk:-resources)
+[Resources](#resources)
 
 [Example for .ENV and .ENV.TEST](#example-for-.env-and-.env.test)
 
