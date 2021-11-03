@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';

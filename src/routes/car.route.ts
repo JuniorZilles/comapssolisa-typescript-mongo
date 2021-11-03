@@ -19,7 +19,7 @@ export default (prefix = '/car'): Router => {
   );
   router.delete(`${prefix}/:id`, IdValidation, CarController.delete);
   router.patch(
-    `${prefix}/:id/acessorios/:idAcessorio`,
+    `${prefix}/:id/acessorios/:idAccessory`,
     PatchIdValidationValidation,
     DescriptionValidation,
     CarController.patchAcessorios

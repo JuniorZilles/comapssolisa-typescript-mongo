@@ -3,6 +3,7 @@ import CarModel, { isValid } from '@models/CarModel';
 import { CarSearch } from '@interfaces/CarSearch';
 import VehiclesModel from '@models/VehicleModel';
 import Car from '@interfaces/Car';
+import Accessory from '@interfaces/Accessory';
 
 class CarRepository {
   async create(payload: Car): Promise<Car> {
@@ -40,6 +41,27 @@ class CarRepository {
     return (await CarModel.findByIdAndUpdate(id, payload, {
       returnOriginal: false,
     }).exec()) as Car;
+  }
+
+  async updateAccessory(id: string, idAccessory: string, payload: Accessory) {
+    const car = await CarModel.findOne({
+      _id: id,
+      'acessorios._id': idAccessory,
+    })
+      .select('-__v')
+      .exec();
+    if (car) {
+      const { descricao } = car.acessorios.id(idAccessory);
+      if (descricao !== payload.descricao) {
+        car.acessorios.id(idAccessory).descricao = payload.descricao;
+      } else {
+        car.acessorios.id(idAccessory).remove();
+      }
+      car.markModified('acessorios');
+      await car.save();
+      return car as Car;
+    }
+    return null;
   }
 }
 

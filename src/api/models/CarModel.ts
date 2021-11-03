@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-import Car from '@interfaces/Car';
 import mongoose from 'mongoose';
 
 const CarSchema = new mongoose.Schema({
@@ -19,10 +18,14 @@ const CarSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     immutable: true,
-    select: false,
+    transform: () => undefined,
   },
-  dataAtualizacao: { type: Date, default: Date.now, select: false },
-  __v: { type: Number, select: false },
+  dataAtualizacao: {
+    type: Date,
+    default: Date.now,
+    transform: () => undefined,
+  },
+  __v: { type: Number, select: false, transform: () => undefined },
 });
 
 CarSchema.pre('findOneAndUpdate', async function onSave(next) {
@@ -30,8 +33,8 @@ CarSchema.pre('findOneAndUpdate', async function onSave(next) {
   next();
 });
 
-const CarModel = mongoose.model<Car>('Car', CarSchema);
+const CarModel = mongoose.model('Car', CarSchema);
 
-export const isValid = (id: string) => mongoose.isValidObjectId(id);
+export const isValid = (id: string): boolean => mongoose.isValidObjectId(id);
 
 export default CarModel;

@@ -1,7 +1,7 @@
 import { ErrorPayload } from '@interfaces/ErrorPayload';
 import Joi from 'joi';
 
-const transformToArray = (value: Joi.ValidationError) => {
+const transformToArray = (value: Joi.ValidationError): ErrorPayload[] => {
   const result: ErrorPayload[] = [];
 
   value.details.forEach((detail: Joi.ValidationErrorItem) => {

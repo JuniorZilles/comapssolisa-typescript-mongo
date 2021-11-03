@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import TokenPayload from '@interfaces/TokenPayload';
 import { verifyToken } from '@services/TokenService';
 import { NextFunction, Request, Response } from 'express';

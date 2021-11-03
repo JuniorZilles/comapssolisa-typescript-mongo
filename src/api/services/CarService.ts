@@ -41,9 +41,7 @@ class CarService {
   }
 
   async getById(id: string) {
-    if (!CarRepository.validId(id)) {
-      throw new InvalidField('id');
-    }
+    this.checkInvalidId(id, 'id');
     const car = await CarRepository.findById(id);
     if (!car) {
       throw new NotFound(id);
@@ -87,8 +85,20 @@ class CarService {
     return CarRepository.update(id, payload);
   }
 
-  updateAccessory(id: string, idAccessory: string, payload: Accessory) {
-    // return CarRepository.updateAccessory(id, idAccessory, payload);
+  private checkInvalidId(id: string, name: string) {
+    if (!CarRepository.validId(id)) {
+      throw new InvalidField(name);
+    }
+  }
+
+  async updateAccessory(id: string, idAccessory: string, payload: Accessory) {
+    this.checkInvalidId(id, 'id');
+    this.checkInvalidId(idAccessory, 'idAccessory');
+    const car = await CarRepository.updateAccessory(id, idAccessory, payload);
+    if (!car) {
+      throw new NotFound(`id: ${id} - idAccessory: ${idAccessory}`);
+    }
+    return car;
   }
 }
 

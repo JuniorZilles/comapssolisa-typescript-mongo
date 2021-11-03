@@ -3,7 +3,11 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import transformToArray from '@validations/utils/transformJoiResult';
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       id: Joi.string()
@@ -12,7 +16,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         .regex(/[0-9A-Fa-f]{24}/)
         .message('Invalid Id')
         .required(),
-      idAcessorio: Joi.string()
+      idAccessory: Joi.string()
         .length(24)
         .trim()
         .regex(/[0-9A-Fa-f]{24}/)

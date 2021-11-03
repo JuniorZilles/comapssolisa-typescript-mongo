@@ -343,29 +343,132 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
+  it('should not update if doesnt match ID', async () => {
+    try {
+      const tempData = {
+        modelo: 'GM S10 2.8',
+        cor: 'Verde',
+        ano: 2021,
+        acessorios: [
+          { descricao: 'Ar-condicionado' },
+          { descricao: 'Ar-condicionado' },
+        ],
+        quantidadePassageiros: 5,
+      };
+      const result = await CarService.update(
+        '6171508962f47a7a91938d30',
+        tempData
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).message).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
+    }
+  });
+
   /**
    * PATCH BY ID ACCESSORIES BY ID
    */
 
-  it('should add a car accessory by its ID', async () => {
+  it('should update a car accessory by its ID', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: 'Ar-condicionado' };
 
-    await CarService.updateAccessory(
+    const carResult = await CarService.updateAccessory(
       car.id as string,
       car.acessorios[0].id as string,
       tempData
     );
+
+    expect(carResult.id).toBe(car.id);
+    expect(carResult.ano).toBe(car.ano);
+    expect(carResult.cor).toBe(car.cor);
+    expect(carResult.modelo).toBe(car.modelo);
+    expect(carResult.quantidadePassageiros).toBe(car.quantidadePassageiros);
+    expect(carResult.acessorios.length).toEqual(car.acessorios.length);
+    expect(carResult.acessorios[0].descricao).toBe(tempData.descricao);
   });
 
   it('should remove a car accessory by its ID', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
 
-    await CarService.updateAccessory(
+    const carResult = await CarService.updateAccessory(
       car.id as string,
       car.acessorios[0].id as string,
       tempData
     );
+
+    expect(carResult.id).toBe(car.id);
+    expect(carResult.ano).toBe(car.ano);
+    expect(carResult.modelo).toBe(car.modelo);
+    expect(carResult.cor).toBe(car.cor);
+    expect(carResult.quantidadePassageiros).toBe(car.quantidadePassageiros);
+    expect(carResult.acessorios.length).toEqual(0);
+  });
+
+  it('should return 400 if the car id its invalid', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: car.acessorios[0].descricao };
+    try {
+      await CarService.updateAccessory(
+        '156',
+        car.acessorios[0].id as string,
+        tempData
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).message).toBe(
+        "The field 'id' is out of the standard format"
+      );
+    }
+  });
+
+  it('should return 400 if the car id its not found', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: car.acessorios[0].descricao };
+    try {
+      await CarService.updateAccessory(
+        '6171508962f47a7a91938d30',
+        car.acessorios[0].id as string,
+        tempData
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).message).toBe(
+        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0].id} not found`
+      );
+    }
+  });
+
+  it('should return 400 if the accessory id its invalid', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: car.acessorios[0].descricao };
+    try {
+      await CarService.updateAccessory(car.id as string, '125', tempData);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).message).toBe(
+        "The field 'idAccessory' is out of the standard format"
+      );
+    }
+  });
+
+  it('should return 400 if the accessory id its not found', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: car.acessorios[0].descricao };
+    try {
+      await CarService.updateAccessory(
+        car.id as string,
+        '6171508962f47a7a91938d30',
+        tempData
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).message).toBe(
+        `Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 not found`
+      );
+    }
   });
 });

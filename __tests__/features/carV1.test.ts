@@ -49,6 +49,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(car._id).toBeDefined();
     expect(car.acessorios.length).toEqual(1);
     expect(car.ano).toBe(carData.ano);
+    expect(car.__v).toBeUndefined();
     expect(car.modelo).toBe(carData.modelo);
     expect(car.cor).toBe(carData.cor);
     expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
@@ -68,6 +69,26 @@ describe('src :: api :: controllers :: car', () => {
     expect(value.length).toBeGreaterThanOrEqual(1);
     expect(value[0].description).toBe('cor');
     expect(value[0].name).toBe('"cor" is required');
+  });
+
+  it('should return 400 when white spaces on descricao', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .post(PREFIX)
+      .set(token)
+      .send({
+        modelo: '  ',
+        ano: 2021,
+        acessorios: [{ descricao: '  ' }],
+        quantidadePassageiros: 5,
+      });
+
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('modelo');
+    expect(value[0].name).toBe('"modelo" is not allowed to be empty');
   });
 
   it('should return 400 with errors, if has no accessory', async () => {
@@ -229,6 +250,7 @@ describe('src :: api :: controllers :: car', () => {
       expect(response.status).toBe(200);
       expect(car._id).toBe(carUsed.id);
       expect(car.modelo).toBe(carUsed.modelo);
+      expect(car.__v).toBeUndefined();
       expect(car.ano).toBe(carUsed.ano);
       expect(car.cor).toBe(carUsed.cor);
     } else {
@@ -314,13 +336,14 @@ describe('src :: api :: controllers :: car', () => {
     const result = response.body;
 
     expect(response.status).toBe(200);
-    expect(carData.acessorios[0].descricao).toEqual(
-      result.acessorios[0].descricao
+    expect(result.acessorios[0].descricao).toEqual(
+      carData.acessorios[0].descricao
     );
-    expect(carData.ano).toBe(result.ano);
-    expect(carData.modelo).toBe(result.modelo);
-    expect(carData.cor).toBe(result.cor);
-    expect(carData.quantidadePassageiros).toBe(result.quantidadePassageiros);
+    expect(result.__v).toBeUndefined();
+    expect(result.ano).toBe(carData.ano);
+    expect(result.modelo).toBe(carData.modelo);
+    expect(result.cor).toBe(carData.cor);
+    expect(result.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
   it('should return 400 with errors if no accessory item exists when updating', async () => {
@@ -427,5 +450,110 @@ describe('src :: api :: controllers :: car', () => {
     expect(value.length).toBeGreaterThanOrEqual(1);
     expect(value[0].description).toBe('modelo');
     expect(value[0].name).toBe('"modelo" is required');
+  });
+
+  /**
+   * PATCH BY ID ACCESSORIES BY ID
+   */
+
+  it('should update a car accessory by its ID', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .set(token)
+      .send({ descricao: 'Ar-condicionado' });
+
+    const value = response.body;
+
+    expect(response.status).toBe(200);
+    expect(value._id).toBe(temp.id);
+    expect(value.ano).toBe(temp.ano);
+    expect(value.cor).toBe(temp.cor);
+    expect(value.modelo).toBe(temp.modelo);
+    expect(value.__v).toBeUndefined();
+    expect(value.quantidadePassageiros).toBe(temp.quantidadePassageiros);
+    expect(value.acessorios.length).toEqual(temp.acessorios.length);
+    expect(value.acessorios[0].descricao).toBe('Ar-condicionado');
+  });
+
+  it('should remove a car accessory by its ID', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .set(token)
+      .send({ descricao: temp.acessorios[0].descricao });
+
+    const value = response.body;
+
+    expect(response.status).toBe(200);
+    expect(value._id).toBe(temp.id);
+    expect(value.ano).toBe(temp.ano);
+    expect(value.cor).toBe(temp.cor);
+    expect(value.modelo).toBe(temp.modelo);
+    expect(value.__v).toBeUndefined();
+    expect(value.quantidadePassageiros).toBe(temp.quantidadePassageiros);
+    expect(value.acessorios.length).toEqual(0);
+  });
+
+  it('should return 400 when missing body', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .set(token)
+      .send({});
+
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('descricao');
+    expect(value[0].name).toBe('"descricao" is required');
+  });
+
+  it('should return 400 when white spaces on descricao', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .set(token)
+      .send({ descricao: '   ' });
+
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('descricao');
+    expect(value[0].name).toBe('"descricao" is not allowed to be empty');
+  });
+
+  it('should return 400 when invalid ID on patch', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .patch(`${PREFIX}/125/acessorios/${temp.acessorios[0].id}`)
+      .set(token)
+      .send({ descricao: 'vidro eletrico' });
+
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('id');
+    expect(value[0].name).toBe('"id" length must be 24 characters long');
+  });
+
+  it('should return 400 when invalid ID on patch', async () => {
+    const temp = await factory.create<Car>('Car');
+    const response = await request(app)
+      .patch(`${PREFIX}/${temp.id}/acessorios/789asd`)
+      .set(token)
+      .send({ descricao: 'vidro eletrico' });
+
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('idAccessory');
+    expect(value[0].name).toBe(
+      '"idAccessory" length must be 24 characters long'
+    );
   });
 });

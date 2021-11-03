@@ -62,10 +62,14 @@ class CarController {
     }
   }
 
-  patchAcessorios(req: Request, res: Response, next: NextFunction) {
+  async patchAcessorios(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id, idAcessorios } = req.params;
-      const updated = CarService.updateAccessory(id, idAcessorios, req.body);
+      const { id, idAccessory } = req.params;
+      const updated = await CarService.updateAccessory(
+        id,
+        idAccessory,
+        req.body
+      );
       return res.status(200).json(updated);
     } catch (e) {
       return next(e);

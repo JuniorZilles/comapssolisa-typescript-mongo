@@ -23,10 +23,14 @@ const PersonSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     immutable: true,
-    select: false,
+    transform: () => undefined,
   },
-  dataAtualizacao: { type: Date, default: Date.now, select: false },
-  __v: { type: Number, select: false },
+  dataAtualizacao: {
+    type: Date,
+    default: Date.now,
+    transform: () => undefined,
+  },
+  __v: { type: Number, transform: () => undefined },
 });
 
 PersonSchema.pre('save', async function onSave(next) {
@@ -42,6 +46,6 @@ PersonSchema.pre('findOneAndUpdate', async function onSave(next) {
 
 const PersonModel = mongoose.model<Person>('People', PersonSchema);
 
-export const isValid = (id: string) => mongoose.isValidObjectId(id);
+export const isValid = (id: string): boolean => mongoose.isValidObjectId(id);
 
 export default PersonModel;
