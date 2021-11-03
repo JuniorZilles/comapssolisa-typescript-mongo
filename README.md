@@ -99,6 +99,7 @@ if you are runnig locally it should be found on `localhost:3000`
    - PUT http://localhost:3000/api/v1/car/:id
    - GET http://localhost:3000/api/v1/car/:id
    - DELETE http://localhost:3000/api/v1/car/:id
+   - PATCH http://localhost:3000/api/v1/car/:id/acessorios/:id
 3. people
    - POST http://localhost:3000/api/v1/people
    - GET http://localhost:3000/api/v1/people
