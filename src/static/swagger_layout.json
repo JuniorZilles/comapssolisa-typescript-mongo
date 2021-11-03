@@ -320,6 +320,16 @@
               }
             }
           },
+          "404": {
+            "description": "Não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Erro ao realizar a solicitação",
             "content": {
@@ -369,6 +379,82 @@
           },
           "404": {
             "description": "id não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car/{id}/acessorios/{idAccessory}": {
+      "patch": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Car"
+        ],
+        "summary": "Atualização de veículos da Compassolisa",
+        "description": "A atualização pode ser feita com apenas um campo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessory-request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Atualização realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/car-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não encontrado",
             "content": {
               "application/json": {
                 "schema": {
@@ -846,6 +932,14 @@
           "offsets": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "accessory-request": {
+        "type": "object",
+        "properties": {
+          "descricao": {
+            "type": "string"
           }
         }
       },
