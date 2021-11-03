@@ -6,7 +6,8 @@ import transformToArray from './utils/transformJoiResult';
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      id: Joi.string().trim().alphanum().length(24)
+      id: Joi.string().length(24).trim().regex(/[0-9A-Fa-f]{24}/)
+        .message('Invalid Id')
         .required(),
     });
 
