@@ -5,13 +5,20 @@ import MissingBody from '@errors/MissingBody';
 import NotFound from '@errors/NotFound';
 import { NextFunction, Request, Response } from 'express';
 
-export default (error:Error, req:Request, res:Response, next:NextFunction) => {
+export default (
+  error: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let status = 500;
   let description = 'Internal Server Error';
-  if (error instanceof NotFound
-    || error instanceof InvalidField
-    || error instanceof MissingBody
-    || error instanceof InvalidValue) {
+  if (
+    error instanceof NotFound ||
+    error instanceof InvalidField ||
+    error instanceof MissingBody ||
+    error instanceof InvalidValue
+  ) {
     status = error.status;
     description = error.description;
   }

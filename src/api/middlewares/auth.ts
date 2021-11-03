@@ -6,19 +6,25 @@ export default (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json([{ description: 'Bearer', name: 'Token not provided' }]);
+    return res
+      .status(401)
+      .json([{ description: 'Bearer', name: 'Token not provided' }]);
   }
 
   const parts = authHeader.split(' ');
 
   if (parts.length !== 2) {
-    return res.status(401).json([{ description: 'Bearer', name: 'Token error' }]);
+    return res
+      .status(401)
+      .json([{ description: 'Bearer', name: 'Token error' }]);
   }
 
   const [scheme, token] = parts;
 
   if (!/^Bearer$/i.test(scheme)) {
-    return res.status(401).json([{ description: 'Bearer', name: 'Token malformatted' }]);
+    return res
+      .status(401)
+      .json([{ description: 'Bearer', name: 'Token malformatted' }]);
   }
   try {
     const result = verifyToken(token);
@@ -29,6 +35,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
     req.email = content.content.email;
     return next();
   } catch (error) {
-    return res.status(401).json([{ description: 'Bearer', name: 'Token invalid' }]);
+    return res
+      .status(401)
+      .json([{ description: 'Bearer', name: 'Token invalid' }]);
   }
 };

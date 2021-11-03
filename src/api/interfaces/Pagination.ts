@@ -1,4 +1,4 @@
-export interface Pagination{
-  offset?:string
-  limit?:string
+export interface Pagination {
+  offset?: string;
+  limit?: string;
 }

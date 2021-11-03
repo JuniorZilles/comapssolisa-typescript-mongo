@@ -1,9 +1,9 @@
 export default interface TokenPayload {
   content: {
-    id:string;
-    habilitado:string;
-    email:string;
+    id: string;
+    habilitado: string;
+    email: string;
   };
-  iat:number;
+  iat: number;
   exp: number;
 }

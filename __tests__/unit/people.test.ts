@@ -30,15 +30,15 @@ describe('src :: api :: services :: people', () => {
   });
 
   /**
-     * INSERT CREATE
-     */
+   * INSERT CREATE
+   */
 
   it('should create a person', async () => {
     const person = await PeopleService.create(personData);
     expect(person.id).toBeDefined();
     expect(person.cpf).toBe(personData.cpf);
     expect(person.data_nascimento).toEqual(
-      new Date(personData.data_nascimento),
+      new Date(personData.data_nascimento)
     );
     expect(person.email).toBe(personData.email);
     expect(person.nome).toBe(personData.nome);
@@ -59,7 +59,9 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'data_nascimento' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'data_nascimento' is out of the standard format"
+      );
     }
   });
 
@@ -77,13 +79,15 @@ describe('src :: api :: services :: people', () => {
       const person2 = await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe('CPF 131.147.860-49 already in use');
+      expect((<InvalidValue>e).message).toBe(
+        'CPF 131.147.860-49 already in use'
+      );
     }
   });
 
   /**
-     * GET LIST
-     */
+   * GET LIST
+   */
 
   it('should get all people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
@@ -110,8 +114,8 @@ describe('src :: api :: services :: people', () => {
   });
 
   /**
-     * GET BY ID
-     */
+   * GET BY ID
+   */
 
   it('should get a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
@@ -119,9 +123,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.getById(personGenerated.id);
       expect(person.id).toBe(personGenerated.id);
       expect(person.cpf).toBe(personGenerated.cpf);
-      expect(person.data_nascimento).toEqual(
-        personGenerated.data_nascimento,
-      );
+      expect(person.data_nascimento).toEqual(personGenerated.data_nascimento);
       expect(person.email).toBe(personGenerated.email);
       expect(person.nome).toBe(personGenerated.nome);
       expect(person.habilitado).toBe(personGenerated.habilitado);
@@ -133,7 +135,9 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'id' is out of the standard format"
+      );
     }
   });
 
@@ -142,13 +146,15 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
+      expect((<NotFound>e).message).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
     }
   });
 
   /**
-     * DELETE BY ID
-     */
+   * DELETE BY ID
+   */
 
   it('should remove a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
@@ -164,7 +170,9 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'id' is out of the standard format"
+      );
     }
   });
 
@@ -173,13 +181,15 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
+      expect((<NotFound>e).message).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
     }
   });
 
   /**
-     * UPDATE BY ID
-     */
+   * UPDATE BY ID
+   */
 
   it('should update a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
@@ -197,7 +207,7 @@ describe('src :: api :: services :: people', () => {
       expect(person.id).toBe(personGenerated.id);
       expect(person.cpf).toBe(tempData.cpf);
       expect(person.data_nascimento).toEqual(
-        new Date(tempData.data_nascimento),
+        new Date(tempData.data_nascimento)
       );
       expect(person.email).toBe(tempData.email);
       expect(person.nome).toBe(tempData.nome);
@@ -218,7 +228,9 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.update('12', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'id' is out of the standard format"
+      );
     }
   });
 
@@ -232,14 +244,19 @@ describe('src :: api :: services :: people', () => {
       habilitado: 'não',
     };
     try {
-      const personWithEmail = await factory.create<Person>('People', { email: 'joazinho@email.com', cpf: '131.147.860-49' });
+      const personWithEmail = await factory.create<Person>('People', {
+        email: 'joazinho@email.com',
+        cpf: '131.147.860-49',
+      });
       const personGenerated = await factory.create<Person>('People');
       if (personGenerated.id) {
         const person = await PeopleService.update(personGenerated.id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe(`CPF ${tempData.cpf} already in use`);
+      expect((<InvalidValue>e).message).toBe(
+        `CPF ${tempData.cpf} already in use`
+      );
     }
   });
 
@@ -253,10 +270,15 @@ describe('src :: api :: services :: people', () => {
         senha: '123456',
         habilitado: 'não',
       };
-      const person = await PeopleService.update('6171508962f47a7a91938d30', tempData);
+      const person = await PeopleService.update(
+        '6171508962f47a7a91938d30',
+        tempData
+      );
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
+      expect((<NotFound>e).message).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
     }
   });
 
@@ -272,10 +294,15 @@ describe('src :: api :: services :: people', () => {
     };
     if (personGenerated.id) {
       try {
-        const personUpdate = await PeopleService.update(personGenerated.id, tempData);
+        const personUpdate = await PeopleService.update(
+          personGenerated.id,
+          tempData
+        );
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidField);
-        expect((<InvalidField>e).message).toBe("The field 'data_nascimento' is out of the standard format");
+        expect((<InvalidField>e).message).toBe(
+          "The field 'data_nascimento' is out of the standard format"
+        );
       }
     }
   });

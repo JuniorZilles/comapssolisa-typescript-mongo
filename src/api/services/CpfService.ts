@@ -17,8 +17,10 @@ const validateCPF = (cpf: string): boolean => {
     restoDigito10 = 0;
     restoDigito11 = 0;
   }
-  if (restoDigito10 === parseInt(cpfSplited[9], 10)
-        && restoDigito11 === parseInt(cpfSplited[10], 10)) {
+  if (
+    restoDigito10 === parseInt(cpfSplited[9], 10) &&
+    restoDigito11 === parseInt(cpfSplited[10], 10)
+  ) {
     return true;
   }
   return false;

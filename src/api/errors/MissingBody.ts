@@ -1,7 +1,7 @@
 export default class MissingBody extends Error {
-  public status:number;
+  public status: number;
 
-  public description:string;
+  public description: string;
 
   constructor() {
     super('Missing requisition body');

@@ -14,7 +14,7 @@ moment.locale('pt-BR');
 class PeopleService {
   async create(payload: Person): Promise<PersonSearch> {
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
-      payload.data_nascimento as string,
+      payload.data_nascimento as string
     );
     const { cpf, email } = payload;
     this.checkCpf(cpf);
@@ -22,7 +22,7 @@ class PeopleService {
     if (result) {
       this.checkIfIsValid(result, cpf, email);
     }
-    const person = await PeopleRepository.create(payload) as PersonSearch;
+    const person = (await PeopleRepository.create(payload)) as PersonSearch;
     person.senha = undefined;
     return person;
   }
@@ -43,12 +43,10 @@ class PeopleService {
   }
 
   private transfromToDateString(date: string) {
-    return moment(date, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD',
-    );
+    return moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
   }
 
-  async getById(id: string):Promise<PersonSearch> {
+  async getById(id: string): Promise<PersonSearch> {
     if (!PeopleRepository.validId(id)) {
       throw new InvalidField('id');
     }
@@ -60,8 +58,8 @@ class PeopleService {
   }
 
   async list(payload: PersonSearch) {
-    let offset: number = 0;
-    let limit: number = 10;
+    let offset = 0;
+    let limit = 10;
 
     if (payload.limit) {
       limit = parseInt(payload.limit, 10);
@@ -75,7 +73,9 @@ class PeopleService {
       payload.senha = undefined;
     }
     if (payload.data_nascimento) {
-      payload.data_nascimento = this.transfromToDateString(payload.data_nascimento as string);
+      payload.data_nascimento = this.transfromToDateString(
+        payload.data_nascimento as string
+      );
     }
     return PeopleRepository.findAll(payload, offset, limit);
   }
@@ -96,7 +96,7 @@ class PeopleService {
   async update(id: string, payload: Person) {
     await this.getById(id);
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
-      payload.data_nascimento as string,
+      payload.data_nascimento as string
     );
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);

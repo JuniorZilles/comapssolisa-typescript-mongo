@@ -11,7 +11,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
       nome: Joi.string().trim().required(),
-      cpf: Joi.string().trim().regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/).message('Invalid CPF')
+      cpf: Joi.string()
+        .trim()
+        .regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/)
+        .message('Invalid CPF')
         .required(),
       data_nascimento: JoiDate.date().format('DD/MM/YYYY').required(),
       email: Joi.string().trim().email().required(),

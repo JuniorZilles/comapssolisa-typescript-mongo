@@ -9,11 +9,14 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       modelo: Joi.string().trim().required(),
       cor: Joi.string().trim().required(),
       ano: Joi.number().min(1950).max(2022).required(),
-      acessorios: Joi.array().min(1).items(
-        Joi.object({
-          descricao: Joi.string().trim().required(),
-        }),
-      ).unique(),
+      acessorios: Joi.array()
+        .min(1)
+        .items(
+          Joi.object({
+            descricao: Joi.string().trim().required(),
+          })
+        )
+        .unique(),
       quantidadePassageiros: Joi.number().required(),
     });
 

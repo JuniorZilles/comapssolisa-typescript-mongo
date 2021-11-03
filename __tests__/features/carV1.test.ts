@@ -21,7 +21,11 @@ let token = {};
 describe('src :: api :: controllers :: car', () => {
   beforeAll(async () => {
     await CarModel.deleteMany();
-    const key = generateToken({ email: 'joazinho@email.com', habilitado: 'sim', id: '6171508962f47a7a91938d30' });
+    const key = generateToken({
+      email: 'joazinho@email.com',
+      habilitado: 'sim',
+      id: '6171508962f47a7a91938d30',
+    });
 
     token = { authorization: `Bearer ${key}` };
   });
@@ -33,14 +37,11 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   /**
-     * POST CREATE
-     */
+   * POST CREATE
+   */
 
   it('should create a car', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .set(token)
-      .send(carData);
+    const response = await request(app).post(PREFIX).set(token).send(carData);
 
     const car = response.body;
 
@@ -60,10 +61,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [],
       quantidadePassageiros: 5,
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .set(token)
-      .send(temp);
+    const response = await request(app).post(PREFIX).set(token).send(temp);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -80,10 +78,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [],
       quantidadePassageiros: 5,
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .set(token)
-      .send(temp);
+    const response = await request(app).post(PREFIX).set(token).send(temp);
     const value = response.body;
     expect(response.status).toBe(400);
     expect(value.length).toBeGreaterThanOrEqual(1);
@@ -99,10 +94,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [{ descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5,
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .set(token)
-      .send(temp);
+    const response = await request(app).post(PREFIX).set(token).send(temp);
 
     const value = response.body;
     expect(response.status).toBe(400);
@@ -119,10 +111,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [{ descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5,
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .set(token)
-      .send(temp);
+    const response = await request(app).post(PREFIX).set(token).send(temp);
 
     const value = response.body;
     expect(response.status).toBe(400);
@@ -136,13 +125,13 @@ describe('src :: api :: controllers :: car', () => {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
       ano: 2021,
-      acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+      acessorios: [
+        { descricao: 'Ar-condicionado' },
+        { descricao: 'Ar-condicionado' },
+      ],
       quantidadePassageiros: 5,
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .set(token)
-      .send(temp);
+    const response = await request(app).post(PREFIX).set(token).send(temp);
 
     const value = response.body;
     expect(response.status).toBe(400);
@@ -152,14 +141,15 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   /**
-     * GET LIST
-     */
+   * GET LIST
+   */
 
   it('should get all cars', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
 
     const response = await request(app)
-      .get(`${PREFIX}?offset=0&limit=${carTemp.length}`).set(token);
+      .get(`${PREFIX}?offset=0&limit=${carTemp.length}`)
+      .set(token);
     const vehicles = response.body;
 
     expect(response.status).toBe(200);
@@ -168,10 +158,15 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   it('should get all cars by accessory', async () => {
-    const carTemp = await factory.createMany<Car>('Car', 5, { acessorios: [{ descricao: 'Ar-condicionado' }] });
+    const carTemp = await factory.createMany<Car>('Car', 5, {
+      acessorios: [{ descricao: 'Ar-condicionado' }],
+    });
 
     const response = await request(app)
-      .get(`${PREFIX}?offset=0&limit=${carTemp.length}&descricao=Ar-condicionado`).set(token);
+      .get(
+        `${PREFIX}?offset=0&limit=${carTemp.length}&descricao=Ar-condicionado`
+      )
+      .set(token);
     const vehicles = response.body;
 
     expect(response.status).toBe(200);
@@ -189,7 +184,8 @@ describe('src :: api :: controllers :: car', () => {
   it('should get all cars by modelo', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
     const response = await request(app)
-      .get(`${PREFIX}?modelo=${carTemp[0].modelo}`).set(token);
+      .get(`${PREFIX}?modelo=${carTemp[0].modelo}`)
+      .set(token);
     const vehicles = response.body;
 
     expect(response.status).toBe(200);
@@ -204,7 +200,8 @@ describe('src :: api :: controllers :: car', () => {
   it('should not get any cars when doesnt have any register for the query', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
     const response = await request(app)
-      .get(`${PREFIX}?modelo=Chevy`).set(token);
+      .get(`${PREFIX}?modelo=Chevy`)
+      .set(token);
     const vehicles = response.body;
 
     expect(response.status).toBe(200);
@@ -217,15 +214,16 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   /**
-     * GET BY ID
-     */
+   * GET BY ID
+   */
 
   it("should get a car by it's ID", async () => {
     const carUsed = await factory.create<Car>('Car');
 
     if (carUsed.id) {
       const response = await request(app)
-        .get(`${PREFIX}/${carUsed.id}`).set(token);
+        .get(`${PREFIX}/${carUsed.id}`)
+        .set(token);
       const car = response.body;
 
       expect(response.status).toBe(200);
@@ -239,8 +237,7 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   it('should return 400 with errors if ID is invalid when searching', async () => {
-    const response = await request(app)
-      .get(`${PREFIX}/12`).set(token);
+    const response = await request(app).get(`${PREFIX}/12`).set(token);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -251,7 +248,8 @@ describe('src :: api :: controllers :: car', () => {
 
   it('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app)
-      .get(`${PREFIX}/6171508962f47a7a91938d30`).set(token);
+      .get(`${PREFIX}/6171508962f47a7a91938d30`)
+      .set(token);
     const car = response.body;
 
     expect(response.status).toBe(404);
@@ -261,15 +259,16 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   /**
-     * DELETE BY ID
-     */
+   * DELETE BY ID
+   */
 
   it("should remove a car by it's ID", async () => {
     const carUsed = await factory.create<Car>('Car');
 
     if (carUsed.id) {
       const response = await request(app)
-        .delete(`${PREFIX}/${carUsed.id}`).set(token);
+        .delete(`${PREFIX}/${carUsed.id}`)
+        .set(token);
       const car = response.body;
 
       expect(response.status).toBe(204);
@@ -280,8 +279,7 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   it('should return 400 with errors if ID is invalid when removing', async () => {
-    const response = await request(app)
-      .delete(`${PREFIX}/12`).set(token);
+    const response = await request(app).delete(`${PREFIX}/12`).set(token);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -292,7 +290,8 @@ describe('src :: api :: controllers :: car', () => {
 
   it('should return 404 with error if ID is notfound when removing', async () => {
     const response = await request(app)
-      .delete(`${PREFIX}/6171508962f47a7a91938d30`).set(token);
+      .delete(`${PREFIX}/6171508962f47a7a91938d30`)
+      .set(token);
 
     const car = response.body;
 
@@ -303,8 +302,8 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   /**
-     * PUT BY ID
-     */
+   * PUT BY ID
+   */
 
   it('should update a car', async () => {
     const temp = await factory.create<Car>('Car');
@@ -315,7 +314,9 @@ describe('src :: api :: controllers :: car', () => {
     const result = response.body;
 
     expect(response.status).toBe(200);
-    expect(carData.acessorios[0].descricao).toEqual(result.acessorios[0].descricao);
+    expect(carData.acessorios[0].descricao).toEqual(
+      result.acessorios[0].descricao
+    );
     expect(carData.ano).toBe(result.ano);
     expect(carData.modelo).toBe(result.modelo);
     expect(carData.cor).toBe(result.cor);
@@ -394,7 +395,10 @@ describe('src :: api :: controllers :: car', () => {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
       ano: 2018,
-      acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+      acessorios: [
+        { descricao: 'Ar-condicionado' },
+        { descricao: 'Ar-condicionado' },
+      ],
       quantidadePassageiros: 5,
     };
     const response = await request(app)

@@ -3,9 +3,9 @@ import Car from '@interfaces/Car';
 export default class VehiclesModel {
   constructor(
     public veiculos: Car[],
-    public total: Number,
-    public limit: Number,
-    public offset: Number,
-    public offsets:Number,
+    public total: number,
+    public limit: number,
+    public offset: number,
+    public offsets: number
   ) {}
 }

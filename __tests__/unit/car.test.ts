@@ -27,8 +27,8 @@ describe('src :: api :: services :: car', () => {
   });
 
   /**
-     * POST CREATE
-     */
+   * POST CREATE
+   */
 
   it('should create a car', async () => {
     const car = await CarService.create(carData);
@@ -50,7 +50,9 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'acessorios' is out of the standard format"
+      );
     }
   });
 
@@ -66,7 +68,9 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'ano' is out of the standard format"
+      );
     }
   });
 
@@ -82,7 +86,9 @@ describe('src :: api :: services :: car', () => {
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'ano' is out of the standard format"
+      );
     }
   });
 
@@ -92,19 +98,24 @@ describe('src :: api :: services :: car', () => {
         modelo: 'GM S10 2.8',
         cor: 'Verde',
         ano: 2021,
-        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        acessorios: [
+          { descricao: 'Ar-condicionado' },
+          { descricao: 'Ar-condicionado' },
+        ],
         quantidadePassageiros: 5,
       };
       const car = await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'acessorios' is out of the standard format"
+      );
     }
   });
 
   /**
-     * GET LIST
-     */
+   * GET LIST
+   */
 
   it('should get all cars by modelo', async () => {
     const car = await factory.create<Car>('Car');
@@ -119,7 +130,10 @@ describe('src :: api :: services :: car', () => {
   it('should get all cars', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
 
-    const result = await CarService.list({ limit: `${carTemp.length}`, offset: '0' });
+    const result = await CarService.list({
+      limit: `${carTemp.length}`,
+      offset: '0',
+    });
 
     expect(result.veiculos.length).toEqual(carTemp.length);
   });
@@ -127,16 +141,20 @@ describe('src :: api :: services :: car', () => {
   it('should get all cars by accessory', async () => {
     const car = await factory.createMany<Car>('Car', 5);
 
-    const result = await CarService.list({ descricao: car[0].acessorios[0].descricao as string });
+    const result = await CarService.list({
+      descricao: car[0].acessorios[0].descricao as string,
+    });
 
     result.veiculos.forEach((element) => {
-      expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao);
+      expect(element.acessorios[0].descricao).toBe(
+        car[0].acessorios[0].descricao
+      );
     });
   });
 
   /**
-     * GET BY ID
-     */
+   * GET BY ID
+   */
 
   it("should get a car by it's ID", async () => {
     const car = await factory.create<Car>('Car');
@@ -157,7 +175,9 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'id' is out of the standard format"
+      );
     }
   });
 
@@ -166,13 +186,15 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
+      expect((<NotFound>e).message).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
     }
   });
 
   /**
-     * DELETE BY ID
-     */
+   * DELETE BY ID
+   */
 
   it("should remove a car by it's ID", async () => {
     const car = await factory.create<Car>('Car');
@@ -190,7 +212,9 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'id' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'id' is out of the standard format"
+      );
     }
   });
 
@@ -199,13 +223,15 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe('Value 6171508962f47a7a91938d30 not found');
+      expect((<NotFound>e).message).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
     }
   });
 
   /**
-     * PUT BY ID
-     */
+   * PUT BY ID
+   */
 
   it('should update a car', async () => {
     const car = await factory.create<Car>('Car');
@@ -220,7 +246,9 @@ describe('src :: api :: services :: car', () => {
       const result = await CarService.update(car.id, tempData);
 
       expect(result.id).toBe(car.id);
-      expect(result.acessorios[0].descricao).toBe(tempData.acessorios[0].descricao);
+      expect(result.acessorios[0].descricao).toBe(
+        tempData.acessorios[0].descricao
+      );
       expect(result.modelo).toBe('Abacaxi');
       expect(result.ano).toBe(tempData.ano);
       expect(result.cor).toBe(tempData.cor);
@@ -242,7 +270,9 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'acessorios' is out of the standard format"
+      );
     }
   });
 
@@ -261,7 +291,9 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'ano' is out of the standard format"
+      );
     }
   });
 
@@ -280,7 +312,9 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'ano' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'ano' is out of the standard format"
+      );
     }
   });
 
@@ -291,7 +325,10 @@ describe('src :: api :: services :: car', () => {
         modelo: 'GM S10 2.8',
         cor: 'Verde',
         ano: 2021,
-        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        acessorios: [
+          { descricao: 'Ar-condicionado' },
+          { descricao: 'Ar-condicionado' },
+        ],
         quantidadePassageiros: 5,
       };
 
@@ -300,18 +337,35 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
+      expect((<InvalidField>e).message).toBe(
+        "The field 'acessorios' is out of the standard format"
+      );
     }
   });
 
   /**
-     * PATCH BY ID ACCESSORIES BY ID
-     */
+   * PATCH BY ID ACCESSORIES BY ID
+   */
 
-  it('should update a car accessory by it\'s ID', async () => {
+  it('should add a car accessory by its ID', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: 'Ar-condicionado' };
 
-    await CarService.updateAccessory(car.id, car.acessorios[0].id, tempData);
+    await CarService.updateAccessory(
+      car.id as string,
+      car.acessorios[0].id as string,
+      tempData
+    );
+  });
+
+  it('should remove a car accessory by its ID', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: car.acessorios[0].descricao };
+
+    await CarService.updateAccessory(
+      car.id as string,
+      car.acessorios[0].id as string,
+      tempData
+    );
   });
 });

@@ -1,4 +1,4 @@
 export default interface Accessory {
-  descricao: String
-  id?: String
+  descricao: string;
+  id?: string;
 }

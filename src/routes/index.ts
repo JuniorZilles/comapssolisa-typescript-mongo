@@ -8,8 +8,12 @@ import swaggerFile from '../static/swagger_layout.json';
 
 const V1Prefix = '/api/v1';
 
-export default (server:Express):void => {
-  server.use(`${V1Prefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerFile));
+export default (server: Express): void => {
+  server.use(
+    `${V1Prefix}/api-docs`,
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerFile)
+  );
   server.use(V1Prefix, routerPeople());
   server.use(V1Prefix, routerAuthenticate());
   server.use(auth);

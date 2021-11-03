@@ -6,15 +6,19 @@ import PeopleRepository from '@repositories/PeopleRepository';
 import InvalidValue from '@errors/InvalidValue';
 
 class AuthenticateService {
-  async authenticate(email:string, senha:string) {
+  async authenticate(email: string, senha: string) {
     const user = await PeopleRepository.findUser({ email });
 
     if (!user) {
       throw new NotFound(email);
     }
 
-    if (!await bcrypt.compare(senha, user.senha)) {
-      throw new InvalidValue('senha', 'The value ****** for senha is invalid', true);
+    if (!(await bcrypt.compare(senha, user.senha))) {
+      throw new InvalidValue(
+        'senha',
+        'The value ****** for senha is invalid',
+        true
+      );
     }
 
     const token = generateToken({

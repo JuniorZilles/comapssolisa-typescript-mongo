@@ -3,9 +3,9 @@ import PersonSearch from '@interfaces/PersonSearch';
 export default class PeopleModel {
   constructor(
     public pessoas: PersonSearch[],
-    public total: Number,
-    public limit: Number,
-    public offset: Number,
-    public offsets:Number,
+    public total: number,
+    public limit: number,
+    public offset: number,
+    public offsets: number
   ) {}
 }

@@ -19,7 +19,9 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   it('Should authenticate and return token, email, habilitado', async () => {
-    const personData = await factory.create<Person>('People', { senha: '123456' });
+    const personData = await factory.create<Person>('People', {
+      senha: '123456',
+    });
     const response = await request(app)
       .post(PREFIX)
       .send({ email: personData.email as string, senha: '123456' });
@@ -58,9 +60,7 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   it('Should return 400 with validation errors for missing email', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ senha: '123456' });
+    const response = await request(app).post(PREFIX).send({ senha: '123456' });
 
     const value = response.body;
 
@@ -106,7 +106,9 @@ describe('src :: api :: controllers :: authenticate', () => {
     expect(response.status).toBe(400);
     expect(value.length).toBeGreaterThanOrEqual(1);
     expect(value[0].description).toBe('senha');
-    expect(value[0].name).toBe('"senha" length must be at least 6 characters long');
+    expect(value[0].name).toBe(
+      '"senha" length must be at least 6 characters long'
+    );
   });
 
   it('Should return 400 with validation errors for invalid email', async () => {

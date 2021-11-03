@@ -4,7 +4,19 @@ import PersonModel from '@models/PersonModel';
 
 factory.define('People', PersonModel, {
   nome: faker.name.findName(),
-  cpf: factory.sequence(() => `cpf${faker.datatype.number({ max: 999, min: 100 })}.${faker.datatype.number({ max: 999, min: 100 })}.${faker.datatype.number({ max: 999, min: 100 })}-${faker.datatype.number({ max: 99, min: 10 })}`),
+  cpf: factory.sequence(
+    () =>
+      `cpf${faker.datatype.number({
+        max: 999,
+        min: 100,
+      })}.${faker.datatype.number({
+        max: 999,
+        min: 100,
+      })}.${faker.datatype.number({
+        max: 999,
+        min: 100,
+      })}-${faker.datatype.number({ max: 99, min: 10 })}`
+  ),
   data_nascimento: faker.datatype.datetime(),
   email: factory.sequence(() => `cpf${faker.internet.email()}`),
   senha: faker.internet.password(),

@@ -24,15 +24,17 @@ class CarService {
     }
   }
 
-  private isValidYear(year: Number) {
+  private isValidYear(year: number) {
     if (year < 1950 || year > 2022) {
       throw new InvalidField('ano');
     }
   }
 
   hasDuplicate(list: Accessory[]) {
-    const newList = list.filter((elem, index, arr) => arr.findIndex((t) => (
-      t.descricao === elem.descricao)) === index);
+    const newList = list.filter(
+      (elem, index, arr) =>
+        arr.findIndex((t) => t.descricao === elem.descricao) === index
+    );
     if (newList.length !== list.length) {
       throw new InvalidField('acessorios');
     }
@@ -50,8 +52,8 @@ class CarService {
   }
 
   async list(payload: CarSearch) {
-    let offset: number = 0;
-    let limit: number = 10;
+    let offset = 0;
+    let limit = 10;
     if (payload.descricao) {
       payload['acessorios.descricao'] = payload.descricao;
       payload.descricao = undefined;
@@ -83,6 +85,10 @@ class CarService {
       this.isValidYear(payload.ano);
     }
     return CarRepository.update(id, payload);
+  }
+
+  updateAccessory(id: string, idAccessory: string, payload: Accessory) {
+    // return CarRepository.updateAccessory(id, idAccessory, payload);
   }
 }
 

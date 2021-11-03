@@ -6,15 +6,20 @@ const CarSchema = new mongoose.Schema({
   modelo: { type: String, required: true },
   cor: { type: String, required: true },
   ano: { type: Number, required: true },
-  acessorios: [{
-    descricao: {
-      type: String,
-      required: true,
+  acessorios: [
+    {
+      descricao: {
+        type: String,
+        required: true,
+      },
     },
-  }],
+  ],
   quantidadePassageiros: { type: Number, required: true },
   dataCriacao: {
-    type: Date, default: Date.now, immutable: true, select: false,
+    type: Date,
+    default: Date.now,
+    immutable: true,
+    select: false,
   },
   dataAtualizacao: { type: Date, default: Date.now, select: false },
   __v: { type: Number, select: false },

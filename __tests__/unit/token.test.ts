@@ -4,7 +4,11 @@ import { JwtPayload } from 'jsonwebtoken';
 
 describe('src :: api :: services :: token', () => {
   it('should generate a token an verification should pass', async () => {
-    const result = await generateToken({ email: 'jao@mail.com', habilitado: 'sim', id: 'sajhdjaks45454asd4sa5d465as4' });
+    const result = await generateToken({
+      email: 'jao@mail.com',
+      habilitado: 'sim',
+      id: 'sajhdjaks45454asd4sa5d465as4',
+    });
 
     expect(result).toBeDefined();
     const content = verifyToken(result) as JwtPayload;
@@ -17,7 +21,8 @@ describe('src :: api :: services :: token', () => {
   });
 
   it('should not pass verification of invalid token', async () => {
-    const result = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    const result =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     try {
       const content = verifyToken(result);
     } catch (e) {

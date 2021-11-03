@@ -1,9 +1,9 @@
 export default class NotFound extends Error {
-  public status:number;
+  public status: number;
 
-  public description:string;
+  public description: string;
 
-  constructor(name:String) {
+  constructor(name: string) {
     super(`Value ${name} not found`);
     this.name = 'NotFound';
     this.description = 'Not Found';

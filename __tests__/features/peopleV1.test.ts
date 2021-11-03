@@ -29,12 +29,10 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   /**
-     * POST CREATE
-     */
+   * POST CREATE
+   */
   it('should create a person', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send(personData);
+    const response = await request(app).post(PREFIX).send(personData);
 
     const person = response.body;
     expect(response.status).toBe(201);
@@ -55,9 +53,7 @@ describe('src :: api :: controllers :: people', () => {
       email: 'joazinho@email.com',
       senha: '123456',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -75,9 +71,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -95,15 +89,15 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
     expect(value.length).toEqual(1);
     expect(value[0].description).toBe('data_nascimento');
-    expect(value[0].name).toBe("The field 'data_nascimento' is out of the standard format");
+    expect(value[0].name).toBe(
+      "The field 'data_nascimento' is out of the standard format"
+    );
   });
 
   it('should return 400 with errors if cpf is invalid', async () => {
@@ -115,9 +109,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -135,9 +127,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempData);
+    const response = await request(app).post(PREFIX).send(tempData);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -155,15 +145,15 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
     expect(value.length).toBeGreaterThanOrEqual(1);
     expect(value[0].description).toBe('senha');
-    expect(value[0].name).toBe('"senha" length must be at least 6 characters long');
+    expect(value[0].name).toBe(
+      '"senha" length must be at least 6 characters long'
+    );
   });
 
   it('should return 400 with errors if email is invalid', async () => {
@@ -175,9 +165,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -195,9 +183,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'talvez',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -207,7 +193,9 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if cpf or email already exists', async () => {
-    const peopleData = await factory.create<Person>('People', { cpf: '847.331.290-25' });
+    const peopleData = await factory.create<Person>('People', {
+      cpf: '847.331.290-25',
+    });
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: peopleData.cpf,
@@ -216,9 +204,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -236,9 +222,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'talvez',
     };
-    const response = await request(app)
-      .post(PREFIX)
-      .send(tempCreate);
+    const response = await request(app).post(PREFIX).send(tempCreate);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -248,14 +232,15 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   /**
-     * GET LIST
-     */
+   * GET LIST
+   */
 
   it('should get all people', async () => {
     const peopleData = await factory.createMany<Person>('People', 5);
 
-    const response = await request(app)
-      .get(`${PREFIX}?offset=0&limit=${peopleData.length}`);
+    const response = await request(app).get(
+      `${PREFIX}?offset=0&limit=${peopleData.length}`
+    );
     const people = response.body;
 
     expect(response.status).toBe(200);
@@ -268,11 +253,17 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should get all people that by habilitado', async () => {
-    const peopleNoData = await factory.createMany<Person>('People', 5, { habilitado: 'sim', nome: 'joaozinho' });
-    const peopleYesData = await factory.createMany<Person>('People', 5, { habilitado: 'sim' });
+    const peopleNoData = await factory.createMany<Person>('People', 5, {
+      habilitado: 'sim',
+      nome: 'joaozinho',
+    });
+    const peopleYesData = await factory.createMany<Person>('People', 5, {
+      habilitado: 'sim',
+    });
 
-    const response = await request(app)
-      .get(`${PREFIX}?offset=1&limit=5&habilitado=sim`);
+    const response = await request(app).get(
+      `${PREFIX}?offset=1&limit=5&habilitado=sim`
+    );
     const people = response.body;
 
     expect(response.status).toBe(200);
@@ -285,8 +276,9 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should not get any people', async () => {
-    const response = await request(app)
-      .get(`${PREFIX}?offset=1&limit=5&habilitado=sim`);
+    const response = await request(app).get(
+      `${PREFIX}?offset=1&limit=5&habilitado=sim`
+    );
     const people = response.body;
 
     expect(response.status).toBe(200);
@@ -299,30 +291,30 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   /**
-     * GET BY ID
-     */
+   * GET BY ID
+   */
 
   it('should get a person by ID', async () => {
-    const peopleData = await factory.create<Person>('People', { data_nascimento: '2020-10-30' });
+    const peopleData = await factory.create<Person>('People', {
+      data_nascimento: '2020-10-30',
+    });
 
-    const response = await request(app)
-      .get(`${PREFIX}/${peopleData.id}`);
+    const response = await request(app).get(`${PREFIX}/${peopleData.id}`);
 
     const person = response.body;
     expect(response.status).toBe(200);
     expect(person.nome).toBe(peopleData.nome);
     expect(person.cpf).toBe(peopleData.cpf);
     const date = new Date(peopleData.data_nascimento);
-    expect(person.data_nascimento).toEqual(moment(date, 'YYYY-MM-DD HH:mm:ss').format(
-      'DD/MM/YYYY',
-    ));
+    expect(person.data_nascimento).toEqual(
+      moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY')
+    );
     expect(person.email).toBe(peopleData.email);
     expect(person.habilitado).toBe(peopleData.habilitado);
   });
 
   it('should return 400 with errors if ID is invalid when searching', async () => {
-    const response = await request(app)
-      .get(`${PREFIX}/12`);
+    const response = await request(app).get(`${PREFIX}/12`);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -332,8 +324,9 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 404 with error if ID is not found when searching', async () => {
-    const response = await request(app)
-      .get(`${PREFIX}/6171508962f47a7a91938d30`);
+    const response = await request(app).get(
+      `${PREFIX}/6171508962f47a7a91938d30`
+    );
     const person = response.body;
 
     expect(response.status).toBe(404);
@@ -343,22 +336,20 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   /**
-     * DELETE BY ID
-     */
+   * DELETE BY ID
+   */
 
   it("should remove a person by it's ID", async () => {
     const peopleData = await factory.create<Person>('People');
 
-    const response = await request(app)
-      .delete(`${PREFIX}/${peopleData.id}`);
+    const response = await request(app).delete(`${PREFIX}/${peopleData.id}`);
 
     expect(response.status).toBe(204);
     expect(response.body).toEqual({});
   });
 
   it('should return 400 with errors if ID is invalid when removing', async () => {
-    const response = await request(app)
-      .delete(`${PREFIX}/12`);
+    const response = await request(app).delete(`${PREFIX}/12`);
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -368,8 +359,9 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 404 with error if ID is not found when removing', async () => {
-    const response = await request(app)
-      .delete(`${PREFIX}/6171508962f47a7a91938d30`);
+    const response = await request(app).delete(
+      `${PREFIX}/6171508962f47a7a91938d30`
+    );
     const person = response.body;
 
     expect(response.status).toBe(404);
@@ -379,11 +371,13 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   /**
-     * PUT BY ID
-     */
+   * PUT BY ID
+   */
 
   it('should update a person', async () => {
-    const peopleData = await factory.create<Person>('People', { habilitado: 'não' });
+    const peopleData = await factory.create<Person>('People', {
+      habilitado: 'não',
+    });
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -410,16 +404,14 @@ describe('src :: api :: controllers :: people', () => {
 
   it('should return 400 with errors if missing an attribute when trying to update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: '131.147.860-49',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: '',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: '',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -430,36 +422,34 @@ describe('src :: api :: controllers :: people', () => {
 
   it('should return 400 with errors if age is less than 18 on update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: '131.147.860-49',
-        data_nascimento: '03/03/2010',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: 'sim',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2010',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);
     expect(value.length).toEqual(1);
     expect(value[0].description).toBe('data_nascimento');
-    expect(value[0].name).toBe("The field 'data_nascimento' is out of the standard format");
+    expect(value[0].name).toBe(
+      "The field 'data_nascimento' is out of the standard format"
+    );
   });
 
   it('should return 400 with errors if cpf is invalid on update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: '131.147.',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: 'sim',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -491,36 +481,34 @@ describe('src :: api :: controllers :: people', () => {
 
   it('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: '131.147.860-49',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '1234',
-        habilitado: 'sim',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '1234',
+      habilitado: 'sim',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);
     expect(value.length).toBeGreaterThanOrEqual(1);
     expect(value[0].description).toBe('senha');
-    expect(value[0].name).toBe('"senha" length must be at least 6 characters long');
+    expect(value[0].name).toBe(
+      '"senha" length must be at least 6 characters long'
+    );
   });
 
   it('should return 400 with errors if email is invalid', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: '847.331.290-25',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho',
-        senha: '123456',
-        habilitado: 'sim',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: 'joaozinho ciclano',
+      cpf: '847.331.290-25',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho',
+      senha: '123456',
+      habilitado: 'sim',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -532,16 +520,14 @@ describe('src :: api :: controllers :: people', () => {
   it('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const peopleData = await factory.create<Person>('People');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: '131.147.860-49',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: 'talvez',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'talvez',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);
@@ -552,7 +538,9 @@ describe('src :: api :: controllers :: people', () => {
 
   it('should return 400 with errors if cpf or email are already used by naother person', async () => {
     const peopleData1 = await factory.create<Person>('People');
-    const peopleData2 = await factory.create<Person>('People', { cpf: '847.331.290-25' });
+    const peopleData2 = await factory.create<Person>('People', {
+      cpf: '847.331.290-25',
+    });
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: peopleData2.cpf,
@@ -575,16 +563,14 @@ describe('src :: api :: controllers :: people', () => {
   it('should return 400 with errors if nome is empty', async () => {
     const peopleData = await factory.create<Person>('People');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${peopleData.id}`)
-      .send({
-        nome: '   ',
-        cpf: '131.147.860-49',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: 'talvez',
-      });
+    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+      nome: '   ',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'talvez',
+    });
     const value = response.body;
 
     expect(response.status).toBe(400);

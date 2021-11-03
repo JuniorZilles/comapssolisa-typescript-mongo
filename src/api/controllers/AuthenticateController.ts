@@ -3,7 +3,7 @@ import AuthenticateService from '@services/AuthenticateService';
 import { Request, Response, NextFunction } from 'express';
 
 class AuthenticateController {
-  async authenticate(req:Request, res:Response, next:NextFunction) {
+  async authenticate(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, senha } = req.body;
       const result = await AuthenticateService.authenticate(email, senha);
