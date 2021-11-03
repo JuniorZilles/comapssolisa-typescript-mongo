@@ -8,6 +8,7 @@ import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
 import PersonSearch from '@interfaces/PersonSearch';
 import InvalidValue from '@errors/InvalidValue';
+import validateCPF from './CpfService';
 
 moment.locale('pt-BR');
 class PeopleService {
@@ -16,6 +17,7 @@ class PeopleService {
       payload.data_nascimento as string,
     );
     const { cpf, email } = payload;
+    this.checkCpf(cpf);
     const result = await PeopleRepository.getUserEmailOrCpf(email, cpf);
     if (result) {
       this.checkIfIsValid(result, cpf, email);
@@ -23,6 +25,12 @@ class PeopleService {
     const person = await PeopleRepository.create(payload) as PersonSearch;
     person.senha = undefined;
     return person;
+  }
+
+  private checkCpf(cpf: string) {
+    if (!validateCPF(cpf)) {
+      throw new InvalidValue('invalid', `CPF ${cpf} is invalid`, true);
+    }
   }
 
   private isOlderAndTransfromToDateString(date: string) {
@@ -94,6 +102,7 @@ class PeopleService {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }
     const { cpf, email } = payload;
+    this.checkCpf(cpf);
     const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
     if (result) {
       if (result.id !== id) {

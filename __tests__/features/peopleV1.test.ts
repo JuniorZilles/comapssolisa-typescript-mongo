@@ -126,6 +126,26 @@ describe('src :: api :: controllers :: people', () => {
     expect(value[0].name).toBe('Invalid CPF');
   });
 
+  it('should return 400 with errors if cpf calculation is invalid', async () => {
+    const tempData = {
+      nome: 'joaozinho ciclano',
+      cpf: '123.456.789-10',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    };
+    const response = await request(app)
+      .post(PREFIX)
+      .send(tempData);
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('invalid');
+    expect(value[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
+  });
+
   it('should return 400 with errors if senha has lenght less than 6 caracteres', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
@@ -169,7 +189,7 @@ describe('src :: api :: controllers :: people', () => {
   it('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
-      cpf: '131.147.860-49',
+      cpf: '847.331.290-25',
       data_nascimento: '03/03/2000',
       email: 'joazinho@email.com',
       senha: '123456',
@@ -187,7 +207,7 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   it('should return 400 with errors if cpf or email already exists', async () => {
-    const peopleData = await factory.create<Person>('People');
+    const peopleData = await factory.create<Person>('People', { cpf: '847.331.290-25' });
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: peopleData.cpf,
@@ -448,6 +468,27 @@ describe('src :: api :: controllers :: people', () => {
     expect(value[0].name).toBe('Invalid CPF');
   });
 
+  it('should return 400 with errors if cpf calculation is invalid on update', async () => {
+    const peopleData = await factory.create<Person>('People');
+    const tempData = {
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.456-85',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    };
+    const response = await request(app)
+      .put(`${PREFIX}/${peopleData.id}`)
+      .send(tempData);
+    const value = response.body;
+
+    expect(response.status).toBe(400);
+    expect(value.length).toBeGreaterThanOrEqual(1);
+    expect(value[0].description).toBe('invalid');
+    expect(value[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
+  });
+
   it('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
     const peopleData = await factory.create<Person>('People');
     const response = await request(app)
@@ -474,7 +515,7 @@ describe('src :: api :: controllers :: people', () => {
       .put(`${PREFIX}/${peopleData.id}`)
       .send({
         nome: 'joaozinho ciclano',
-        cpf: '131.147.860-49',
+        cpf: '847.331.290-25',
         data_nascimento: '03/03/2000',
         email: 'joazinho',
         senha: '123456',
@@ -511,7 +552,7 @@ describe('src :: api :: controllers :: people', () => {
 
   it('should return 400 with errors if cpf or email are already used by naother person', async () => {
     const peopleData1 = await factory.create<Person>('People');
-    const peopleData2 = await factory.create<Person>('People');
+    const peopleData2 = await factory.create<Person>('People', { cpf: '847.331.290-25' });
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: peopleData2.cpf,
