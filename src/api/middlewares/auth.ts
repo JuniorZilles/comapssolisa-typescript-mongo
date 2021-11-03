@@ -2,7 +2,7 @@ import TokenPayload from '@interfaces/TokenPayload';
 import { verifyToken } from '@services/TokenService';
 import { NextFunction, Request, Response } from 'express';
 
-export default (req:Request, res:Response, next: NextFunction) => {
+export default (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -20,16 +20,15 @@ export default (req:Request, res:Response, next: NextFunction) => {
   if (!/^Bearer$/i.test(scheme)) {
     return res.status(401).json([{ description: 'Bearer', name: 'Token malformatted' }]);
   }
+  try {
+    const result = verifyToken(token);
+    const content = result as TokenPayload;
 
-  const result = verifyToken(token);
-  if (result instanceof Error) {
+    req.userId = content.content.id;
+    req.habilitado = content.content.habilitado;
+    req.email = content.content.email;
+    return next();
+  } catch (error) {
     return res.status(401).json([{ description: 'Bearer', name: 'Token invalid' }]);
   }
-
-  const content = result as TokenPayload;
-
-  req.userId = content.content.id;
-  req.habilitado = content.content.habilitado;
-  req.email = content.content.email;
-  return next();
 };

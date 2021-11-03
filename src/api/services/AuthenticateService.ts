@@ -18,7 +18,7 @@ class AuthenticateService {
     }
 
     const token = generateToken({
-      id: user.id,
+      id: user.id as string,
       email: user.email as string,
       habilitado: user.habilitado as string,
     });
