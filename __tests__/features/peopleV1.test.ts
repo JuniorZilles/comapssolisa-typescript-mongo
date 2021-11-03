@@ -512,23 +512,23 @@ describe('src :: api :: controllers :: people', () => {
   it('should return 400 with errors if cpf or email are already used by naother person', async () => {
     const peopleData1 = await factory.create<Person>('People');
     const peopleData2 = await factory.create<Person>('People');
-
+    const tempData = {
+      nome: 'joaozinho ciclano',
+      cpf: peopleData2.cpf,
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    };
     const response = await request(app)
       .put(`${PREFIX}/${peopleData1.id}`)
-      .send({
-        nome: 'joaozinho ciclano',
-        cpf: peopleData2.cpf,
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: 'sim',
-      });
+      .send(tempData);
     const value = response.body;
 
     expect(response.status).toBe(400);
     expect(value.length).toEqual(1);
     expect(value[0].description).toBe('conflict');
-    expect(value[0].name).toBe('cpf or email already exists, use another');
+    expect(value[0].name).toBe(`CPF ${tempData.cpf} already in use`);
   });
 
   it('should return 400 with errors if nome is empty', async () => {

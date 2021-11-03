@@ -223,23 +223,23 @@ describe('src :: api :: services :: people', () => {
   });
 
   it('should not update a person if exists another with the same email or cpf', async () => {
+    const tempData = {
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-49',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'não',
+    };
     try {
       const personWithEmail = await factory.create<Person>('People', { email: 'joazinho@email.com', cpf: '131.147.860-49' });
       const personGenerated = await factory.create<Person>('People');
       if (personGenerated.id) {
-        const tempData = {
-          nome: 'joaozinho ciclano',
-          cpf: '131.147.860-49',
-          data_nascimento: '03/03/2000',
-          email: 'joazinho@email.com',
-          senha: '123456',
-          habilitado: 'não',
-        };
         const person = await PeopleService.update(personGenerated.id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe('cpf or email already exists, use another');
+      expect((<InvalidValue>e).message).toBe(`CPF ${tempData.cpf} already in use`);
     }
   });
 
