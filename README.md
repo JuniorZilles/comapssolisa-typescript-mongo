@@ -22,6 +22,21 @@ Development of the first stage of the API Compassolisa
 
 [License](#license)
 
+### :floppy_disk: RESOURCES
+
+- Node.JS v.14.18.1
+- MongoDB v.5.0.3
+- Dependencies:
+    - @joi/date v.2.1.0
+    - bcryptjs v.2.4.3
+    - Joi v17.4.2
+    - dotenv v.10.0.0
+    - express v.4.17.1
+    - jsonwebtoken v.8.5.1
+    - moment v.2.29.1
+    - mongoose v.6.0.11
+    - swagger-ui-express v.4.1.6
+
 ### Example for .ENV and .ENV.TEST
 
 Database name should be different for each

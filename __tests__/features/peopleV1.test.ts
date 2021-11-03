@@ -39,7 +39,6 @@ describe('src :: api :: controllers :: people', () => {
     const person = response.body;
     expect(response.status).toBe(201);
     expect(person._id).toBeDefined();
-    expect(person.dataCriacao).toBeDefined();
     expect(person.nome).toBe(personData.nome);
     expect(person.senha).toBeUndefined();
     expect(person.cpf).toBe(personData.cpf);
@@ -382,7 +381,6 @@ describe('src :: api :: controllers :: people', () => {
     expect(responseput.status).toBe(200);
 
     expect(personput._id).toBe(peopleData.id);
-    expect(new Date(personput.dataCriacao)).toEqual(peopleData.dataCriacao);
     expect(personput.nome).toBe(tempData.nome);
     expect(personput.cpf).toBe(tempData.cpf);
     expect(personput.data_nascimento).toEqual(tempData.data_nascimento);

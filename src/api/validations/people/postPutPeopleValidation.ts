@@ -23,6 +23,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (error) throw error;
     return next();
   } catch (error) {
-    return res.status(400).json(transformToArray(error));
+    return res.status(400).json(transformToArray(error as Joi.ValidationError));
   }
 };

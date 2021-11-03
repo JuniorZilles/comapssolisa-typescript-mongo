@@ -6,6 +6,4 @@ export interface Person {
   email: string
   senha: string
   habilitado: string
-  dataCriacao?: Date
-  dataAtualizacao?: Date
 }

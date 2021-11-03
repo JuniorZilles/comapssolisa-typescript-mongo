@@ -13,8 +13,11 @@ const CarSchema = new mongoose.Schema({
     },
   }],
   quantidadePassageiros: { type: Number, required: true },
-  dataCriacao: { type: Date, default: Date.now, immutable: true },
-  dataAtualizacao: { type: Date, default: Date.now },
+  dataCriacao: {
+    type: Date, default: Date.now, immutable: true, select: false,
+  },
+  dataAtualizacao: { type: Date, default: Date.now, select: false },
+  __v: { type: Number, select: false },
 });
 
 CarSchema.pre('findOneAndUpdate', async function onSave(next) {

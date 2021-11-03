@@ -1,7 +1,13 @@
-const transformToArray = (value: any) => {
-  const result: any[] = [];
-  value.details.forEach((detail: any) => {
-    result.push({ name: detail.message, description: detail.path.join('.') });
+import { ErrorPayload } from '@interfaces/ErrorPayload';
+import Joi from 'joi';
+
+const transformToArray = (value:Joi.ValidationError) => {
+  const result:ErrorPayload[] = [];
+
+  value.details.forEach((detail:Joi.ValidationErrorItem) => {
+    const name = detail.message;
+    const description = detail.path.join('.');
+    result.push({ name, description });
   });
   return result;
 };

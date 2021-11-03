@@ -15,21 +15,14 @@ class PeopleService {
     payload.data_nascimento = this.isOlderAndTransfromToDateString(
       payload.data_nascimento as string,
     );
-    await this.isUnique(payload.email, payload.cpf);
+    const { cpf, email } = payload;
+    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf);
+    if (result) {
+      this.checkIfIsValid(result, cpf, email);
+    }
     const person = await PeopleRepository.create(payload) as PersonSearch;
     person.senha = undefined;
     return person;
-  }
-
-  private async isUnique(email:string, cpf:string) {
-    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf);
-    if (result) {
-      if (result.cpf === cpf) {
-        throw new InvalidValue('conflict', `CPF ${cpf} already in use`, true);
-      } else if (result.email === email) {
-        throw new InvalidValue('conflict', `Email ${email} already in use`, true);
-      }
-    }
   }
 
   private isOlderAndTransfromToDateString(date: string) {
@@ -84,12 +77,11 @@ class PeopleService {
     return PeopleRepository.delete(id);
   }
 
-  private async isUniqueOrNotSamePerson(email:string, id:string, cpf:string) {
-    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
-    if (result) {
-      if (result.id !== id) {
-        throw new InvalidValue('conflict', 'cpf or email already exists, use another', true);
-      }
+  private checkIfIsValid(result: Person, cpf: string, email: string) {
+    if (result.cpf === cpf) {
+      throw new InvalidValue('conflict', `CPF ${cpf} already in use`, true);
+    } else if (result.email === email) {
+      throw new InvalidValue('conflict', `Email ${email} already in use`, true);
     }
   }
 
@@ -101,7 +93,13 @@ class PeopleService {
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }
-    await this.isUniqueOrNotSamePerson(payload.email, id, payload.cpf);
+    const { cpf, email } = payload;
+    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
+    if (result) {
+      if (result.id !== id) {
+        this.checkIfIsValid(result, cpf, email);
+      }
+    }
     const person = await PeopleRepository.update(id, payload);
     return person;
   }

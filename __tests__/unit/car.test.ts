@@ -33,7 +33,6 @@ describe('src :: api :: services :: car', () => {
   it('should create a car', async () => {
     const car = await CarService.create(carData);
     expect(car.id).toBeDefined();
-    expect(car.dataCriacao).toBeDefined();
     expect(car.ano).toBe(carData.ano);
     expect(car.cor).toBe(carData.cor);
     expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
@@ -303,5 +302,16 @@ describe('src :: api :: services :: car', () => {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).message).toBe("The field 'acessorios' is out of the standard format");
     }
+  });
+
+  /**
+     * PATCH BY ID ACCESSORIES BY ID
+     */
+
+  it('should update a car accessory by it\'s ID', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: 'Ar-condicionado' };
+
+    await CarService.updateAccessory(car.id, car.acessorios[0].id, tempData);
   });
 });

@@ -18,7 +18,7 @@ class MongoDatabase {
       console.log('Connected to mongo');
     });
 
-    mongoose.connection.on('error', (err:any) => {
+    mongoose.connection.on('error', (err:Error) => {
       console.log(err);
     });
   }

@@ -7,6 +7,4 @@ export default interface Car {
   ano: Number
   acessorios: Accessory[]
   quantidadePassageiros: Number
-  dataCriacao?: Date
-  dataAtualizacao?: Date
 }

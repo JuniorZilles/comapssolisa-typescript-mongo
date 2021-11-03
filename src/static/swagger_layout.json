@@ -819,18 +819,6 @@
               "sim",
               "não"
             ]
-          },
-          "dataCriacao": {
-            "type": "string",
-            "format": "date"
-          },
-          "dataAtualizacao": {
-            "type": "string",
-            "format": "date"
-          },
-          "_v": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },
@@ -920,18 +908,6 @@
             "format": "int64"
           },
           "quantidadePassageiros": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "dataCriacao": {
-            "type": "string",
-            "format": "date"
-          },
-          "dataAtualizacao": {
-            "type": "string",
-            "format": "date"
-          },
-          "_v": {
             "type": "integer",
             "format": "int64"
           }

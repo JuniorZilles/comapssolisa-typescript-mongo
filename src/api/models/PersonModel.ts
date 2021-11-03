@@ -16,8 +16,11 @@ const PersonSchema = new mongoose.Schema({
   },
   senha: { type: String, required: true, select: false },
   habilitado: { type: String, required: true, enum: ['sim', 'não'] },
-  dataCriacao: { type: Date, default: Date.now, immutable: true },
-  dataAtualizacao: { type: Date, default: Date.now },
+  dataCriacao: {
+    type: Date, default: Date.now, immutable: true, select: false,
+  },
+  dataAtualizacao: { type: Date, default: Date.now, select: false },
+  __v: { type: Number, select: false },
 });
 
 PersonSchema.pre('save', async function onSave(next) {

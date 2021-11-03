@@ -46,7 +46,6 @@ describe('src :: api :: controllers :: car', () => {
 
     expect(response.status).toBe(201);
     expect(car._id).toBeDefined();
-    expect(car.dataCriacao).toBeDefined();
     expect(car.acessorios.length).toEqual(1);
     expect(car.ano).toBe(carData.ano);
     expect(car.modelo).toBe(carData.modelo);

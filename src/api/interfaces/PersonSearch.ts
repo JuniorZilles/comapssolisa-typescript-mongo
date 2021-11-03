@@ -8,6 +8,4 @@ export default interface PersonSearch extends Pagination{
   email?: string
   senha?: string
   habilitado?: string
-  dataCriacao?: Date
-  dataAtualizacao?: Date
 }

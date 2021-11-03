@@ -3,6 +3,7 @@ import PeopleModel from '@models/PeopleModel';
 import { Person } from '@interfaces/Person';
 import PersonModel, { isValid } from '@models/PersonModel';
 import PersonSearch from '@interfaces/PersonSearch';
+import { FindUserPayload } from '@interfaces/FindUserPayload';
 
 class PeopleRepository {
   async create(payload:Person):Promise<Person> {
@@ -36,16 +37,19 @@ class PeopleRepository {
       }).exec() as Person;
   }
 
-  async findUser(payload:any) {
+  async findUser(payload:FindUserPayload) {
     return await PersonModel.findOne(payload,
       { senha: true, habilitado: true, email: true }).exec() as Person;
   }
 
   async getUserEmailOrCpf(email:string, cpf:string, id?:string) {
-    let filter:any = { $or: [{ email }, { cpf }] };
+    let filter;
     if (id) {
       filter = { $and: [{ $or: [{ email }, { cpf }] }, { _id: { $ne: id } }] };
+    } else {
+      filter = { $or: [{ email }, { cpf }] };
     }
+
     return await PersonModel.findOne(
       filter,
       { email: true, cpf: true },

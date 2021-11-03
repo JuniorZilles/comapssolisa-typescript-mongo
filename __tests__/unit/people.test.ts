@@ -2,7 +2,7 @@
 import InvalidField from '@errors/InvalidField';
 import PersonModel from '@models/PersonModel';
 import PeopleService from '@services/PeopleService';
-import { Person } from '@interfaces/Person';
+import { PersonCreate } from '@interfaces/PersonCreate';
 import NotFound from '@errors/NotFound';
 import InvalidValue from '@errors/InvalidValue';
 import MongoDatabase from '../../src/infra/mongo/index';
@@ -36,7 +36,6 @@ describe('src :: api :: services :: people', () => {
   it('should create a person', async () => {
     const person = await PeopleService.create(personData);
     expect(person.id).toBeDefined();
-    expect(person.dataCriacao).toBeDefined();
     expect(person.cpf).toBe(personData.cpf);
     expect(person.data_nascimento).toEqual(
       new Date(personData.data_nascimento),
@@ -87,14 +86,14 @@ describe('src :: api :: services :: people', () => {
      */
 
   it('should get all people', async () => {
-    const temp = await factory.createMany<Person>('People', 5);
+    const temp = await factory.createMany<PersonCreate>('People', 5);
     const person = await PeopleService.list({});
 
     expect(person.pessoas.length).toEqual(temp.length);
   });
 
   it('should get all by nome people', async () => {
-    const temp = await factory.createMany<Person>('People', 5);
+    const temp = await factory.createMany<PersonCreate>('People', 5);
     const person = await PeopleService.list({ nome: temp[0].nome });
 
     expect(person.pessoas.length).toEqual(temp.length);
@@ -104,7 +103,7 @@ describe('src :: api :: services :: people', () => {
   });
 
   it('should get not get all people by password', async () => {
-    const temp = await factory.create<Person>('People');
+    const temp = await factory.create<PersonCreate>('People');
     const person = await PeopleService.list({ nome: temp.senha });
 
     expect(person.pessoas.length).toEqual(0);
@@ -115,11 +114,10 @@ describe('src :: api :: services :: people', () => {
      */
 
   it('should get a person by ID', async () => {
-    const personGenerated = await factory.create<Person>('People');
+    const personGenerated = await factory.create<PersonCreate>('People');
     if (personGenerated.id) {
       const person = await PeopleService.getById(personGenerated.id);
       expect(person.id).toBe(personGenerated.id);
-      expect(person.dataCriacao).toEqual(personGenerated.dataCriacao);
       expect(person.cpf).toBe(personGenerated.cpf);
       expect(person.data_nascimento).toEqual(
         personGenerated.data_nascimento,
@@ -153,7 +151,7 @@ describe('src :: api :: services :: people', () => {
      */
 
   it('should remove a person by ID', async () => {
-    const personGenerated = await factory.create<Person>('People');
+    const personGenerated = await factory.create<PersonCreate>('People');
     if (personGenerated.id) {
       const person = await PeopleService.delete(personGenerated.id);
 
@@ -184,7 +182,7 @@ describe('src :: api :: services :: people', () => {
      */
 
   it('should update a person by ID', async () => {
-    const personGenerated = await factory.create<Person>('People');
+    const personGenerated = await factory.create<PersonCreate>('People');
     if (personGenerated.id) {
       const tempData = {
         nome: 'joaozinho ciclano',
@@ -197,7 +195,6 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.update(personGenerated.id, tempData);
 
       expect(person.id).toBe(personGenerated.id);
-      expect(person.dataCriacao).toEqual(personGenerated.dataCriacao);
       expect(person.cpf).toBe(tempData.cpf);
       expect(person.data_nascimento).toEqual(
         new Date(tempData.data_nascimento),
@@ -227,8 +224,8 @@ describe('src :: api :: services :: people', () => {
 
   it('should not update a person if exists another with the same email or cpf', async () => {
     try {
-      const personWithEmail = await factory.create<Person>('People', { email: 'joazinho@email.com', cpf: '131.147.860-49' });
-      const personGenerated = await factory.create<Person>('People');
+      const personWithEmail = await factory.create<PersonCreate>('People', { email: 'joazinho@email.com', cpf: '131.147.860-49' });
+      const personGenerated = await factory.create<PersonCreate>('People');
       if (personGenerated.id) {
         const tempData = {
           nome: 'joaozinho ciclano',
@@ -264,7 +261,7 @@ describe('src :: api :: services :: people', () => {
   });
 
   it('should not update a person data_nascimento if not 18 years old by ID', async () => {
-    const personGenerated = await factory.create<Person>('People');
+    const personGenerated = await factory.create<PersonCreate>('People');
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
