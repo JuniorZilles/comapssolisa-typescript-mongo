@@ -108,6 +108,12 @@ if you are runnig locally it should be found on `localhost:3000`
    - DELETE http://localhost:3000/api/v1/people/:id
 4. authenticate
    - POST http://localhost:3000/api/v1/authenticate
+5. rental
+   - POST http://localhost:3000/api/v1/rental
+   - GET http://localhost:3000/api/v1/rental
+   - PUT http://localhost:3000/api/v1/rental/:id
+   - GET http://localhost:3000/api/v1/rental/:id
+   - DELETE http://localhost:3000/api/v1/rental/:id
 
 ## License
 
