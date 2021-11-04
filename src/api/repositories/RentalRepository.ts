@@ -1,8 +1,8 @@
+/* eslint-disable class-methods-use-this */
 import { Rental, RentalPayload } from '@interfaces/Rental';
 import { isValid } from '@models/Model';
 import RentalModel from '@models/RentalModel';
 
-/* eslint-disable class-methods-use-this */
 class RentalRepository {
   async create(paylod: RentalPayload): Promise<Rental> {
     return (await RentalModel.create(paylod)) as Rental;
@@ -13,11 +13,12 @@ class RentalRepository {
   }
 
   async delete(id: string): Promise<boolean> {
+    await RentalModel.findByIdAndDelete(id);
     return true;
   }
 
-  async findById(id: string): Promise<string> {
-    return '';
+  async findById(id: string): Promise<Rental> {
+    return (await RentalModel.findById(id)) as Rental;
   }
 
   validId(id: string): boolean {

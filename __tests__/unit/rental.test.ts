@@ -1,4 +1,6 @@
+import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
+import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
 import RentalModel from '@models/RentalModel';
@@ -150,13 +152,122 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
+  it('should not create with invalid cep and throw NotFound error', async () => {
+    const rentalTemp = {
+      nome: 'Localiza Rent a Car',
+      cnpj: '16.670.085/0001-55',
+      atividades: 'Aluguel de Carros E Gestão de Frotas',
+      endereco: [
+        {
+          cep: '96200-200',
+          number: '1234',
+          isFilial: false,
+        },
+        {
+          cep: '93950-999',
+          number: '61',
+          isFilial: true,
+        },
+      ],
+    };
+    try {
+      await RentalService.create(rentalTemp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
+      expect((<NotFound>e).name).toBe('Value CEP 93950-999 not found');
+    }
+  });
+
   /**
    * GET BY ID
    */
 
+  it('should get a rental by id', async () => {
+    const generated = await factory.create<Rental>('Rental');
+    if (generated.id) {
+      const rental = await RentalService.getById(generated.id);
+      expect(rental).toHaveProperty('_id');
+      expect(rental.id).toBeDefined();
+      expect(rental).toHaveProperty('nome');
+      expect(rental.nome).toBe(generated.nome);
+      expect(rental).toHaveProperty('cnpj');
+      expect(rental.cnpj).toBe(generated.cnpj);
+      expect(rental).toHaveProperty('atividades');
+      expect(rental.atividades).toBe(generated.atividades);
+      expect(rental).toHaveProperty('endereco');
+      expect(rental.endereco).toHaveLength(2);
+      rental.endereco.forEach((endereco: Endereco) => {
+        expect(endereco.id).toBeDefined();
+        const index = generated.endereco.findIndex(function get(enderecoData) {
+          return enderecoData.cep === endereco.cep;
+        });
+        expect(endereco.cep).toBe(generated.endereco[index].cep);
+        expect(endereco.number).toBe(generated.endereco[index].number);
+        expect(endereco.isFilial).toBe(generated.endereco[index].isFilial);
+        expect(endereco.localidade).toBeDefined();
+        expect(endereco).toHaveProperty('bairro');
+        expect(endereco).toHaveProperty('localidade');
+        expect(endereco).toHaveProperty('uf');
+      });
+    }
+  });
+
+  it('should not get a rental by a invalid id and throw invalid field', async () => {
+    try {
+      await RentalService.getById('12');
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).name).toBe(
+        "The field 'id' is out of the standard format"
+      );
+    }
+  });
+
+  it('should not get a rental by a nonexistent id and throw a not found', async () => {
+    try {
+      await RentalService.getById('6171508962f47a7a91938d30');
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).name).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
+    }
+  });
+
   /**
    * DELETE BY ID
    */
+
+  it('should delete a rental by id', async () => {
+    const generated = await factory.create<Rental>('Rental');
+    if (generated.id) {
+      const rental = await RentalService.delete(generated.id);
+      expect(rental).toBe(true);
+    }
+  });
+
+  it('should not delete a rental by a invalid id and throw invalid field', async () => {
+    try {
+      await RentalService.delete('12');
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).name).toBe(
+        "The field 'id' is out of the standard format"
+      );
+    }
+  });
+
+  it('should not delete a rental by a nonexistent id and throw a not found', async () => {
+    try {
+      await RentalService.delete('6171508962f47a7a91938d30');
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).name).toBe(
+        'Value 6171508962f47a7a91938d30 not found'
+      );
+    }
+  });
 
   /**
    * UPDATE BY ID

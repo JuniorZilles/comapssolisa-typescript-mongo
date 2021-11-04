@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
+import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
+import NotFound from '@errors/NotFound';
 import { Endereco, EnderecoPayload } from '@interfaces/Endereco';
 import { Rental, RentalPayload } from '@interfaces/Rental';
 import RentalsModel from '@models/RentalsModel';
@@ -80,16 +82,26 @@ class RentalService {
     await this.checkIfExistsCNPJ(payload.cnpj);
     this.checkIfExistsMoreThanOneFilial(payload.endereco);
     payload.endereco = await this.getCepLocations(payload.endereco);
+    await this.getById(id);
     // return payload;
   }
 
   async delete(id: string): Promise<boolean> {
-    return false;
+    await this.getById(id);
+    const result = await RentalRepository.delete(id);
+    return result;
   }
 
-  // async getById(id: string): Promise<Rental> {
-  //   //return null;
-  // }
+  async getById(id: string): Promise<Rental> {
+    if (!RentalRepository.validId(id)) {
+      throw new InvalidField('id');
+    }
+    const rental = await RentalRepository.findById(id);
+    if (!rental) {
+      throw new NotFound(id);
+    }
+    return rental;
+  }
 
   // async getAll(): Promise<RentalsModel> {
   //   //return new RentalsModel();
