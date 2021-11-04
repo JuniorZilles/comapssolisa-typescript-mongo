@@ -24,12 +24,13 @@ Development of the first stage of the API Compassolisa
 
 [License](#license)
 
-### RESOURCES
+## RESOURCES
 
 - Node.JS v.14.18.1
 - MongoDB v.5.0.3
 - Dependencies:
   - @joi/date v.2.1.0
+  - axios 0.24.0
   - bcryptjs v.2.4.3
   - Joi v17.4.2
   - dotenv v.10.0.0
@@ -38,8 +39,40 @@ Development of the first stage of the API Compassolisa
   - moment v.2.29.1
   - mongoose v.6.0.11
   - swagger-ui-express v.4.1.6
-
-### Example for .ENV and .ENV.TEST
+- Development dependencies:
+   - @babel/cli 7.15.7
+   - @babel/core 7.15.8
+   - @babel/preset-env 7.15.8
+   - @babel/preset-typescript 7.15.0
+   - @types/bcryptjs 2.4.2",
+   - @types/express 4.17.13
+   - @types/factory-girl 5.0.8
+   - @types/faker 5.5.9
+   - @types/jest 27.0.2
+   - @types/jsonwebtoken 8.5.5
+   - @types/supertest 2.0.11
+   - @types/swagger-ui-express 4.1.3
+   - @typescript-eslint/eslint-plugin 4.29.3
+   - @typescript-eslint/parser 4.29.3
+   - babel-jest 27.3.1
+   - babel-plugin-module-resolver 4.1.0
+   - eslint 7.32.0
+   - eslint-config-airbnb-typescript 14.0.1
+   - eslint-config-prettier 8.3.0
+   - eslint-plugin-import 2.22.1
+   - eslint-plugin-node 11.1.0
+   - eslint-plugin-prettier 4.0.0
+   - eslint-plugin-promise 4.2.1
+   - factory-girl 5.0.4
+   - faker 5.5.3
+   - jest 27.3.1
+   - prettier 2.4.1
+   - supertest 6.1.6
+   - ts-jest 27.0.7
+   - ts-node-dev 1.1.8
+   - tsconfig-paths 3.11.0
+   - typescript 4.4.0
+## Example for .ENV and .ENV.TEST
 
 Database name should be different for each
 
@@ -52,19 +85,19 @@ PORT=3000
 NODE_ENV=test
 ```
 
-### Requirements
+## Requirements
 
 [Node.js](https://nodejs.org/en/)
 
 [MongoDB](https://www.mongodb.com/pt-br)
 
-### Instaling with npm
+## Instaling with npm
 
 ```
 npm install
 ```
 
-### Running Locally
+## Running Locally
 
 ```
 # run test
@@ -80,7 +113,7 @@ npm run start
 npm run dev
 ```
 
-### Running with docker-compose
+## Running with docker-compose
 
 ```
 # build services
@@ -89,7 +122,7 @@ docker-compose up -d
 
 if you are runnig locally it should be found on `localhost:3000`
 
-### Routes
+## Routes
 
 1. docs
    - http://localhost:3000/api/v1/api-docs
