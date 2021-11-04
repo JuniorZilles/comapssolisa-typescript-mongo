@@ -3,10 +3,10 @@ import { factory } from 'factory-girl';
 import PersonModel from '@models/PersonModel';
 
 factory.define('People', PersonModel, {
-  nome: faker.name.findName(),
+  nome: factory.sequence(() => faker.name.findName()),
   cpf: factory.sequence(
     () =>
-      `cpf${faker.datatype.number({
+      `${faker.datatype.number({
         max: 999,
         min: 100,
       })}.${faker.datatype.number({
@@ -17,9 +17,9 @@ factory.define('People', PersonModel, {
         min: 100,
       })}-${faker.datatype.number({ max: 99, min: 10 })}`
   ),
-  data_nascimento: faker.datatype.datetime(),
-  email: factory.sequence(() => `email${faker.internet.email()}`),
-  senha: faker.internet.password(),
+  data_nascimento: factory.sequence(() => faker.datatype.datetime()),
+  email: factory.sequence(() => `${faker.internet.email()}`),
+  senha: factory.sequence(() => faker.internet.password()),
   habilitado: faker.random.arrayElement(['sim', 'não']),
 });
 export default factory;

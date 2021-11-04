@@ -203,7 +203,9 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   it('should get all cars by modelo', async () => {
-    const carTemp = await factory.createMany<Car>('Car', 5);
+    const carTemp = await factory.createMany<Car>('Car', 5, {
+      modelo: 'GM S10 2.8',
+    });
     const response = await request(app)
       .get(`${PREFIX}?modelo=${carTemp[0].modelo}`)
       .set(token);
