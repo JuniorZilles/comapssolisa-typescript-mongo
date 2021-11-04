@@ -18,7 +18,7 @@ factory.define('People', PersonModel, {
       })}-${faker.datatype.number({ max: 99, min: 10 })}`
   ),
   data_nascimento: faker.datatype.datetime(),
-  email: factory.sequence(() => `cpf${faker.internet.email()}`),
+  email: factory.sequence(() => `email${faker.internet.email()}`),
   senha: faker.internet.password(),
   habilitado: faker.random.arrayElement(['sim', 'não']),
 });
