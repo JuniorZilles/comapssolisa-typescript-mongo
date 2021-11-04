@@ -1,4 +1,6 @@
+import InvalidValue from '@errors/InvalidValue';
 import { Endereco } from '@interfaces/Endereco';
+import { Rental } from '@interfaces/Rental';
 import RentalModel from '@models/RentalModel';
 import RentalService from '@services/RentalService';
 import MongoDatabase from '../../src/infra/mongo/index';
@@ -68,11 +70,85 @@ describe('src :: api :: services :: rental', () => {
     });
   });
 
-  it('should not have a invalid CNPJ and throw invalid field error', async () => {});
+  it('should not have a invalid CNPJ and throw invalid field error', async () => {
+    const rentalTemp = {
+      nome: 'Localiza Rent a Car',
+      cnpj: '16.670.085/0001-57',
+      atividades: 'Aluguel de Carros E Gestão de Frotas',
+      endereco: [
+        {
+          cep: '96200-200',
+          number: '1234',
+          isFilial: false,
+        },
+      ],
+    };
+    try {
+      await RentalService.create(rentalTemp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('invalid');
+      expect((<InvalidValue>e).message).toBe(
+        'CNPJ 16.670.085/0001-57 is invalid'
+      );
+    }
+  });
 
-  it('should not have a duplicated CNPJ and throw invalid value error', async () => {});
+  it('should not have a duplicated CNPJ and throw invalid value error', async () => {
+    const rentalAuto = await factory.create<Rental>('Rental', {
+      cnpj: '08.450.508/0001-01',
+    });
+    const rentalTemp = {
+      nome: 'Localiza Rent a Car',
+      cnpj: rentalAuto.cnpj,
+      atividades: 'Aluguel de Carros E Gestão de Frotas',
+      endereco: [
+        {
+          cep: '96200-200',
+          number: '1234',
+          isFilial: false,
+        },
+      ],
+    };
+    try {
+      await RentalService.create(rentalTemp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('conflict');
+      expect((<InvalidValue>e).message).toBe(
+        'CNPJ 08.450.508/0001-01 already in use'
+      );
+    }
+  });
 
-  it('should not have a one isFilial equals to false and throw invalid field error', async () => {});
+  it('should not have a one isFilial equals to false and throw invalid value error', async () => {
+    const rentalTemp = {
+      nome: 'Localiza Rent a Car',
+      cnpj: '16.670.085/0001-55',
+      atividades: 'Aluguel de Carros E Gestão de Frotas',
+      endereco: [
+        {
+          cep: '96200-200',
+          number: '1234',
+          isFilial: false,
+        },
+        {
+          cep: '93950-000',
+          number: '61',
+          isFilial: false,
+        },
+      ],
+    };
+    try {
+      await RentalService.create(rentalTemp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('invalid');
+      expect((<InvalidValue>e).name).toBe(
+        'isFilial has more than one headquarters'
+      );
+    }
+  });
 
   /**
    * GET BY ID

@@ -27,6 +27,10 @@ const RentalSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      logradouro: {
+        type: String,
+        required: true,
+      },
       uf: {
         type: String,
         required: true,
@@ -34,7 +38,6 @@ const RentalSchema = new mongoose.Schema({
       isFilial: {
         type: Boolean,
         required: true,
-        unique: true,
       },
     },
   ],

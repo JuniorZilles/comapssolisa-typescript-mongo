@@ -3,10 +3,10 @@ import { factory } from 'factory-girl';
 import Rental from '@models/RentalModel';
 
 factory.define('Rental', Rental, {
-  nome: factory.sequence(() => `nome${faker.company.companyName()}`),
+  nome: factory.sequence(() => `${faker.company.companyName()}`),
   cnpj: factory.sequence(
     () =>
-      `cnpj${faker.datatype.number({
+      `${faker.datatype.number({
         max: 99,
         min: 10,
       })}.${faker.datatype.number({
@@ -20,31 +20,37 @@ factory.define('Rental', Rental, {
         min: 1000,
       })}-${faker.datatype.number({ max: 99, min: 10 })}`
   ),
-  atividades: factory.sequence(
-    () => `atividades${faker.company.catchPhrase()}`
-  ),
+  atividades: factory.sequence(() => `${faker.company.catchPhrase()}`),
   endereco: [
     {
       cep: factory.sequence(
         () =>
-          `cep${faker.datatype.number({
+          `${faker.datatype.number({
             max: 99999,
             min: 10000,
           })}-${faker.datatype.number({ max: 999, min: 100 })}`
       ),
-      number: factory.sequence(() => `number${faker.random.alpha()}`),
-      isFilial: factory.sequence(() => `isFilial${!Math.round(Math.random())}`),
+      number: factory.sequence(() => `${faker.random.alpha()}`),
+      logradouro: factory.sequence(() => `${faker.address.streetName()}`),
+      uf: factory.sequence(() => `${faker.address.stateAbbr()}`),
+      bairro: factory.sequence(() => `${faker.address.secondaryAddress()}`),
+      localidade: factory.sequence(() => `${faker.address.cityName()}`),
+      isFilial: factory.sequence(() => `${!Math.round(Math.random())}`),
     },
     {
       cep: factory.sequence(
         () =>
-          `cep${faker.datatype.number({
+          `${faker.datatype.number({
             max: 99999,
             min: 10000,
           })}-${faker.datatype.number({ max: 999, min: 100 })}`
       ),
-      number: factory.sequence(() => `number${faker.random.alpha()}`),
-      isFilial: factory.sequence(() => `isFilial${!Math.round(Math.random())}`),
+      logradouro: factory.sequence(() => `${faker.address.streetName()}`),
+      uf: factory.sequence(() => `${faker.address.stateAbbr()}`),
+      bairro: factory.sequence(() => `${faker.address.secondaryAddress()}`),
+      localidade: factory.sequence(() => `${faker.address.cityName()}`),
+      number: factory.sequence(() => `${faker.random.alpha()}`),
+      isFilial: factory.sequence(() => `${!Math.round(Math.random())}`),
     },
   ],
 });

@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import InvalidValue from '@errors/InvalidValue';
-import { CepPayload } from '@interfaces/CepPayload';
 import { Endereco, EnderecoPayload } from '@interfaces/Endereco';
 import { Rental, RentalPayload } from '@interfaces/Rental';
 import RentalsModel from '@models/RentalsModel';
@@ -14,9 +13,23 @@ class RentalService {
   async create(payload: RentalPayload): Promise<Rental> {
     this.checkCNPJ(payload.cnpj);
     await this.checkIfExistsCNPJ(payload.cnpj);
+    this.checkIfExistsMoreThanOneFilial(payload.endereco);
     payload.endereco = await this.getCepLocations(payload.endereco);
     const rental = RentalRepository.create(payload);
     return rental;
+  }
+
+  private checkIfExistsMoreThanOneFilial(addresses: EnderecoPayload[]): void {
+    const indexes = addresses.filter((address) => {
+      return address.isFilial === false;
+    });
+    if (indexes.length > 1) {
+      throw new InvalidValue(
+        'invalid',
+        `isFilial has more than one headquarters`,
+        true
+      );
+    }
   }
 
   private async getCepLocations(
@@ -27,7 +40,7 @@ class RentalService {
         const { cep } = address;
         const data = (await getCEP(cep)) as Endereco;
         data.number = address.number;
-        data.isFilial = address.isFilial;
+        data.isFilial = address.isFilial as boolean;
         if (address.complemento) {
           data.complemento = address.complemento;
         }
@@ -52,7 +65,7 @@ class RentalService {
 
   private checkIfIsValid(result: Rental, cnpj: string) {
     if (result.cnpj === cnpj) {
-      throw new InvalidValue('conflict', `cnpj ${cnpj} already in use`, true);
+      throw new InvalidValue('conflict', `CNPJ ${cnpj} already in use`, true);
     }
   }
 
@@ -64,6 +77,9 @@ class RentalService {
 
   async update(id: string, payload: RentalPayload): Promise<void | Rental> {
     this.checkCNPJ(payload.cnpj);
+    await this.checkIfExistsCNPJ(payload.cnpj);
+    this.checkIfExistsMoreThanOneFilial(payload.endereco);
+    payload.endereco = await this.getCepLocations(payload.endereco);
     // return payload;
   }
 
