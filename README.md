@@ -103,6 +103,9 @@ npm install
 # run test
 npm run test
 
+# run tests with coverage
+npm run coverage
+
 # run to build script
 npm run build
 
@@ -111,6 +114,9 @@ npm run start
 
 # run server for development
 npm run dev
+
+# run eslint verification with auto fix
+npm run lint-fix
 ```
 
 ## Running with docker-compose
