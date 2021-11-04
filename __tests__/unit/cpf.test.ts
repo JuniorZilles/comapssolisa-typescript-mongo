@@ -6,7 +6,7 @@ describe('src :: api :: services :: cpf', () => {
     expect(isValid).toBe(true);
   });
 
-  it('should not pass verification of invalid token', async () => {
+  it('should not pass verification of invalid cpf', async () => {
     const isValid = validateCPF('123.456.789-10');
     expect(isValid).toBe(false);
   });
