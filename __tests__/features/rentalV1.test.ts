@@ -268,4 +268,97 @@ describe('src :: api :: controllers :: rental', () => {
       '"cep" with incorrect format, it should be XXXXX-XXX'
     );
   });
+
+  /**
+   * GET BY ID
+   */
+
+  it('should get a rental company by ID', async () => {
+    const tempData = await factory.create<Rental>('Rental');
+
+    const response = await request(app).get(`${PREFIX}/${tempData.id}`);
+
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    expect(body).toHaveProperty('_id');
+    expect(body).not.toHaveProperty('__v');
+    expect(body).toHaveProperty('nome');
+    expect(body).toHaveProperty('cnpj');
+    expect(body).toHaveProperty('atividades');
+    expect(body).toHaveProperty('endereco');
+    expect(body.endereco.length).toEqual(tempData.endereco.length);
+    expect(body.nome).toBe(tempData.nome);
+    expect(body.cnpj).toBe(tempData.cnpj);
+    expect(body.atividades).toBe(tempData.atividades);
+    body.endereco.forEach((endereco, index) => {
+      expect(endereco).toHaveProperty('cep');
+      expect(endereco).toHaveProperty('number');
+      expect(endereco).toHaveProperty('isFilial');
+      expect(endereco).toHaveProperty('logradouro');
+      expect(endereco).toHaveProperty('bairro');
+      expect(endereco).toHaveProperty('localidade');
+      expect(endereco).toHaveProperty('uf');
+      expect(endereco.cep).toBe(tempData.endereco[index].cep);
+      expect(endereco.number).toBe(tempData.endereco[index].number);
+      expect(endereco.isFilial).toBe(tempData.endereco[index].isFilial);
+    });
+  });
+
+  it('should return 400 with errors if ID is invalid when searching', async () => {
+    const response = await request(app).get(`${PREFIX}/12`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('id');
+    expect(body[0].name).toBe('"id" length must be 24 characters long');
+  });
+
+  it('should return 404 with error if ID is not found when searching', async () => {
+    const response = await request(app).get(
+      `${PREFIX}/6171508962f47a7a91938d30`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(404);
+    expect(body.length).toEqual(1);
+    expect(body[0].description).toBe('Not Found');
+    expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
+  });
+
+  /**
+   * DELETE BY ID
+   */
+
+  it("should remove a rental company by it's ID", async () => {
+    const tempData = await factory.create<Rental>('Rental');
+
+    const response = await request(app).delete(`${PREFIX}/${tempData.id}`);
+
+    expect(response.status).toBe(204);
+    expect(response.body).toEqual({});
+  });
+
+  it('should return 400 with errors if ID is invalid when removing', async () => {
+    const response = await request(app).delete(`${PREFIX}/12`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('id');
+    expect(body[0].name).toBe('"id" length must be 24 characters long');
+  });
+
+  it('should return 404 with error if ID is not found when removing', async () => {
+    const response = await request(app).delete(
+      `${PREFIX}/6171508962f47a7a91938d30`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(404);
+    expect(body.length).toEqual(1);
+    expect(body[0].description).toBe('Not Found');
+    expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
+  });
 });

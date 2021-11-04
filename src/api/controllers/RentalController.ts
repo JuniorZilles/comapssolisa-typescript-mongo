@@ -17,12 +17,32 @@ class RentalController {
     return res.json('Rental update');
   }
 
-  delete(req: Request, res: Response, next: NextFunction) {
-    return res.json('Rental delete');
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const removed = await RentalService.delete(req.params.id);
+      if (removed) {
+        return res.status(204).end();
+      }
+      return res
+        .status(400)
+        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+    } catch (e) {
+      return next(e);
+    }
   }
 
-  getById(req: Request, res: Response, next: NextFunction) {
-    return res.json('Rental getbyd');
+  async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const rental = await RentalService.getById(req.params.id);
+      if (rental) {
+        return res.status(200).json(rental);
+      }
+      return res
+        .status(400)
+        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   getAll(req: Request, res: Response, next: NextFunction) {

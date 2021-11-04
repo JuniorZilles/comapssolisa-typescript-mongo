@@ -38,7 +38,9 @@ class PeopleController {
       if (updated) {
         return res.status(200).json(updated);
       }
-      return res.status(400).send({ message: 'Something went wrong!' });
+      return res
+        .status(400)
+        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
       return next(e);
     }
@@ -51,7 +53,9 @@ class PeopleController {
       if (removed) {
         return res.status(204).end();
       }
-      return res.status(400).send({ message: 'Something went wrong!' });
+      return res
+        .status(400)
+        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
       return next(e);
     }
