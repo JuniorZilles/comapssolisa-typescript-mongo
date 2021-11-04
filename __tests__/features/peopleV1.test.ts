@@ -94,7 +94,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(value.length).toEqual(1);
-    expect(value[0].description).toBe('data_nascimento');
+    expect(value[0].description).toBe('InvalidField');
     expect(value[0].name).toBe(
       "The field 'data_nascimento' is out of the standard format"
     );
@@ -434,7 +434,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(value.length).toEqual(1);
-    expect(value[0].description).toBe('data_nascimento');
+    expect(value[0].description).toBe('InvalidField');
     expect(value[0].name).toBe(
       "The field 'data_nascimento' is out of the standard format"
     );

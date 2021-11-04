@@ -59,7 +59,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe(
+      expect((<InvalidField>e).name).toBe(
         "The field 'data_nascimento' is out of the standard format"
       );
     }
@@ -79,9 +79,7 @@ describe('src :: api :: services :: people', () => {
       const person2 = await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe(
-        'CPF 131.147.860-49 already in use'
-      );
+      expect((<InvalidValue>e).name).toBe('CPF 131.147.860-49 already in use');
     }
   });
 
@@ -135,7 +133,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe(
+      expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
     }
@@ -146,7 +144,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe(
+      expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
     }
@@ -170,7 +168,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe(
+      expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
     }
@@ -181,7 +179,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe(
+      expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
     }
@@ -228,7 +226,7 @@ describe('src :: api :: services :: people', () => {
       const person = await PeopleService.update('12', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).message).toBe(
+      expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
     }
@@ -254,9 +252,7 @@ describe('src :: api :: services :: people', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).message).toBe(
-        `CPF ${tempData.cpf} already in use`
-      );
+      expect((<InvalidValue>e).name).toBe(`CPF ${tempData.cpf} already in use`);
     }
   });
 
@@ -276,7 +272,7 @@ describe('src :: api :: services :: people', () => {
       );
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).message).toBe(
+      expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
     }
@@ -300,7 +296,7 @@ describe('src :: api :: services :: people', () => {
         );
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidField);
-        expect((<InvalidField>e).message).toBe(
+        expect((<InvalidField>e).name).toBe(
           "The field 'data_nascimento' is out of the standard format"
         );
       }
