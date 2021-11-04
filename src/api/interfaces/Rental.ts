@@ -13,5 +13,5 @@ export interface RentalPayload {
   nome: string;
   cnpj: string;
   atividades: string;
-  endereco: EnderecoPayload[];
+  endereco: EnderecoPayload[] | Endereco[];
 }
