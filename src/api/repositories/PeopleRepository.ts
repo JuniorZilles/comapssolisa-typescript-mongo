@@ -8,7 +8,7 @@ import { isValid } from '@models/Model';
 
 class PeopleRepository {
   async create(payload: Person): Promise<Person> {
-    return PersonModel.create(payload);
+    return (await PersonModel.create(payload)) as Person;
   }
 
   async findAll(
