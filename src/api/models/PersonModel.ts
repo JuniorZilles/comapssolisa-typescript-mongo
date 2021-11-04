@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
 import { Person } from '@interfaces/Person';
+import { Model } from './Model';
 
 const PersonSchema = new mongoose.Schema({
   nome: { type: String, required: true },
@@ -44,8 +45,4 @@ PersonSchema.pre('findOneAndUpdate', async function onSave(next) {
   next();
 });
 
-const PersonModel = mongoose.model<Person>('People', PersonSchema);
-
-export const isValid = (id: string): boolean => mongoose.isValidObjectId(id);
-
-export default PersonModel;
+export default Model('People', PersonSchema) as mongoose.Model<Person>;

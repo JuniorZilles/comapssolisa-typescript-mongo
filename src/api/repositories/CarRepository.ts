@@ -1,9 +1,10 @@
 /* eslint-disable class-methods-use-this */
-import CarModel, { isValid } from '@models/CarModel';
+import CarModel from '@models/CarModel';
 import { CarSearch } from '@interfaces/CarSearch';
 import VehiclesModel from '@models/VehicleModel';
 import Car from '@interfaces/Car';
 import Accessory from '@interfaces/Accessory';
+import { isValid } from '@models/Model';
 
 class CarRepository {
   async create(payload: Car): Promise<Car> {
@@ -47,9 +48,7 @@ class CarRepository {
     const car = await CarModel.findOne({
       _id: id,
       'acessorios._id': idAccessory,
-    })
-      .select('-__v')
-      .exec();
+    }).exec();
     if (car) {
       const { descricao } = car.acessorios.id(idAccessory);
       if (descricao !== payload.descricao) {

@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import mongoose from 'mongoose';
+import { Model } from './Model';
 
 const CarSchema = new mongoose.Schema({
   modelo: { type: String, required: true },
@@ -33,8 +34,4 @@ CarSchema.pre('findOneAndUpdate', async function onSave(next) {
   next();
 });
 
-const CarModel = mongoose.model('Car', CarSchema);
-
-export const isValid = (id: string): boolean => mongoose.isValidObjectId(id);
-
-export default CarModel;
+export default Model('Car', CarSchema);

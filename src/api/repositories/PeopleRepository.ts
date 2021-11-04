@@ -1,9 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import PeopleModel from '@models/PeopleModel';
 import { Person } from '@interfaces/Person';
-import PersonModel, { isValid } from '@models/PersonModel';
+import PersonModel from '@models/PersonModel';
 import PersonSearch from '@interfaces/PersonSearch';
 import { FindUserPayload } from '@interfaces/FindUserPayload';
+import { isValid } from '@models/Model';
 
 class PeopleRepository {
   async create(payload: Person): Promise<Person> {
