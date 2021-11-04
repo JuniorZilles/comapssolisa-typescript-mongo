@@ -121,7 +121,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not have a one isFilial equals to false and throw invalid value error', async () => {
+  it('should not have more than one isFilial equals to false and throw invalid value error', async () => {
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
       cnpj: '16.670.085/0001-55',

@@ -41,6 +41,18 @@ const RentalSchema = new mongoose.Schema({
       },
     },
   ],
+  dataCriacao: {
+    type: Date,
+    default: Date.now,
+    immutable: true,
+    transform: () => undefined,
+  },
+  dataAtualizacao: {
+    type: Date,
+    default: Date.now,
+    transform: () => undefined,
+  },
+  __v: { type: Number, select: false, transform: () => undefined },
 });
 
 export default Model('Rental', RentalSchema);
