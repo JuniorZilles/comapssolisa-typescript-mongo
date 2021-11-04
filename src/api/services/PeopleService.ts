@@ -18,13 +18,23 @@ class PeopleService {
     );
     const { cpf, email } = payload;
     this.checkCpf(cpf);
-    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf);
-    if (result) {
-      this.checkIfIsValid(result, cpf, email);
-    }
+    await this.checkIfExistsEmailOrCpf(email, cpf);
     const person = (await PeopleRepository.create(payload)) as PersonSearch;
     person.senha = undefined;
     return person;
+  }
+
+  private async checkIfExistsEmailOrCpf(
+    email: string,
+    cpf: string,
+    id: string | undefined = undefined
+  ) {
+    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
+    if (result) {
+      if (result.id !== id) {
+        this.checkIfIsValid(result, cpf, email);
+      }
+    }
   }
 
   private checkCpf(cpf: string) {
@@ -103,12 +113,7 @@ class PeopleService {
     }
     const { cpf, email } = payload;
     this.checkCpf(cpf);
-    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
-    if (result) {
-      if (result.id !== id) {
-        this.checkIfIsValid(result, cpf, email);
-      }
-    }
+    await this.checkIfExistsEmailOrCpf(email, cpf, id);
     const person = await PeopleRepository.update(id, payload);
     return person;
   }
