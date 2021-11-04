@@ -5,7 +5,7 @@ export default class NotFound extends Error {
 
   constructor(name: string) {
     super(`Value ${name} not found`);
-    this.name = 'NotFound';
+    this.name = `Value ${name} not found`;
     this.description = 'Not Found';
     this.status = 404;
   }

@@ -9,8 +9,8 @@ export default class InvalidValue extends Error {
       message = value;
     }
     super(message);
-    this.description = field;
-    this.name = 'InvalidField';
+    this.description = 'InvalidField';
+    this.name = message;
     this.status = 400;
   }
 }

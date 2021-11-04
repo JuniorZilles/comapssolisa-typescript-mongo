@@ -5,7 +5,7 @@ export default class MissingBody extends Error {
 
   constructor() {
     super('Missing requisition body');
-    this.name = 'MissingBody';
+    this.name = 'Missing requisition body';
     this.description = 'Bad Request';
     this.status = 400;
   }

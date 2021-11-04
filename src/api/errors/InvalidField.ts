@@ -5,8 +5,8 @@ export default class InvalidField extends Error {
 
   constructor(field: string) {
     super(`The field '${field}' is out of the standard format`);
-    this.name = 'InvalidField';
-    this.description = field;
+    this.name = `The field '${field}' is out of the standard format`;
+    this.description = 'InvalidField';
     this.status = 400;
   }
 }
