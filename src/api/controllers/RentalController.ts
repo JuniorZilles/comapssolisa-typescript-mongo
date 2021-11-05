@@ -13,8 +13,13 @@ class RentalController {
     }
   }
 
-  update(req: Request, res: Response, next: NextFunction) {
-    return res.json('Rental update');
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const rental = await RentalService.update(req.params.id, req.body);
+      return res.status(200).json(rental);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
