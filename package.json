@@ -1,9 +1,9 @@
 {
-  "name": "projeto_final_parte_1",
+  "name": "projeto_final",
   "version": "1.0.0",
   "description": "Desenvolvimento da API do compassolisa",
   "main": "server.js",
-  "repository": "git@github.com:JuniorZilles/projeto_final_parte_1.git",
+  "repository": "git@github.com:JuniorZilles/projeto_final.git",
   "author": "JuniorZilles <42867787+JuniorZilles@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
