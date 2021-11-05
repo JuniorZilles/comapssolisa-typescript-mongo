@@ -25,8 +25,10 @@ class RentalRepository {
     return isValid(id);
   }
 
-  async update(id: string): Promise<string> {
-    return '';
+  async update(id: string, payload: RentalPayload): Promise<Rental> {
+    return (await RentalModel.findByIdAndUpdate(id, payload, {
+      returnOriginal: false,
+    })) as Rental;
   }
 
   async getRentalByCNPJ(cnpj: string, id?: string) {

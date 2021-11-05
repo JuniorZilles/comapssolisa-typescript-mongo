@@ -77,13 +77,14 @@ class RentalService {
     }
   }
 
-  async update(id: string, payload: RentalPayload): Promise<void | Rental> {
+  async update(id: string, payload: RentalPayload): Promise<Rental> {
     this.checkCNPJ(payload.cnpj);
     await this.checkIfExistsCNPJ(payload.cnpj);
     this.checkIfExistsMoreThanOneFilial(payload.endereco);
     payload.endereco = await this.getCepLocations(payload.endereco);
     await this.getById(id);
-    // return payload;
+    const rental = await RentalRepository.update(id, payload);
+    return rental;
   }
 
   async delete(id: string): Promise<boolean> {
