@@ -91,7 +91,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"nome" is required');
   });
 
-  it('should return 400 with errors if withe space entry on create rental', async () => {
+  it('should return 400 with errors if white space entry on create rental', async () => {
     const rentalTemp = {
       nome: '   ',
       cnpj: '16.670.085/0001-55',
@@ -427,7 +427,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"nome" is required');
   });
 
-  it('should return 400 with errors if withe space entry on update rental company', async () => {
+  it('should return 400 with errors if white space entry on update rental company', async () => {
     const rentalTemp = {
       nome: '   ',
       cnpj: '16.670.085/0001-55',
