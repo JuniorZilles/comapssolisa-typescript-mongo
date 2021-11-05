@@ -5,6 +5,7 @@ import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Endereco, EnderecoPayload } from '@interfaces/Endereco';
 import { Rental, RentalPayload } from '@interfaces/Rental';
+import { RentalSearch } from '@interfaces/RentalSearch';
 import RentalsModel from '@models/RentalsModel';
 import RentalRepository from '@repositories/RentalRepository';
 import { Promise } from 'mongoose';
@@ -104,9 +105,51 @@ class RentalService {
     return rental;
   }
 
-  // async getAll(): Promise<RentalsModel> {
-  //   //return new RentalsModel();
-  // }
+  async getAll(payload: RentalSearch): Promise<RentalsModel> {
+    let offset = 0;
+    let limit = 10;
+    if (payload.uf) {
+      payload['endereco.uf'] = payload.uf;
+      payload.uf = undefined;
+    }
+    if (payload.bairro) {
+      payload['endereco.bairro'] = payload.bairro;
+      payload.bairro = undefined;
+    }
+    if (payload.cep) {
+      payload['endereco.cep'] = payload.cep;
+      payload.cep = undefined;
+    }
+    if (payload.complemento) {
+      payload['endereco.complemento'] = payload.complemento;
+      payload.complemento = undefined;
+    }
+    if (payload.localidade) {
+      payload['endereco.localidade'] = payload.localidade;
+      payload.localidade = undefined;
+    }
+    if (payload.logradouro) {
+      payload['endereco.logradouro'] = payload.logradouro;
+      payload.logradouro = undefined;
+    }
+    if (payload.number) {
+      payload['endereco.number'] = payload.number;
+      payload.number = undefined;
+    }
+    if (payload.limit) {
+      limit = parseInt(payload.limit, 10);
+      payload.limit = undefined;
+    }
+    if (payload.offset) {
+      offset = parseInt(payload.offset, 10);
+      payload.offset = undefined;
+    }
+    return (await RentalRepository.findAll(
+      payload,
+      offset,
+      limit
+    )) as RentalsModel;
+  }
 }
 
 export default new RentalService();

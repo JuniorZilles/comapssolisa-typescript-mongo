@@ -1,15 +1,27 @@
 /* eslint-disable class-methods-use-this */
 import { Rental, RentalPayload } from '@interfaces/Rental';
+import { RentalSearch } from '@interfaces/RentalSearch';
 import { isValid } from '@models/Model';
 import RentalModel from '@models/RentalModel';
+import RentalsModel from '@models/RentalsModel';
 
 class RentalRepository {
   async create(paylod: RentalPayload): Promise<Rental> {
     return (await RentalModel.create(paylod)) as Rental;
   }
 
-  async findAll(): Promise<string> {
-    return '';
+  async findAll(
+    payload: RentalSearch,
+    offset: number,
+    limit: number
+  ): Promise<RentalsModel> {
+    const count = await RentalModel.countDocuments(payload);
+    const cars = await RentalModel.find(payload)
+      .skip(offset * limit)
+      .limit(limit)
+      .exec();
+    const offsets = Math.round(count / limit);
+    return new RentalsModel(cars, count, limit, offset, offsets);
   }
 
   async delete(id: string): Promise<boolean> {
