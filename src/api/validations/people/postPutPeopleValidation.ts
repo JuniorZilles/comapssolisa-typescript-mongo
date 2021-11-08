@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import Extension from '@joi/date';
 import Joi from 'joi';
 import transformToArray from '@validations/utils/transformJoiResult';
+import { cpfRegex } from '@validations/utils/regex';
 
 const JoiDate = Joi.extend(Extension);
 
@@ -11,11 +12,7 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
   try {
     const schema = Joi.object({
       nome: Joi.string().trim().required(),
-      cpf: Joi.string()
-        .trim()
-        .regex(/\d{3}.\d{3}.\d{3}-\d{2}/)
-        .message('Invalid CPF')
-        .required(),
+      cpf: Joi.string().trim().regex(cpfRegex).message('Invalid CPF').required(),
       data_nascimento: JoiDate.date().format('DD/MM/YYYY').required(),
       email: Joi.string().trim().email().required(),
       senha: Joi.string().trim().min(6).required(),

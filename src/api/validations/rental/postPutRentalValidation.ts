@@ -3,16 +3,13 @@ import { NextFunction, Request, Response } from 'express';
 
 import Joi from 'joi';
 import transformToArray from '@validations/utils/transformJoiResult';
+import { cnpjRegex, cepRegex } from '@validations/utils/regex';
 
 export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       nome: Joi.string().trim().required(),
-      cnpj: Joi.string()
-        .trim()
-        .regex(/\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}/)
-        .message('"cnpj" has a invalid format')
-        .required(),
+      cnpj: Joi.string().trim().regex(cnpjRegex).message('"cnpj" has a invalid format').required(),
       atividades: Joi.string().trim().required(),
       endereco: Joi.array()
         .min(1)
@@ -20,12 +17,12 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
           Joi.object({
             cep: Joi.string()
               .trim()
-              .regex(/\d{5}-\d{3}/)
+              .regex(cepRegex)
               .message('"cep" with incorrect format, it should be XXXXX-XXX')
               .required(),
             number: Joi.string().trim().required(),
             complemento: Joi.string().trim(),
-            isFilial: Joi.boolean().valid(true, false).required()
+            isFilial: Joi.boolean().required()
           })
         )
         .required()
