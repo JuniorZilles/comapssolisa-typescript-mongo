@@ -1,5 +1,8 @@
 const validateCNPJ = (cnpj: string): boolean => {
   const cnpjClean = cnpj.replace(/[.\-/]/g, '');
+  if (cnpjClean.length !== 14) {
+    return false;
+  }
   const cnpjSplited = cnpjClean.split('');
   let somaDigito12 = 0;
   let somaDigito13 = 0;

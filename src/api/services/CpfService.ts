@@ -1,5 +1,8 @@
 const validateCPF = (cpf: string): boolean => {
   const cpfClean = cpf.replace(/[.-]/g, '');
+  if (cpfClean.length !== 11) {
+    return false;
+  }
   const cpfSplited = cpfClean.split('');
   let somaDigito10 = 0;
   let somaDigito11 = 0;
