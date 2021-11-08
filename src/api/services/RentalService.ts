@@ -28,7 +28,7 @@ class RentalService {
     });
     if (indexes.length > 1) {
       throw new InvalidValue(
-        'invalid',
+        'Bad Request',
         `isFilial has more than one headquarters`,
         true
       );
@@ -68,13 +68,13 @@ class RentalService {
 
   private checkIfIsValid(result: Rental, cnpj: string) {
     if (result.cnpj === cnpj) {
-      throw new InvalidValue('conflict', `CNPJ ${cnpj} already in use`, true);
+      throw new InvalidValue('Conflict', `CNPJ ${cnpj} already in use`, true);
     }
   }
 
   private checkIfValidCNPJ(cnpj: string): void {
     if (!validateCNPJ(cnpj)) {
-      throw new InvalidValue('invalid', `CNPJ ${cnpj} is invalid`, true);
+      throw new InvalidValue('Bad Request', `CNPJ ${cnpj} is invalid`, true);
     }
   }
 

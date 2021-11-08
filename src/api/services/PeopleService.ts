@@ -97,9 +97,9 @@ class PeopleService {
 
   private checkIfIsValid(result: Person, cpf: string, email: string) {
     if (result.cpf === cpf) {
-      throw new InvalidValue('conflict', `CPF ${cpf} already in use`, true);
+      throw new InvalidValue('Conflict', `CPF ${cpf} already in use`, true);
     } else if (result.email === email) {
-      throw new InvalidValue('conflict', `Email ${email} already in use`, true);
+      throw new InvalidValue('Conflict', `Email ${email} already in use`, true);
     }
   }
 

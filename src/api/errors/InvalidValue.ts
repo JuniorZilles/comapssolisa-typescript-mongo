@@ -9,7 +9,7 @@ export default class InvalidValue extends Error {
       message = value;
     }
     super(message);
-    this.description = field;
+    this.description = 'Bad Request';
     this.name = message;
     this.status = 400;
   }
