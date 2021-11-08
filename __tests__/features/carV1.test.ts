@@ -18,6 +18,7 @@ const carData = {
   quantidadePassageiros: 5,
 };
 let token = {};
+
 describe('src :: api :: controllers :: car', () => {
   beforeAll(async () => {
     await CarModel.deleteMany();
@@ -40,7 +41,7 @@ describe('src :: api :: controllers :: car', () => {
    * POST CREATE
    */
 
-  it('should create a car', async () => {
+  test('should create a car', async () => {
     const response = await request(app).post(PREFIX).set(token).send(carData);
 
     const { body } = response;
@@ -55,7 +56,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
-  it('should return 400 with errors if missing an attribute', async () => {
+  test('should return 400 with errors if missing an attribute', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       ano: 2021,
@@ -71,7 +72,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"cor" is required');
   });
 
-  it('should return 400 when white spaces on descricao', async () => {
+  test('should return 400 when white spaces on descricao', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .post(PREFIX)
@@ -91,7 +92,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"modelo" is not allowed to be empty');
   });
 
-  it('should return 400 with errors, if has no accessory', async () => {
+  test('should return 400 with errors, if has no accessory', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -108,7 +109,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"acessorios" must contain at least 1 items');
   });
 
-  it('should return 400 with errors if year greater than 2022', async () => {
+  test('should return 400 with errors if year greater than 2022', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -125,7 +126,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"ano" must be less than or equal to 2022');
   });
 
-  it('should return 400 with errors if year least than 1950', async () => {
+  test('should return 400 with errors if year least than 1950', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -142,7 +143,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
 
-  it('should not include if duplicated accessory', async () => {
+  test('should not include if duplicated accessory', async () => {
     const temp = {
       modelo: 'GM S10 2.8',
       cor: 'Verde',
@@ -166,7 +167,7 @@ describe('src :: api :: controllers :: car', () => {
    * GET LIST
    */
 
-  it('should get all cars', async () => {
+  test('should get all cars', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
 
     const response = await request(app)
@@ -179,7 +180,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.veiculos.length).toEqual(carTemp.length);
   });
 
-  it('should get all cars by accessory', async () => {
+  test('should get all cars by accessory', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5, {
       acessorios: [{ descricao: 'Ar-condicionado' }],
     });
@@ -203,7 +204,7 @@ describe('src :: api :: controllers :: car', () => {
     });
   });
 
-  it('should get all cars by modelo', async () => {
+  test('should get all cars by modelo', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5, {
       modelo: 'GM S10 2.8',
     });
@@ -221,7 +222,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.veiculos.length).toEqual(5);
   });
 
-  it('should not get any cars when doesnt have any register for the query', async () => {
+  test('should not get any cars when doesnt have any register for the query', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
     const response = await request(app)
       .get(`${PREFIX}?modelo=Chevy`)
@@ -241,7 +242,7 @@ describe('src :: api :: controllers :: car', () => {
    * GET BY ID
    */
 
-  it("should get a car by it's ID", async () => {
+  test("should get a car by it's ID", async () => {
     const carUsed = await factory.create<Car>('Car');
 
     if (carUsed.id) {
@@ -261,7 +262,7 @@ describe('src :: api :: controllers :: car', () => {
     }
   });
 
-  it('should return 400 with errors if ID is invalid when searching', async () => {
+  test('should return 400 with errors if ID is invalid when searching', async () => {
     const response = await request(app).get(`${PREFIX}/12`).set(token);
     const { body } = response;
 
@@ -271,7 +272,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is not found when searching', async () => {
+  test('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app)
       .get(`${PREFIX}/6171508962f47a7a91938d30`)
       .set(token);
@@ -287,7 +288,7 @@ describe('src :: api :: controllers :: car', () => {
    * DELETE BY ID
    */
 
-  it("should remove a car by it's ID", async () => {
+  test("should remove a car by it's ID", async () => {
     const carUsed = await factory.create<Car>('Car');
 
     if (carUsed.id) {
@@ -303,7 +304,7 @@ describe('src :: api :: controllers :: car', () => {
     }
   });
 
-  it('should return 400 with errors if ID is invalid when removing', async () => {
+  test('should return 400 with errors if ID is invalid when removing', async () => {
     const response = await request(app).delete(`${PREFIX}/12`).set(token);
     const { body } = response;
 
@@ -313,7 +314,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is notfound when removing', async () => {
+  test('should return 404 with error if ID is notfound when removing', async () => {
     const response = await request(app)
       .delete(`${PREFIX}/6171508962f47a7a91938d30`)
       .set(token);
@@ -330,7 +331,7 @@ describe('src :: api :: controllers :: car', () => {
    * PUT BY ID
    */
 
-  it('should update a car', async () => {
+  test('should update a car', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .put(`${PREFIX}/${temp.id}`)
@@ -349,7 +350,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
-  it('should return 400 with errors if no accessory item exists when updating', async () => {
+  test('should return 400 with errors if no accessory item exists when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -371,7 +372,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"acessorios" must contain at least 1 items');
   });
 
-  it('should return 400 with errors if year greater than 2022 when updating', async () => {
+  test('should return 400 with errors if year greater than 2022 when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -393,7 +394,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"ano" must be less than or equal to 2022');
   });
 
-  it('should return 400 with errors if year least than 1950 when updating', async () => {
+  test('should return 400 with errors if year least than 1950 when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -415,7 +416,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
 
-  it('should not update if accessory has duplicated item when updating', async () => {
+  test('should not update if accessory has duplicated item when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'GM S10 2.8',
@@ -440,7 +441,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
 
-  it('should return 400 with errors if empty body when updating', async () => {
+  test('should return 400 with errors if empty body when updating', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .put(`${PREFIX}/${temp.id}`)
@@ -459,7 +460,7 @@ describe('src :: api :: controllers :: car', () => {
    * PATCH BY ID ACCESSORIES BY ID
    */
 
-  it('should update a car accessory by its ID', async () => {
+  test('should update a car accessory by its ID', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
@@ -479,7 +480,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.acessorios[0].descricao).toBe('Ar-condicionado');
   });
 
-  it('should remove a car accessory by its ID', async () => {
+  test('should remove a car accessory by its ID', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
@@ -498,7 +499,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.acessorios.length).toEqual(0);
   });
 
-  it('should return 400 when missing body', async () => {
+  test('should return 400 when missing body', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
@@ -513,7 +514,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"descricao" is required');
   });
 
-  it('should return 400 when white spaces on descricao', async () => {
+  test('should return 400 when white spaces on descricao', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
@@ -528,7 +529,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"descricao" is not allowed to be empty');
   });
 
-  it('should return 400 when invalid ID on patch', async () => {
+  test('should return 400 when invalid ID on patch', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .patch(`${PREFIX}/125/acessorios/${temp.acessorios[0].id}`)
@@ -543,7 +544,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 400 when invalid ID on patch', async () => {
+  test('should return 400 when invalid ID on patch', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
       .patch(`${PREFIX}/${temp.id}/acessorios/789asd`)

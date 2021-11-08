@@ -15,6 +15,7 @@ const carData = {
   acessorios: [{ descricao: 'Ar-condicionado' }],
   quantidadePassageiros: 5,
 };
+
 describe('src :: api :: services :: car', () => {
   beforeAll(async () => {
     await CarModel.deleteMany();
@@ -30,7 +31,7 @@ describe('src :: api :: services :: car', () => {
    * POST CREATE
    */
 
-  it('should create a car', async () => {
+  test('should create a car', async () => {
     const car = await CarService.create(carData);
     expect(car.id).toBeDefined();
     expect(car.ano).toBe(carData.ano);
@@ -38,7 +39,7 @@ describe('src :: api :: services :: car', () => {
     expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
-  it('should have at least one accessory', async () => {
+  test('should have at least one accessory', async () => {
     try {
       const temp = {
         modelo: 'GM S10 2.8',
@@ -56,7 +57,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('the year should not be greater than 2022', async () => {
+  test('the year should not be greater than 2022', async () => {
     try {
       const temp = {
         modelo: 'GM S10 2.8',
@@ -74,7 +75,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('the year should not be least than 1950', async () => {
+  test('the year should not be least than 1950', async () => {
     try {
       const temp = {
         modelo: 'GM S10 2.8',
@@ -92,7 +93,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should include just one if duplicated accessory', async () => {
+  test('should include just one if duplicated accessory', async () => {
     try {
       const temp = {
         modelo: 'GM S10 2.8',
@@ -117,7 +118,7 @@ describe('src :: api :: services :: car', () => {
    * GET LIST
    */
 
-  it('should get all cars by modelo', async () => {
+  test('should get all cars by modelo', async () => {
     const car = await factory.create<Car>('Car');
     const result = await CarService.list({ modelo: car.modelo });
 
@@ -127,7 +128,7 @@ describe('src :: api :: services :: car', () => {
     });
   });
 
-  it('should get all cars', async () => {
+  test('should get all cars', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
 
     const result = await CarService.list({
@@ -138,7 +139,7 @@ describe('src :: api :: services :: car', () => {
     expect(result.veiculos.length).toEqual(carTemp.length);
   });
 
-  it('should get all cars by accessory', async () => {
+  test('should get all cars by accessory', async () => {
     const car = await factory.createMany<Car>('Car', 5);
 
     const result = await CarService.list({
@@ -156,7 +157,7 @@ describe('src :: api :: services :: car', () => {
    * GET BY ID
    */
 
-  it("should get a car by it's ID", async () => {
+  test("should get a car by it's ID", async () => {
     const car = await factory.create<Car>('Car');
 
     if (car.id) {
@@ -170,7 +171,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it("should not get a car by it's ID and throw a InvalidField error", async () => {
+  test("should not get a car by it's ID and throw a InvalidField error", async () => {
     try {
       const result = await CarService.getById('12');
     } catch (e) {
@@ -181,7 +182,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it("should not get a car by it's ID and throw a NotFound error", async () => {
+  test("should not get a car by it's ID and throw a NotFound error", async () => {
     try {
       const result = await CarService.getById('6171508962f47a7a91938d30');
     } catch (e) {
@@ -196,7 +197,7 @@ describe('src :: api :: services :: car', () => {
    * DELETE BY ID
    */
 
-  it("should remove a car by it's ID", async () => {
+  test("should remove a car by it's ID", async () => {
     const car = await factory.create<Car>('Car');
 
     if (car.id) {
@@ -207,7 +208,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it("should not remove a car by it's ID and throw a InvalidField error", async () => {
+  test("should not remove a car by it's ID and throw a InvalidField error", async () => {
     try {
       const result = await CarService.delete('12');
     } catch (e) {
@@ -218,7 +219,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it("should not remove a car by it's ID and throw a NotFound error", async () => {
+  test("should not remove a car by it's ID and throw a NotFound error", async () => {
     try {
       const result = await CarService.delete('6171508962f47a7a91938d30');
     } catch (e) {
@@ -233,7 +234,7 @@ describe('src :: api :: services :: car', () => {
    * PUT BY ID
    */
 
-  it('should update a car', async () => {
+  test('should update a car', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = {
       modelo: 'Abacaxi',
@@ -255,7 +256,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should have at least one accessory if is updating this field', async () => {
+  test('should have at least one accessory if is updating this field', async () => {
     try {
       const car = await factory.create<Car>('Car');
       const tempData = {
@@ -276,7 +277,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('the year updated should not be greater than 2022 and throw a InvalidField error', async () => {
+  test('the year updated should not be greater than 2022 and throw a InvalidField error', async () => {
     try {
       const car = await factory.create<Car>('Car');
       const tempData = {
@@ -297,7 +298,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('the year updated should not be least than 1950 and throw a InvalidField error', async () => {
+  test('the year updated should not be least than 1950 and throw a InvalidField error', async () => {
     try {
       const car = await factory.create<Car>('Car');
       const tempData = {
@@ -318,7 +319,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should update and include just one if duplicated accessory', async () => {
+  test('should update and include just one if duplicated accessory', async () => {
     const car = await factory.create<Car>('Car');
     try {
       const tempData = {
@@ -343,7 +344,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should not update if doesnt match ID', async () => {
+  test('should not update if doesnt match ID', async () => {
     try {
       const tempData = {
         modelo: 'GM S10 2.8',
@@ -371,7 +372,7 @@ describe('src :: api :: services :: car', () => {
    * PATCH BY ID ACCESSORIES BY ID
    */
 
-  it('should update a car accessory by its ID', async () => {
+  test('should update a car accessory by its ID', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: 'Ar-condicionado' };
 
@@ -390,7 +391,7 @@ describe('src :: api :: services :: car', () => {
     expect(carResult.acessorios[0].descricao).toBe(tempData.descricao);
   });
 
-  it('should remove a car accessory by its ID', async () => {
+  test('should remove a car accessory by its ID', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
 
@@ -408,7 +409,7 @@ describe('src :: api :: services :: car', () => {
     expect(carResult.acessorios.length).toEqual(0);
   });
 
-  it('should return 400 if the car id its invalid', async () => {
+  test('should return 400 if the car id its invalid', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
@@ -425,7 +426,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should return 400 if the car id its not found', async () => {
+  test('should return 400 if the car id its not found', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
@@ -442,7 +443,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should return 400 if the accessory id its invalid', async () => {
+  test('should return 400 if the accessory id its invalid', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
@@ -455,7 +456,7 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  it('should return 400 if the accessory id its not found', async () => {
+  test('should return 400 if the accessory id its not found', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {

@@ -2,7 +2,7 @@ import NotFound from '@errors/NotFound';
 import getCEP from '@services/CepService';
 
 describe('src :: api :: services :: cep', () => {
-  it('should return CEP info', async () => {
+  test('should return CEP info', async () => {
     const cepInfo = await getCEP('96200-200');
     expect(cepInfo.cep).toBe('96200-200');
     expect(cepInfo.logradouro).toBe('Rua General Canabarro');
@@ -12,7 +12,7 @@ describe('src :: api :: services :: cep', () => {
     expect(cepInfo.uf).toBe('RS');
   });
 
-  it('should return not found error', async () => {
+  test('should return not found error', async () => {
     try {
       await getCEP('93950-001');
     } catch (e) {

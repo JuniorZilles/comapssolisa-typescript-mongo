@@ -3,7 +3,7 @@ import { generateToken, verifyToken } from '@services/TokenService';
 import { JwtPayload } from 'jsonwebtoken';
 
 describe('src :: api :: services :: token', () => {
-  it('should generate a token an verification should pass', async () => {
+  test('should generate a token an verification should pass', async () => {
     const result = await generateToken({
       email: 'jao@mail.com',
       habilitado: 'sim',
@@ -20,7 +20,7 @@ describe('src :: api :: services :: token', () => {
     expect(tempContent.habilitado).toBe('sim');
   });
 
-  it('should not pass verification of invalid token', async () => {
+  test('should not pass verification of invalid token', async () => {
     const result =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     try {

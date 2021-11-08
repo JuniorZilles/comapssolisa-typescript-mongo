@@ -44,7 +44,7 @@ describe('src :: api :: services :: rental', () => {
    * INSERT CREATE
    */
 
-  it('should create a rental place with two addresses', async () => {
+  test('should create a rental place with two addresses', async () => {
     const rental = await RentalService.create(rentalData);
 
     expect(rental).toHaveProperty('_id');
@@ -72,7 +72,7 @@ describe('src :: api :: services :: rental', () => {
     });
   });
 
-  it('should not have a invalid CNPJ and throw invalid field error', async () => {
+  test('should not have a invalid CNPJ and throw invalid field error', async () => {
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
       cnpj: '16.670.085/0001-57',
@@ -96,7 +96,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not have a duplicated CNPJ and throw invalid value error', async () => {
+  test('should not have a duplicated CNPJ and throw invalid value error', async () => {
     const rentalAuto = await factory.create<Rental>('Rental', {
       cnpj: '08.450.508/0001-01',
     });
@@ -123,7 +123,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not have more than one isFilial equals to false and throw invalid value error', async () => {
+  test('should not have more than one isFilial equals to false and throw invalid value error', async () => {
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
       cnpj: '16.670.085/0001-55',
@@ -152,7 +152,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not create with invalid cep and throw NotFound error', async () => {
+  test('should not create with invalid cep and throw NotFound error', async () => {
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
       cnpj: '16.670.085/0001-55',
@@ -183,7 +183,7 @@ describe('src :: api :: services :: rental', () => {
    * GET BY ID
    */
 
-  it('should get a rental by id', async () => {
+  test('should get a rental by id', async () => {
     const generated = await factory.create<Rental>('Rental');
     if (generated.id) {
       const rental = await RentalService.getById(generated.id);
@@ -213,7 +213,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not get a rental by a invalid id and throw invalid field', async () => {
+  test('should not get a rental by a invalid id and throw invalid field', async () => {
     try {
       await RentalService.getById('12');
     } catch (e) {
@@ -224,7 +224,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not get a rental by a nonexistent id and throw a not found', async () => {
+  test('should not get a rental by a nonexistent id and throw a not found', async () => {
     try {
       await RentalService.getById('6171508962f47a7a91938d30');
     } catch (e) {
@@ -239,7 +239,7 @@ describe('src :: api :: services :: rental', () => {
    * DELETE BY ID
    */
 
-  it('should delete a rental by id', async () => {
+  test('should delete a rental by id', async () => {
     const generated = await factory.create<Rental>('Rental');
     if (generated.id) {
       const rental = await RentalService.delete(generated.id);
@@ -247,7 +247,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not delete a rental by a invalid id and throw invalid field', async () => {
+  test('should not delete a rental by a invalid id and throw invalid field', async () => {
     try {
       await RentalService.delete('12');
     } catch (e) {
@@ -258,7 +258,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not delete a rental by a nonexistent id and throw a not found', async () => {
+  test('should not delete a rental by a nonexistent id and throw a not found', async () => {
     try {
       await RentalService.delete('6171508962f47a7a91938d30');
     } catch (e) {
@@ -273,7 +273,7 @@ describe('src :: api :: services :: rental', () => {
    * UPDATE BY ID
    */
 
-  it('should update a rental place with two addresses', async () => {
+  test('should update a rental place with two addresses', async () => {
     const generated = await factory.create<Rental>('Rental');
     const rental = await RentalService.update(
       generated.id as string,
@@ -305,7 +305,7 @@ describe('src :: api :: services :: rental', () => {
     });
   });
 
-  it('should not have a invalid CNPJ and throw invalid field error on update', async () => {
+  test('should not have a invalid CNPJ and throw invalid field error on update', async () => {
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
       cnpj: '16.670.085/0001-57',
@@ -330,7 +330,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not have a duplicated CNPJ and throw invalid value error on update', async () => {
+  test('should not have a duplicated CNPJ and throw invalid value error on update', async () => {
     const rentalAuto0 = await factory.create<Rental>('Rental', {
       cnpj: '08.450.508/0001-01',
     });
@@ -360,7 +360,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not have more than one isFilial equals to false and throw invalid value error on update', async () => {
+  test('should not have more than one isFilial equals to false and throw invalid value error on update', async () => {
     const generated = await factory.create<Rental>('Rental');
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
@@ -390,7 +390,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not create with invalid cep and throw NotFound error', async () => {
+  test('should not create with invalid cep and throw NotFound error', async () => {
     const generated = await factory.create<Rental>('Rental');
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
@@ -418,7 +418,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not update a rental by a invalid id and throw invalid field', async () => {
+  test('should not update a rental by a invalid id and throw invalid field', async () => {
     try {
       const rentalTemp = {
         nome: 'Localiza Rent a Car',
@@ -446,7 +446,7 @@ describe('src :: api :: services :: rental', () => {
     }
   });
 
-  it('should not update a rental by a nonexistent id and throw a not found', async () => {
+  test('should not update a rental by a nonexistent id and throw a not found', async () => {
     try {
       const rentalTemp = {
         nome: 'Localiza Rent a Car',
@@ -478,7 +478,7 @@ describe('src :: api :: services :: rental', () => {
    * GET LIST
    */
 
-  it('should get 10 paginated rental companies', async () => {
+  test('should get 10 paginated rental companies', async () => {
     await factory.createMany<Rental>('Rental', 25);
     const rentalP0 = await RentalService.getAll({ limit: '5', offset: '0' });
 
@@ -496,7 +496,7 @@ describe('src :: api :: services :: rental', () => {
     expect(rentalP1.offsets).toEqual(5);
   });
 
-  it('should get a rental company by cnpj', async () => {
+  test('should get a rental company by cnpj', async () => {
     const tempData = await factory.createMany<Rental>('Rental', 5);
     const rental = await RentalService.getAll({ cnpj: tempData[0].cnpj });
 
@@ -535,7 +535,7 @@ describe('src :: api :: services :: rental', () => {
     });
   });
 
-  it('should get all a rental company by uf', async () => {
+  test('should get all a rental company by uf', async () => {
     await factory.createMany<Rental>('Rental', 5, {
       endereco: [
         {
@@ -583,7 +583,7 @@ describe('src :: api :: services :: rental', () => {
     });
   });
 
-  it('should return nothing if doesnt match a rental company by uf', async () => {
+  test('should return nothing if doesnt match a rental company by uf', async () => {
     await factory.createMany<Rental>('Rental', 5);
 
     const rental = await RentalService.getAll({ uf: 'RS' });

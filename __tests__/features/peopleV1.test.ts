@@ -17,6 +17,7 @@ const personData = {
   senha: '123456',
   habilitado: 'sim',
 };
+
 describe('src :: api :: controllers :: people', () => {
   beforeAll(async () => {
     await PersonModel.deleteMany();
@@ -31,7 +32,7 @@ describe('src :: api :: controllers :: people', () => {
   /**
    * POST CREATE
    */
-  it('should create a person', async () => {
+  test('should create a person', async () => {
     const response = await request(app).post(PREFIX).send(personData);
 
     const { body } = response;
@@ -46,7 +47,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body.habilitado).toBe(personData.habilitado);
   });
 
-  it('should return 400 with errors if missing an attribute', async () => {
+  test('should return 400 with errors if missing an attribute', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -63,7 +64,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"habilitado" is required');
   });
 
-  it('should return 400 with errors if attribute is empty', async () => {
+  test('should return 400 with errors if attribute is empty', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -81,7 +82,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"senha" is not allowed to be empty');
   });
 
-  it('should return 400 with errors if age is less than 18', async () => {
+  test('should return 400 with errors if age is less than 18', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -101,7 +102,7 @@ describe('src :: api :: controllers :: people', () => {
     );
   });
 
-  it('should return 400 with errors if cpf is invalid', async () => {
+  test('should return 400 with errors if cpf is invalid', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147',
@@ -119,7 +120,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('Invalid CPF');
   });
 
-  it('should return 400 with errors if cpf calculation is invalid', async () => {
+  test('should return 400 with errors if cpf calculation is invalid', async () => {
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: '123.456.789-10',
@@ -137,7 +138,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
   });
 
-  it('should return 400 with errors if senha has lenght less than 6 caracteres', async () => {
+  test('should return 400 with errors if senha has lenght less than 6 caracteres', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -157,7 +158,7 @@ describe('src :: api :: controllers :: people', () => {
     );
   });
 
-  it('should return 400 with errors if email is invalid', async () => {
+  test('should return 400 with errors if email is invalid', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -175,7 +176,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"email" must be a valid email');
   });
 
-  it('should return 400 with errors if habilitado has other option than sim or não', async () => {
+  test('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const tempCreate = {
       nome: 'joaozinho ciclano',
       cpf: '847.331.290-25',
@@ -193,7 +194,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  it('should return 400 with errors if cpf or email already exists', async () => {
+  test('should return 400 with errors if cpf or email already exists', async () => {
     const peopleData = await factory.create<Person>('People', {
       cpf: '847.331.290-25',
     });
@@ -214,7 +215,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe(`CPF ${peopleData.cpf} already in use`);
   });
 
-  it('should return 400 with errors if nome has withe spaces', async () => {
+  test('should return 400 with errors if nome has withe spaces', async () => {
     const tempCreate = {
       nome: '  ',
       cpf: '131.147.860-49',
@@ -236,7 +237,7 @@ describe('src :: api :: controllers :: people', () => {
    * GET LIST
    */
 
-  it('should get all people', async () => {
+  test('should get all people', async () => {
     const peopleData = await factory.createMany<Person>('People', 5);
 
     const response = await request(app).get(
@@ -253,7 +254,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body.pessoas.length).toEqual(peopleData.length);
   });
 
-  it('should get all people that by habilitado', async () => {
+  test('should get all people that by habilitado', async () => {
     const peopleNoData = await factory.createMany<Person>('People', 5, {
       habilitado: 'sim',
       nome: 'joaozinho',
@@ -276,7 +277,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body.pessoas.length).toEqual(5);
   });
 
-  it('should not get any people', async () => {
+  test('should not get any people', async () => {
     const response = await request(app).get(
       `${PREFIX}?offset=1&limit=5&habilitado=sim`
     );
@@ -295,7 +296,7 @@ describe('src :: api :: controllers :: people', () => {
    * GET BY ID
    */
 
-  it('should get a person by ID', async () => {
+  test('should get a person by ID', async () => {
     const peopleData = await factory.create<Person>('People', {
       data_nascimento: '2020-10-30',
     });
@@ -315,7 +316,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body.habilitado).toBe(peopleData.habilitado);
   });
 
-  it('should return 400 with errors if ID is invalid when searching', async () => {
+  test('should return 400 with errors if ID is invalid when searching', async () => {
     const response = await request(app).get(`${PREFIX}/12`);
     const { body } = response;
 
@@ -325,7 +326,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is not found when searching', async () => {
+  test('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app).get(
       `${PREFIX}/6171508962f47a7a91938d30`
     );
@@ -341,7 +342,7 @@ describe('src :: api :: controllers :: people', () => {
    * DELETE BY ID
    */
 
-  it("should remove a person by it's ID", async () => {
+  test("should remove a person by it's ID", async () => {
     const peopleData = await factory.create<Person>('People');
 
     const response = await request(app).delete(`${PREFIX}/${peopleData.id}`);
@@ -350,7 +351,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(response.body).toEqual({});
   });
 
-  it('should return 400 with errors if ID is invalid when removing', async () => {
+  test('should return 400 with errors if ID is invalid when removing', async () => {
     const response = await request(app).delete(`${PREFIX}/12`);
     const { body } = response;
 
@@ -360,7 +361,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is not found when removing', async () => {
+  test('should return 404 with error if ID is not found when removing', async () => {
     const response = await request(app).delete(
       `${PREFIX}/6171508962f47a7a91938d30`
     );
@@ -376,7 +377,7 @@ describe('src :: api :: controllers :: people', () => {
    * PUT BY ID
    */
 
-  it('should update a person', async () => {
+  test('should update a person', async () => {
     const peopleData = await factory.create<Person>('People', {
       habilitado: 'não',
     });
@@ -404,7 +405,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body.habilitado).toBe('sim');
   });
 
-  it('should return 400 with errors if missing an attribute when trying to update', async () => {
+  test('should return 400 with errors if missing an attribute when trying to update', async () => {
     const peopleData = await factory.create<Person>('People');
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
       nome: 'joaozinho ciclano',
@@ -422,7 +423,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  it('should return 400 with errors if age is less than 18 on update', async () => {
+  test('should return 400 with errors if age is less than 18 on update', async () => {
     const peopleData = await factory.create<Person>('People');
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
       nome: 'joaozinho ciclano',
@@ -442,7 +443,7 @@ describe('src :: api :: controllers :: people', () => {
     );
   });
 
-  it('should return 400 with errors if cpf is invalid on update', async () => {
+  test('should return 400 with errors if cpf is invalid on update', async () => {
     const peopleData = await factory.create<Person>('People');
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
       nome: 'joaozinho ciclano',
@@ -460,7 +461,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('Invalid CPF');
   });
 
-  it('should return 400 with errors if cpf calculation is invalid on update', async () => {
+  test('should return 400 with errors if cpf calculation is invalid on update', async () => {
     const peopleData = await factory.create<Person>('People');
     const tempData = {
       nome: 'joaozinho ciclano',
@@ -481,7 +482,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
   });
 
-  it('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
+  test('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
     const peopleData = await factory.create<Person>('People');
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
       nome: 'joaozinho ciclano',
@@ -501,7 +502,7 @@ describe('src :: api :: controllers :: people', () => {
     );
   });
 
-  it('should return 400 with errors if email is invalid', async () => {
+  test('should return 400 with errors if email is invalid', async () => {
     const peopleData = await factory.create<Person>('People');
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
       nome: 'joaozinho ciclano',
@@ -519,7 +520,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"email" must be a valid email');
   });
 
-  it('should return 400 with errors if habilitado has other option than sim or não', async () => {
+  test('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const peopleData = await factory.create<Person>('People');
 
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
@@ -538,7 +539,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  it('should return 400 with errors if cpf or email are already used by naother person', async () => {
+  test('should return 400 with errors if cpf or email are already used by naother person', async () => {
     const peopleData1 = await factory.create<Person>('People');
     const peopleData2 = await factory.create<Person>('People', {
       cpf: '847.331.290-25',
@@ -562,7 +563,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe(`CPF ${tempData.cpf} already in use`);
   });
 
-  it('should return 400 with errors if nome is empty', async () => {
+  test('should return 400 with errors if nome is empty', async () => {
     const peopleData = await factory.create<Person>('People');
 
     const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({

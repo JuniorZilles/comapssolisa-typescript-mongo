@@ -18,6 +18,7 @@ const personData = {
   senha: '123456',
   habilitado: 'sim',
 };
+
 describe('src :: api :: services :: people', () => {
   beforeAll(async () => {
     await PersonModel.deleteMany();
@@ -33,7 +34,7 @@ describe('src :: api :: services :: people', () => {
    * INSERT CREATE
    */
 
-  it('should create a person', async () => {
+  test('should create a person', async () => {
     const person = await PeopleService.create(personData);
     expect(person.id).toBeDefined();
     expect(person.cpf).toBe(personData.cpf);
@@ -46,7 +47,7 @@ describe('src :: api :: services :: people', () => {
     expect(person.habilitado).toBe(personData.habilitado);
   });
 
-  it('should not create a person if data_nascimento is less tan 18 years', async () => {
+  test('should not create a person if data_nascimento is less tan 18 years', async () => {
     const temp = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -65,7 +66,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not create a person with same email or cpf', async () => {
+  test('should not create a person with same email or cpf', async () => {
     const temp = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -87,14 +88,14 @@ describe('src :: api :: services :: people', () => {
    * GET LIST
    */
 
-  it('should get all people', async () => {
+  test('should get all people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
     const person = await PeopleService.list({});
 
     expect(person.pessoas.length).toEqual(temp.length);
   });
 
-  it('should get all by nome people', async () => {
+  test('should get all by nome people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
     const person = await PeopleService.list({ habilitado: temp[0].habilitado });
 
@@ -104,7 +105,7 @@ describe('src :: api :: services :: people', () => {
     });
   });
 
-  it('should get not get all people by password', async () => {
+  test('should get not get all people by password', async () => {
     const temp = await factory.create<Person>('People');
     const person = await PeopleService.list({ nome: temp.senha });
 
@@ -115,7 +116,7 @@ describe('src :: api :: services :: people', () => {
    * GET BY ID
    */
 
-  it('should get a person by ID', async () => {
+  test('should get a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
     if (personGenerated.id) {
       const person = await PeopleService.getById(personGenerated.id);
@@ -128,7 +129,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not get a person by ID and throw a InvalidField error', async () => {
+  test('should not get a person by ID and throw a InvalidField error', async () => {
     try {
       const person = await PeopleService.getById('12');
     } catch (e) {
@@ -139,7 +140,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not get a person by ID and throw a NotFound error', async () => {
+  test('should not get a person by ID and throw a NotFound error', async () => {
     try {
       const person = await PeopleService.getById('6171508962f47a7a91938d30');
     } catch (e) {
@@ -154,7 +155,7 @@ describe('src :: api :: services :: people', () => {
    * DELETE BY ID
    */
 
-  it('should remove a person by ID', async () => {
+  test('should remove a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
     if (personGenerated.id) {
       const person = await PeopleService.delete(personGenerated.id);
@@ -163,7 +164,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not remove a person by ID and throw a InvalidField error', async () => {
+  test('should not remove a person by ID and throw a InvalidField error', async () => {
     try {
       const person = await PeopleService.delete('12');
     } catch (e) {
@@ -174,7 +175,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not remove a person by ID and throw a NotFound error', async () => {
+  test('should not remove a person by ID and throw a NotFound error', async () => {
     try {
       const person = await PeopleService.delete('6171508962f47a7a91938d30');
     } catch (e) {
@@ -189,7 +190,7 @@ describe('src :: api :: services :: people', () => {
    * UPDATE BY ID
    */
 
-  it('should update a person by ID', async () => {
+  test('should update a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
     if (personGenerated.id) {
       const tempData = {
@@ -213,7 +214,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not update a person by ID and throw a InvalidField error', async () => {
+  test('should not update a person by ID and throw a InvalidField error', async () => {
     try {
       const tempData = {
         nome: 'joaozinho ciclano',
@@ -232,7 +233,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not update a person if exists another with the same email or cpf', async () => {
+  test('should not update a person if exists another with the same email or cpf', async () => {
     const tempData = {
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
@@ -256,7 +257,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not update a person by ID and throw a NotFound error', async () => {
+  test('should not update a person by ID and throw a NotFound error', async () => {
     try {
       const tempData = {
         nome: 'joaozinho ciclano',
@@ -278,7 +279,7 @@ describe('src :: api :: services :: people', () => {
     }
   });
 
-  it('should not update a person data_nascimento if not 18 years old by ID', async () => {
+  test('should not update a person data_nascimento if not 18 years old by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
     const tempData = {
       nome: 'joaozinho ciclano',

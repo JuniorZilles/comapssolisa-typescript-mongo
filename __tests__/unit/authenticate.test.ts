@@ -22,7 +22,7 @@ describe('src :: api :: services :: authenticate', () => {
     await PersonModel.deleteMany();
   });
 
-  it('should authenticate', async () => {
+  test('should authenticate', async () => {
     const temp = await factory.create<Person>('People', { senha: '123456' });
 
     const result = await AuthenticateService.authenticate(temp.email, '123456');
@@ -37,7 +37,7 @@ describe('src :: api :: services :: authenticate', () => {
     expect(tempContent.habilitado).toBe(temp.habilitado);
   });
 
-  it('should throw invalid value error when trying to authenticate', async () => {
+  test('should throw invalid value error when trying to authenticate', async () => {
     const temp = await factory.create<Person>('People');
     try {
       const result = await AuthenticateService.authenticate(
@@ -52,7 +52,7 @@ describe('src :: api :: services :: authenticate', () => {
     }
   });
 
-  it('should throw invalid value error when trying to authenticate', async () => {
+  test('should throw invalid value error when trying to authenticate', async () => {
     try {
       const result = await AuthenticateService.authenticate(
         'Joazinho@mail.com',

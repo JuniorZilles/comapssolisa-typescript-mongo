@@ -25,6 +25,7 @@ const rentalData = {
     },
   ],
 };
+
 describe('src :: api :: controllers :: rental', () => {
   beforeAll(async () => {
     await RentalModel.deleteMany();
@@ -40,7 +41,7 @@ describe('src :: api :: controllers :: rental', () => {
    * POST /rental
    */
 
-  it('Should create a rental place and return 201 with database content', async () => {
+  test('Should create a rental place and return 201 with database content', async () => {
     const response = await request(app).post(PREFIX).send(rentalData);
 
     const { body } = response;
@@ -71,7 +72,7 @@ describe('src :: api :: controllers :: rental', () => {
     });
   });
 
-  it('should return 400 with errors if missing an attribute on create rental', async () => {
+  test('should return 400 with errors if missing an attribute on create rental', async () => {
     const rentalTemp = {
       cnpj: '16.670.085/0001-57',
       atividades: 'Aluguel de Carros E Gestão de Frotas',
@@ -92,7 +93,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"nome" is required');
   });
 
-  it('should return 400 with errors if white space entry on create rental', async () => {
+  test('should return 400 with errors if white space entry on create rental', async () => {
     const rentalTemp = {
       nome: '   ',
       cnpj: '16.670.085/0001-55',
@@ -114,7 +115,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"nome" is not allowed to be empty');
   });
 
-  it('should return 400 with errors if endereco has not any child on create rental', async () => {
+  test('should return 400 with errors if endereco has not any child on create rental', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '16.670.085/0001-55',
@@ -130,7 +131,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"endereco" must contain at least 1 items');
   });
 
-  it('should return 400 with errors if endereco has more than one headquarters on create rental', async () => {
+  test('should return 400 with errors if endereco has more than one headquarters on create rental', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '16.670.085/0001-55',
@@ -157,7 +158,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('isFilial has more than one headquarters');
   });
 
-  it('should return 400 with errors if CNPJ already exists on create rental', async () => {
+  test('should return 400 with errors if CNPJ already exists on create rental', async () => {
     const rentalAuto = await factory.create<Rental>('Rental', {
       cnpj: '08.450.508/0001-01',
     });
@@ -187,7 +188,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-01 already in use');
   });
 
-  it('should return 400 with errors if CNPJ has invalid format on create rental', async () => {
+  test('should return 400 with errors if CNPJ has invalid format on create rental', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001',
@@ -214,7 +215,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"cnpj" has a invalid format');
   });
 
-  it('should return 400 with errors if CNPJ is invalid calculated value on create rental', async () => {
+  test('should return 400 with errors if CNPJ is invalid calculated value on create rental', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001-78',
@@ -241,7 +242,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-78 is invalid');
   });
 
-  it('should return 400 with errors if CEP has invalid format on create rental', async () => {
+  test('should return 400 with errors if CEP has invalid format on create rental', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001-01',
@@ -274,7 +275,7 @@ describe('src :: api :: controllers :: rental', () => {
    * GET BY ID
    */
 
-  it('should get a rental company by ID', async () => {
+  test('should get a rental company by ID', async () => {
     const tempData = await factory.create<Rental>('Rental');
 
     const response = await request(app).get(`${PREFIX}/${tempData.id}`);
@@ -306,7 +307,7 @@ describe('src :: api :: controllers :: rental', () => {
     });
   });
 
-  it('should return 400 with errors if ID is invalid when searching', async () => {
+  test('should return 400 with errors if ID is invalid when searching', async () => {
     const response = await request(app).get(`${PREFIX}/12`);
     const { body } = response;
 
@@ -316,7 +317,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is not found when searching', async () => {
+  test('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app).get(
       `${PREFIX}/6171508962f47a7a91938d30`
     );
@@ -332,7 +333,7 @@ describe('src :: api :: controllers :: rental', () => {
    * DELETE BY ID
    */
 
-  it("should remove a rental company by it's ID", async () => {
+  test("should remove a rental company by it's ID", async () => {
     const tempData = await factory.create<Rental>('Rental');
 
     const response = await request(app).delete(`${PREFIX}/${tempData.id}`);
@@ -341,7 +342,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(response.body).toEqual({});
   });
 
-  it('should return 400 with errors if ID is invalid when removing', async () => {
+  test('should return 400 with errors if ID is invalid when removing', async () => {
     const response = await request(app).delete(`${PREFIX}/12`);
     const { body } = response;
 
@@ -351,7 +352,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is not found when removing', async () => {
+  test('should return 404 with error if ID is not found when removing', async () => {
     const response = await request(app).delete(
       `${PREFIX}/6171508962f47a7a91938d30`
     );
@@ -367,7 +368,7 @@ describe('src :: api :: controllers :: rental', () => {
    * PUT BY ID
    */
 
-  it('Should update a rental place and return 200 with new database content', async () => {
+  test('Should update a rental place and return 200 with new database content', async () => {
     const tempData = await factory.create<Rental>('Rental');
 
     const response = await request(app)
@@ -402,7 +403,7 @@ describe('src :: api :: controllers :: rental', () => {
     });
   });
 
-  it('should return 400 with errors if missing an attribute on update rental company', async () => {
+  test('should return 400 with errors if missing an attribute on update rental company', async () => {
     const rentalTemp = {
       cnpj: '16.670.085/0001-57',
       atividades: 'Aluguel de Carros E Gestão de Frotas',
@@ -428,7 +429,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"nome" is required');
   });
 
-  it('should return 400 with errors if white space entry on update rental company', async () => {
+  test('should return 400 with errors if white space entry on update rental company', async () => {
     const rentalTemp = {
       nome: '   ',
       cnpj: '16.670.085/0001-55',
@@ -455,7 +456,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"nome" is not allowed to be empty');
   });
 
-  it('should return 400 with errors if endereco has not any child on update rental company', async () => {
+  test('should return 400 with errors if endereco has not any child on update rental company', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '16.670.085/0001-55',
@@ -476,7 +477,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"endereco" must contain at least 1 items');
   });
 
-  it('should return 400 with errors if endereco has more than one headquarters on update rental company', async () => {
+  test('should return 400 with errors if endereco has more than one headquarters on update rental company', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '16.670.085/0001-55',
@@ -508,7 +509,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('isFilial has more than one headquarters');
   });
 
-  it('should return 400 with errors if CNPJ already exists when updating a rental company', async () => {
+  test('should return 400 with errors if CNPJ already exists when updating a rental company', async () => {
     const rentalAuto = await factory.create<Rental>('Rental', {
       cnpj: '08.450.508/0001-01',
     });
@@ -543,7 +544,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-01 already in use');
   });
 
-  it('should return 400 with errors if CNPJ has invalid format on updating a rental company', async () => {
+  test('should return 400 with errors if CNPJ has invalid format on updating a rental company', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001',
@@ -575,7 +576,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"cnpj" has a invalid format');
   });
 
-  it('should return 400 with errors if CNPJ is invalid calculated value on updating a rental company', async () => {
+  test('should return 400 with errors if CNPJ is invalid calculated value on updating a rental company', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001-78',
@@ -607,7 +608,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-78 is invalid');
   });
 
-  it('should return 400 with errors if CEP has invalid format on updating a rental company', async () => {
+  test('should return 400 with errors if CEP has invalid format on updating a rental company', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001-01',
@@ -641,7 +642,7 @@ describe('src :: api :: controllers :: rental', () => {
     );
   });
 
-  it('should return 400 with errors if ID is invalid when updating a rental company', async () => {
+  test('should return 400 with errors if ID is invalid when updating a rental company', async () => {
     const response = await request(app).put(`${PREFIX}/12`);
 
     const { body } = response;
@@ -652,7 +653,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  it('should return 404 with error if ID is not found when updating a rental company', async () => {
+  test('should return 404 with error if ID is not found when updating a rental company', async () => {
     const rentalTemp = {
       nome: 'Trevor Rental',
       cnpj: '08.450.508/0001-01',
@@ -686,7 +687,7 @@ describe('src :: api :: controllers :: rental', () => {
    * GET LIST
    */
 
-  it('should get 5 each rental companys with pagination', async () => {
+  test('should get 5 each rental companys with pagination', async () => {
     await factory.createMany<Rental>('Rental', 25);
 
     const responseP0 = await request(app).get(`${PREFIX}?offset=0&limit=5`);
@@ -718,7 +719,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(rentalP1.offsets).toEqual(5);
   });
 
-  it('should get all rental company that by nome', async () => {
+  test('should get all rental company that by nome', async () => {
     const locadora = await factory.create<Rental>('Rental', {
       nome: 'Trevor Rental',
     });
@@ -744,7 +745,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body.locadoras[0].endereco.length).toEqual(locadora.endereco.length);
   });
 
-  it('should get all rental company that by bairro', async () => {
+  test('should get all rental company that by bairro', async () => {
     const locadora = await factory.create<Rental>('Rental', {
       endereco: [
         {
@@ -781,7 +782,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body.locadoras[0].endereco.length).toEqual(locadora.endereco.length);
   });
 
-  it('should not get any rental company', async () => {
+  test('should not get any rental company', async () => {
     const response = await request(app).get(
       `${PREFIX}?offset=0&limit=10&nome=Trevor Rental`
     );
@@ -796,7 +797,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body.locadoras.length).toEqual(0);
   });
 
-  it('should not get any rental company when inputed CNPJ is invalid', async () => {
+  test('should not get any rental company when inputed CNPJ is invalid', async () => {
     const response = await request(app).get(
       `${PREFIX}?offset=0&limit=10&cnpj=16670085000155`
     );
@@ -808,7 +809,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body[0].name).toBe('"cnpj" has a invalid format');
   });
 
-  it('should not get any rental company when inputed CEP is invalid', async () => {
+  test('should not get any rental company when inputed CEP is invalid', async () => {
     const response = await request(app).get(
       `${PREFIX}?offset=0&limit=10&cep=15678911`
     );
