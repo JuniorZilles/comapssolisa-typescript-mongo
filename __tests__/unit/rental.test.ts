@@ -478,7 +478,7 @@ describe('src :: api :: services :: rental', () => {
    * GET LIST
    */
 
-  it('should get all people', async () => {
+  it('should get 10 paginated rental companies', async () => {
     await factory.createMany<Rental>('Rental', 25);
     const rentalP0 = await RentalService.getAll({ limit: '5', offset: '0' });
 

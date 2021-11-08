@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import request from 'supertest';
 import RentalModel from '@models/RentalModel';
 import { Rental } from '@interfaces/Rental';
@@ -679,5 +680,143 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body.length).toEqual(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
+  });
+
+  /**
+   * GET LIST
+   */
+
+  it('should get 5 each rental companys with pagination', async () => {
+    await factory.createMany<Rental>('Rental', 25);
+
+    const responseP0 = await request(app).get(`${PREFIX}?offset=0&limit=5`);
+    const rentalP0 = responseP0.body;
+
+    expect(responseP0.status).toBe(200);
+    expect(rentalP0).toHaveProperty('total');
+    expect(rentalP0).toHaveProperty('limit');
+    expect(rentalP0).toHaveProperty('offset');
+    expect(rentalP0).toHaveProperty('offsets');
+    expect(rentalP0).toHaveProperty('locadoras');
+    expect(rentalP0.locadoras.length).toEqual(5);
+    expect(rentalP0.offset).toEqual(0);
+    expect(rentalP0.limit).toEqual(5);
+    expect(rentalP0.total).toEqual(25);
+    expect(rentalP0.offsets).toEqual(5);
+
+    const responseP1 = await request(app).get(`${PREFIX}?offset=1&limit=5`);
+    const rentalP1 = responseP1.body;
+    expect(rentalP1).toHaveProperty('total');
+    expect(rentalP1).toHaveProperty('limit');
+    expect(rentalP1).toHaveProperty('offset');
+    expect(rentalP1).toHaveProperty('offsets');
+    expect(rentalP1).toHaveProperty('locadoras');
+    expect(rentalP1.locadoras.length).toEqual(5);
+    expect(rentalP1.offset).toEqual(1);
+    expect(rentalP1.limit).toEqual(5);
+    expect(rentalP1.total).toEqual(25);
+    expect(rentalP1.offsets).toEqual(5);
+  });
+
+  it('should get all rental company that by nome', async () => {
+    const locadora = await factory.create<Rental>('Rental', {
+      nome: 'Trevor Rental',
+    });
+    await factory.createMany<Rental>('Rental', 5);
+
+    const response = await request(app).get(
+      `${PREFIX}?offset=0&limit=10&nome=Trevor Rental`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    expect(body).toHaveProperty('locadoras');
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('limit');
+    expect(body).toHaveProperty('offset');
+    expect(body).toHaveProperty('offsets');
+    expect(body.locadoras.length).toEqual(1);
+    expect(body.locadoras[0]._id).toBe(locadora.id);
+    expect(body.locadoras[0].atividades).toBe(locadora.atividades);
+    expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);
+    expect(body.locadoras[0].nome).toBe(locadora.nome);
+    expect(body.locadoras[0].endereco.length).toEqual(locadora.endereco.length);
+  });
+
+  it('should get all rental company that by bairro', async () => {
+    const locadora = await factory.create<Rental>('Rental', {
+      endereco: [
+        {
+          cep: '96200-200',
+          logradouro: 'Rua General Canabarro',
+          complemento: '',
+          bairro: 'Centro',
+          number: '1234',
+          localidade: 'Rio Grande',
+          uf: 'SP',
+          isFilial: false,
+        },
+      ],
+    });
+    await factory.createMany<Rental>('Rental', 5);
+
+    const response = await request(app).get(
+      `${PREFIX}?offset=0&limit=10&bairro=Centro`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    expect(body).toHaveProperty('locadoras');
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('limit');
+    expect(body).toHaveProperty('offset');
+    expect(body).toHaveProperty('offsets');
+    expect(body.locadoras.length).toEqual(1);
+    expect(body.locadoras[0]._id).toBe(locadora.id);
+    expect(body.locadoras[0].atividades).toBe(locadora.atividades);
+    expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);
+    expect(body.locadoras[0].nome).toBe(locadora.nome);
+    expect(body.locadoras[0].endereco.length).toEqual(locadora.endereco.length);
+  });
+
+  it('should not get any rental company', async () => {
+    const response = await request(app).get(
+      `${PREFIX}?offset=0&limit=10&nome=Trevor Rental`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    expect(body).toHaveProperty('locadoras');
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('limit');
+    expect(body).toHaveProperty('offset');
+    expect(body).toHaveProperty('offsets');
+    expect(body.locadoras.length).toEqual(0);
+  });
+
+  it('should not get any rental company when inputed CNPJ is invalid', async () => {
+    const response = await request(app).get(
+      `${PREFIX}?offset=0&limit=10&cnpj=16670085000155`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('cnpj');
+    expect(body[0].name).toBe('"cnpj" has a invalid format');
+  });
+
+  it('should not get any rental company when inputed CEP is invalid', async () => {
+    const response = await request(app).get(
+      `${PREFIX}?offset=0&limit=10&cep=15678911`
+    );
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('cep');
+    expect(body[0].name).toBe(
+      '"cep" with incorrect format, it should be XXXXX-XXX'
+    );
   });
 });

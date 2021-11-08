@@ -50,8 +50,13 @@ class RentalController {
     }
   }
 
-  getAll(req: Request, res: Response, next: NextFunction) {
-    return res.json('Rental getall');
+  async getAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const rentals = await RentalService.getAll(req.query);
+      return res.status(200).json(rentals);
+    } catch (e) {
+      return next(e);
+    }
   }
 }
 

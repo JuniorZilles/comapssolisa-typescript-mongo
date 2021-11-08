@@ -16,12 +16,12 @@ class RentalRepository {
     limit: number
   ): Promise<RentalsModel> {
     const count = await RentalModel.countDocuments(payload);
-    const cars = await RentalModel.find(payload)
+    const rental = (await RentalModel.find(payload)
       .skip(offset * limit)
       .limit(limit)
-      .exec();
+      .exec()) as Rental[];
     const offsets = Math.round(count / limit);
-    return new RentalsModel(cars, count, limit, offset, offsets);
+    return new RentalsModel(rental, count, limit, offset, offsets);
   }
 
   async delete(id: string): Promise<boolean> {
