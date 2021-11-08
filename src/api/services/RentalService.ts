@@ -80,10 +80,10 @@ class RentalService {
 
   async update(id: string, payload: RentalPayload): Promise<Rental> {
     this.checkIfValidCNPJ(payload.cnpj);
+    await this.getById(id);
     await this.checkIfExistsCNPJ(payload.cnpj, id);
     this.checkIfExistsMoreThanOneFilial(payload.endereco);
     payload.endereco = await this.getCepLocations(payload.endereco);
-    await this.getById(id);
     const rental = await RentalRepository.update(id, payload);
     return rental;
   }
