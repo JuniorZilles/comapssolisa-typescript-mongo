@@ -736,6 +736,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body).toHaveProperty('offset');
     expect(body).toHaveProperty('offsets');
     expect(body.locadoras.length).toEqual(1);
+    expect(body.locadoras[0].__v).toBeUndefined();
     expect(body.locadoras[0]._id).toBe(locadora.id);
     expect(body.locadoras[0].atividades).toBe(locadora.atividades);
     expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);
@@ -772,6 +773,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body).toHaveProperty('offset');
     expect(body).toHaveProperty('offsets');
     expect(body.locadoras.length).toEqual(1);
+    expect(body.locadoras[0].__v).toBeUndefined();
     expect(body.locadoras[0]._id).toBe(locadora.id);
     expect(body.locadoras[0].atividades).toBe(locadora.atividades);
     expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);

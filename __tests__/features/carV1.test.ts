@@ -43,16 +43,16 @@ describe('src :: api :: controllers :: car', () => {
   it('should create a car', async () => {
     const response = await request(app).post(PREFIX).set(token).send(carData);
 
-    const car = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(201);
-    expect(car._id).toBeDefined();
-    expect(car.acessorios.length).toEqual(1);
-    expect(car.ano).toBe(carData.ano);
-    expect(car.__v).toBeUndefined();
-    expect(car.modelo).toBe(carData.modelo);
-    expect(car.cor).toBe(carData.cor);
-    expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
+    expect(body._id).toBeDefined();
+    expect(body.acessorios.length).toEqual(1);
+    expect(body.ano).toBe(carData.ano);
+    expect(body.__v).toBeUndefined();
+    expect(body.modelo).toBe(carData.modelo);
+    expect(body.cor).toBe(carData.cor);
+    expect(body.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
   it('should return 400 with errors if missing an attribute', async () => {
@@ -63,12 +63,12 @@ describe('src :: api :: controllers :: car', () => {
       quantidadePassageiros: 5,
     };
     const response = await request(app).post(PREFIX).set(token).send(temp);
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('cor');
-    expect(value[0].name).toBe('"cor" is required');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('cor');
+    expect(body[0].name).toBe('"cor" is required');
   });
 
   it('should return 400 when white spaces on descricao', async () => {
@@ -83,12 +83,12 @@ describe('src :: api :: controllers :: car', () => {
         quantidadePassageiros: 5,
       });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('modelo');
-    expect(value[0].name).toBe('"modelo" is not allowed to be empty');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('modelo');
+    expect(body[0].name).toBe('"modelo" is not allowed to be empty');
   });
 
   it('should return 400 with errors, if has no accessory', async () => {
@@ -100,11 +100,12 @@ describe('src :: api :: controllers :: car', () => {
       quantidadePassageiros: 5,
     };
     const response = await request(app).post(PREFIX).set(token).send(temp);
-    const value = response.body;
+    const { body } = response;
+
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('acessorios');
-    expect(value[0].name).toBe('"acessorios" must contain at least 1 items');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('acessorios');
+    expect(body[0].name).toBe('"acessorios" must contain at least 1 items');
   });
 
   it('should return 400 with errors if year greater than 2022', async () => {
@@ -117,11 +118,11 @@ describe('src :: api :: controllers :: car', () => {
     };
     const response = await request(app).post(PREFIX).set(token).send(temp);
 
-    const value = response.body;
+    const { body } = response;
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('ano');
-    expect(value[0].name).toBe('"ano" must be less than or equal to 2022');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('ano');
+    expect(body[0].name).toBe('"ano" must be less than or equal to 2022');
   });
 
   it('should return 400 with errors if year least than 1950', async () => {
@@ -134,11 +135,11 @@ describe('src :: api :: controllers :: car', () => {
     };
     const response = await request(app).post(PREFIX).set(token).send(temp);
 
-    const value = response.body;
+    const { body } = response;
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('ano');
-    expect(value[0].name).toBe('"ano" must be greater than or equal to 1950');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('ano');
+    expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
 
   it('should not include if duplicated accessory', async () => {
@@ -154,11 +155,11 @@ describe('src :: api :: controllers :: car', () => {
     };
     const response = await request(app).post(PREFIX).set(token).send(temp);
 
-    const value = response.body;
+    const { body } = response;
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('acessorios.1');
-    expect(value[0].name).toBe('"acessorios[1]" contains a duplicate value');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('acessorios.1');
+    expect(body[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
 
   /**
@@ -171,11 +172,11 @@ describe('src :: api :: controllers :: car', () => {
     const response = await request(app)
       .get(`${PREFIX}?offset=0&limit=${carTemp.length}`)
       .set(token);
-    const vehicles = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(vehicles).toHaveProperty('veiculos');
-    expect(vehicles.veiculos.length).toEqual(carTemp.length);
+    expect(body).toHaveProperty('veiculos');
+    expect(body.veiculos.length).toEqual(carTemp.length);
   });
 
   it('should get all cars by accessory', async () => {
@@ -188,16 +189,16 @@ describe('src :: api :: controllers :: car', () => {
         `${PREFIX}?offset=0&limit=${carTemp.length}&descricao=Ar-condicionado`
       )
       .set(token);
-    const vehicles = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(vehicles).toHaveProperty('veiculos');
-    expect(vehicles).toHaveProperty('total');
-    expect(vehicles).toHaveProperty('limit');
-    expect(vehicles).toHaveProperty('offset');
-    expect(vehicles).toHaveProperty('offsets');
-    expect(vehicles.veiculos.length).toEqual(carTemp.length);
-    vehicles.veiculos.forEach((element: Car) => {
+    expect(body).toHaveProperty('veiculos');
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('limit');
+    expect(body).toHaveProperty('offset');
+    expect(body).toHaveProperty('offsets');
+    expect(body.veiculos.length).toEqual(carTemp.length);
+    body.veiculos.forEach((element: Car) => {
       expect(element.acessorios[0].descricao).toBe('Ar-condicionado');
     });
   });
@@ -209,15 +210,15 @@ describe('src :: api :: controllers :: car', () => {
     const response = await request(app)
       .get(`${PREFIX}?modelo=${carTemp[0].modelo}`)
       .set(token);
-    const vehicles = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(vehicles).toHaveProperty('veiculos');
-    expect(vehicles).toHaveProperty('total');
-    expect(vehicles).toHaveProperty('limit');
-    expect(vehicles).toHaveProperty('offset');
-    expect(vehicles).toHaveProperty('offsets');
-    expect(vehicles.veiculos.length).toEqual(5);
+    expect(body).toHaveProperty('veiculos');
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('limit');
+    expect(body).toHaveProperty('offset');
+    expect(body).toHaveProperty('offsets');
+    expect(body.veiculos.length).toEqual(5);
   });
 
   it('should not get any cars when doesnt have any register for the query', async () => {
@@ -225,15 +226,15 @@ describe('src :: api :: controllers :: car', () => {
     const response = await request(app)
       .get(`${PREFIX}?modelo=Chevy`)
       .set(token);
-    const vehicles = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(vehicles).toHaveProperty('veiculos');
-    expect(vehicles).toHaveProperty('total');
-    expect(vehicles).toHaveProperty('limit');
-    expect(vehicles).toHaveProperty('offset');
-    expect(vehicles).toHaveProperty('offsets');
-    expect(vehicles.veiculos.length).toEqual(0);
+    expect(body).toHaveProperty('veiculos');
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('limit');
+    expect(body).toHaveProperty('offset');
+    expect(body).toHaveProperty('offsets');
+    expect(body.veiculos.length).toEqual(0);
   });
 
   /**
@@ -247,14 +248,14 @@ describe('src :: api :: controllers :: car', () => {
       const response = await request(app)
         .get(`${PREFIX}/${carUsed.id}`)
         .set(token);
-      const car = response.body;
+      const { body } = response;
 
       expect(response.status).toBe(200);
-      expect(car._id).toBe(carUsed.id);
-      expect(car.modelo).toBe(carUsed.modelo);
-      expect(car.__v).toBeUndefined();
-      expect(car.ano).toBe(carUsed.ano);
-      expect(car.cor).toBe(carUsed.cor);
+      expect(body._id).toBe(carUsed.id);
+      expect(body.modelo).toBe(carUsed.modelo);
+      expect(body.__v).toBeUndefined();
+      expect(body.ano).toBe(carUsed.ano);
+      expect(body.cor).toBe(carUsed.cor);
     } else {
       expect(carUsed.id).toBeDefined();
     }
@@ -262,24 +263,24 @@ describe('src :: api :: controllers :: car', () => {
 
   it('should return 400 with errors if ID is invalid when searching', async () => {
     const response = await request(app).get(`${PREFIX}/12`).set(token);
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('id');
-    expect(value[0].name).toBe('"id" length must be 24 characters long');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('id');
+    expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 404 with error if ID is not found when searching', async () => {
     const response = await request(app)
       .get(`${PREFIX}/6171508962f47a7a91938d30`)
       .set(token);
-    const car = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(car.length).toEqual(1);
-    expect(car[0].description).toBe('Not Found');
-    expect(car[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
+    expect(body.length).toEqual(1);
+    expect(body[0].description).toBe('Not Found');
+    expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
 
   /**
@@ -293,10 +294,10 @@ describe('src :: api :: controllers :: car', () => {
       const response = await request(app)
         .delete(`${PREFIX}/${carUsed.id}`)
         .set(token);
-      const car = response.body;
+      const { body } = response;
 
       expect(response.status).toBe(204);
-      expect(car).toEqual({});
+      expect(body).toEqual({});
     } else {
       expect(carUsed.id).toBeDefined();
     }
@@ -304,12 +305,12 @@ describe('src :: api :: controllers :: car', () => {
 
   it('should return 400 with errors if ID is invalid when removing', async () => {
     const response = await request(app).delete(`${PREFIX}/12`).set(token);
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('id');
-    expect(value[0].name).toBe('"id" length must be 24 characters long');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('id');
+    expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 404 with error if ID is notfound when removing', async () => {
@@ -317,12 +318,12 @@ describe('src :: api :: controllers :: car', () => {
       .delete(`${PREFIX}/6171508962f47a7a91938d30`)
       .set(token);
 
-    const car = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(car.length).toEqual(1);
-    expect(car[0].description).toBe('Not Found');
-    expect(car[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
+    expect(body.length).toEqual(1);
+    expect(body[0].description).toBe('Not Found');
+    expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
 
   /**
@@ -335,17 +336,17 @@ describe('src :: api :: controllers :: car', () => {
       .put(`${PREFIX}/${temp.id}`)
       .set(token)
       .send(carData);
-    const result = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(result.acessorios[0].descricao).toEqual(
+    expect(body.acessorios[0].descricao).toEqual(
       carData.acessorios[0].descricao
     );
-    expect(result.__v).toBeUndefined();
-    expect(result.ano).toBe(carData.ano);
-    expect(result.modelo).toBe(carData.modelo);
-    expect(result.cor).toBe(carData.cor);
-    expect(result.quantidadePassageiros).toBe(carData.quantidadePassageiros);
+    expect(body.__v).toBeUndefined();
+    expect(body.ano).toBe(carData.ano);
+    expect(body.modelo).toBe(carData.modelo);
+    expect(body.cor).toBe(carData.cor);
+    expect(body.quantidadePassageiros).toBe(carData.quantidadePassageiros);
   });
 
   it('should return 400 with errors if no accessory item exists when updating', async () => {
@@ -362,12 +363,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send(tempData);
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('acessorios');
-    expect(value[0].name).toBe('"acessorios" must contain at least 1 items');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('acessorios');
+    expect(body[0].name).toBe('"acessorios" must contain at least 1 items');
   });
 
   it('should return 400 with errors if year greater than 2022 when updating', async () => {
@@ -384,12 +385,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send(tempData);
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('ano');
-    expect(value[0].name).toBe('"ano" must be less than or equal to 2022');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('ano');
+    expect(body[0].name).toBe('"ano" must be less than or equal to 2022');
   });
 
   it('should return 400 with errors if year least than 1950 when updating', async () => {
@@ -406,12 +407,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send(tempData);
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('ano');
-    expect(value[0].name).toBe('"ano" must be greater than or equal to 1950');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('ano');
+    expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
 
   it('should not update if accessory has duplicated item when updating', async () => {
@@ -431,12 +432,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send(tempData);
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('acessorios.1');
-    expect(value[0].name).toBe('"acessorios[1]" contains a duplicate value');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('acessorios.1');
+    expect(body[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
 
   it('should return 400 with errors if empty body when updating', async () => {
@@ -446,12 +447,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({});
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('modelo');
-    expect(value[0].name).toBe('"modelo" is required');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('modelo');
+    expect(body[0].name).toBe('"modelo" is required');
   });
 
   /**
@@ -465,17 +466,17 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({ descricao: 'Ar-condicionado' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(value._id).toBe(temp.id);
-    expect(value.ano).toBe(temp.ano);
-    expect(value.cor).toBe(temp.cor);
-    expect(value.modelo).toBe(temp.modelo);
-    expect(value.__v).toBeUndefined();
-    expect(value.quantidadePassageiros).toBe(temp.quantidadePassageiros);
-    expect(value.acessorios.length).toEqual(temp.acessorios.length);
-    expect(value.acessorios[0].descricao).toBe('Ar-condicionado');
+    expect(body._id).toBe(temp.id);
+    expect(body.ano).toBe(temp.ano);
+    expect(body.cor).toBe(temp.cor);
+    expect(body.modelo).toBe(temp.modelo);
+    expect(body.__v).toBeUndefined();
+    expect(body.quantidadePassageiros).toBe(temp.quantidadePassageiros);
+    expect(body.acessorios.length).toEqual(temp.acessorios.length);
+    expect(body.acessorios[0].descricao).toBe('Ar-condicionado');
   });
 
   it('should remove a car accessory by its ID', async () => {
@@ -485,16 +486,16 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({ descricao: temp.acessorios[0].descricao });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(value._id).toBe(temp.id);
-    expect(value.ano).toBe(temp.ano);
-    expect(value.cor).toBe(temp.cor);
-    expect(value.modelo).toBe(temp.modelo);
-    expect(value.__v).toBeUndefined();
-    expect(value.quantidadePassageiros).toBe(temp.quantidadePassageiros);
-    expect(value.acessorios.length).toEqual(0);
+    expect(body._id).toBe(temp.id);
+    expect(body.ano).toBe(temp.ano);
+    expect(body.cor).toBe(temp.cor);
+    expect(body.modelo).toBe(temp.modelo);
+    expect(body.__v).toBeUndefined();
+    expect(body.quantidadePassageiros).toBe(temp.quantidadePassageiros);
+    expect(body.acessorios.length).toEqual(0);
   });
 
   it('should return 400 when missing body', async () => {
@@ -504,12 +505,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({});
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('descricao');
-    expect(value[0].name).toBe('"descricao" is required');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('descricao');
+    expect(body[0].name).toBe('"descricao" is required');
   });
 
   it('should return 400 when white spaces on descricao', async () => {
@@ -519,12 +520,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({ descricao: '   ' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('descricao');
-    expect(value[0].name).toBe('"descricao" is not allowed to be empty');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('descricao');
+    expect(body[0].name).toBe('"descricao" is not allowed to be empty');
   });
 
   it('should return 400 when invalid ID on patch', async () => {
@@ -534,12 +535,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({ descricao: 'vidro eletrico' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('id');
-    expect(value[0].name).toBe('"id" length must be 24 characters long');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('id');
+    expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
   it('should return 400 when invalid ID on patch', async () => {
@@ -549,12 +550,12 @@ describe('src :: api :: controllers :: car', () => {
       .set(token)
       .send({ descricao: 'vidro eletrico' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('idAccessory');
-    expect(value[0].name).toBe(
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('idAccessory');
+    expect(body[0].name).toBe(
       '"idAccessory" length must be 24 characters long'
     );
   });
