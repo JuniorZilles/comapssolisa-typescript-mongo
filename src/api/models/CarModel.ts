@@ -5,7 +5,7 @@ import { Model } from './Model';
 const CarSchema = new mongoose.Schema({
   modelo: { type: String, required: true },
   cor: { type: String, required: true },
-  ano: { type: Number, required: true },
+  ano: { type: Number, min: 1950, max: 2022, required: true },
   acessorios: [
     {
       descricao: {
