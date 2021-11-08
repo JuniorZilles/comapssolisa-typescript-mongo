@@ -5,14 +5,11 @@ import config from '../../config/config';
 
 class MongoDatabase {
   async connect() {
-    await mongoose.connect(
-      `mongodb://${config.database.host}/${config.database.collection}`,
-      {
-        user: config.database.username,
-        pass: config.database.password,
-        authSource: 'admin',
-      }
-    );
+    await mongoose.connect(`mongodb://${config.database.host}/${config.database.collection}`, {
+      user: config.database.username,
+      pass: config.database.password,
+      authSource: 'admin'
+    });
 
     mongoose.connection.on('open', () => {
       console.log('Connected to mongo');

@@ -7,11 +7,7 @@ import transformToArray from '@validations/utils/transformJoiResult';
 
 const JoiDate = Joi.extend(Extension);
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void | Response> => {
+export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       nome: Joi.string().trim(),
@@ -24,7 +20,7 @@ export default async (
       senha: Joi.string().trim().min(6),
       habilitado: Joi.string().trim().valid('sim', 'não'),
       limit: Joi.number(),
-      offset: Joi.number(),
+      offset: Joi.number()
     });
 
     const { error } = schema.validate(req.query, { abortEarly: false });

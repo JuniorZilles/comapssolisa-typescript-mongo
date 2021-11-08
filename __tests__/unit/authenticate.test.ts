@@ -40,25 +40,17 @@ describe('src :: api :: services :: authenticate', () => {
   test('should throw invalid value error when trying to authenticate', async () => {
     const temp = await factory.create<Person>('People');
     try {
-      const result = await AuthenticateService.authenticate(
-        temp.email,
-        '123456'
-      );
+      const result = await AuthenticateService.authenticate(temp.email, '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('senha');
-      expect((<InvalidValue>e).name).toBe(
-        'The value ****** for senha is invalid'
-      );
+      expect((<InvalidValue>e).name).toBe('The value ****** for senha is invalid');
     }
   });
 
   test('should throw invalid value error when trying to authenticate', async () => {
     try {
-      const result = await AuthenticateService.authenticate(
-        'Joazinho@mail.com',
-        '123456'
-      );
+      const result = await AuthenticateService.authenticate('Joazinho@mail.com', '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');

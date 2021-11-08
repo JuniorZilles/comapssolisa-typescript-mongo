@@ -3,15 +3,11 @@ import { NextFunction, Request, Response } from 'express';
 
 import Joi from 'joi';
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void | Response> => {
+export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       email: Joi.string().trim().email().required(),
-      senha: Joi.string().trim().min(6).required(),
+      senha: Joi.string().trim().min(6).required()
     });
 
     const { error } = schema.validate(req.body, { abortEarly: false });

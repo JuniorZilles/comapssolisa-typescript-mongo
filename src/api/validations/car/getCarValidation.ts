@@ -3,11 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import Joi from 'joi';
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void | Response> => {
+export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       modelo: Joi.string().trim(),
@@ -16,7 +12,7 @@ export default async (
       descricao: Joi.string().trim(),
       quantidadePassageiros: Joi.number(),
       limit: Joi.number(),
-      offset: Joi.number(),
+      offset: Joi.number()
     });
 
     const { error } = schema.validate(req.query, { abortEarly: false });

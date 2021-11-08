@@ -18,15 +18,15 @@ const rentalData = {
     {
       cep: '96200-200',
       number: '1234',
-      isFilial: false,
+      isFilial: false
     },
     {
       cep: '96200-500',
       number: '5678',
       complemento: 'Muro A',
-      isFilial: true,
-    },
-  ],
+      isFilial: true
+    }
+  ]
 };
 
 describe('src :: api :: services :: rental', () => {
@@ -81,24 +81,22 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     try {
       await RentalService.create(rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidValue>e).message).toBe(
-        'CNPJ 16.670.085/0001-57 is invalid'
-      );
+      expect((<InvalidValue>e).message).toBe('CNPJ 16.670.085/0001-57 is invalid');
     }
   });
 
   test('should not have a duplicated CNPJ and throw invalid value error', async () => {
     const rentalAuto = await factory.create<Rental>('Rental', {
-      cnpj: '08.450.508/0001-01',
+      cnpj: '08.450.508/0001-01'
     });
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
@@ -108,18 +106,16 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     try {
       await RentalService.create(rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Conflict');
-      expect((<InvalidValue>e).message).toBe(
-        'CNPJ 08.450.508/0001-01 already in use'
-      );
+      expect((<InvalidValue>e).message).toBe('CNPJ 08.450.508/0001-01 already in use');
     }
   });
 
@@ -132,23 +128,21 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '93950-000',
           number: '61',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     try {
       await RentalService.create(rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidValue>e).name).toBe(
-        'isFilial has more than one headquarters'
-      );
+      expect((<InvalidValue>e).name).toBe('isFilial has more than one headquarters');
     }
   });
 
@@ -161,14 +155,14 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '93950-999',
           number: '61',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     try {
       await RentalService.create(rentalTemp);
@@ -218,9 +212,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -229,9 +221,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -252,9 +242,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -263,9 +251,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -275,10 +261,7 @@ describe('src :: api :: services :: rental', () => {
 
   test('should update a rental place with two addresses', async () => {
     const generated = await factory.create<Rental>('Rental');
-    const rental = await RentalService.update(
-      generated.id as string,
-      rentalData
-    );
+    const rental = await RentalService.update(generated.id as string, rentalData);
 
     expect(rental).toHaveProperty('_id');
     expect(rental.id).toBeDefined();
@@ -314,9 +297,9 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     try {
       const generated = await factory.create<Rental>('Rental');
@@ -324,18 +307,16 @@ describe('src :: api :: services :: rental', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidValue>e).message).toBe(
-        'CNPJ 16.670.085/0001-57 is invalid'
-      );
+      expect((<InvalidValue>e).message).toBe('CNPJ 16.670.085/0001-57 is invalid');
     }
   });
 
   test('should not have a duplicated CNPJ and throw invalid value error on update', async () => {
     const rentalAuto0 = await factory.create<Rental>('Rental', {
-      cnpj: '08.450.508/0001-01',
+      cnpj: '08.450.508/0001-01'
     });
     const rentalAuto1 = await factory.create<Rental>('Rental', {
-      cnpj: '07.450.508/0001-01',
+      cnpj: '07.450.508/0001-01'
     });
     const rentalTemp = {
       nome: 'Localiza Rent a Car',
@@ -345,18 +326,16 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     try {
       await RentalService.update(rentalAuto1.id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Conflict');
-      expect((<InvalidValue>e).message).toBe(
-        'CNPJ 08.450.508/0001-01 already in use'
-      );
+      expect((<InvalidValue>e).message).toBe('CNPJ 08.450.508/0001-01 already in use');
     }
   });
 
@@ -370,23 +349,21 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '93950-000',
           number: '61',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     try {
       await RentalService.update(generated.id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidValue>e).name).toBe(
-        'isFilial has more than one headquarters'
-      );
+      expect((<InvalidValue>e).name).toBe('isFilial has more than one headquarters');
     }
   });
 
@@ -400,14 +377,14 @@ describe('src :: api :: services :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '93950-999',
           number: '61',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     try {
       await RentalService.update(generated.id as string, rentalTemp);
@@ -428,21 +405,19 @@ describe('src :: api :: services :: rental', () => {
           {
             cep: '96200-200',
             number: '1234',
-            isFilial: false,
+            isFilial: false
           },
           {
             cep: '93950-000',
             number: '61',
-            isFilial: true,
-          },
-        ],
+            isFilial: true
+          }
+        ]
       };
       await RentalService.update('12', rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -456,21 +431,19 @@ describe('src :: api :: services :: rental', () => {
           {
             cep: '96200-200',
             number: '1234',
-            isFilial: false,
+            isFilial: false
           },
           {
             cep: '93950-000',
             number: '61',
-            isFilial: true,
-          },
-        ],
+            isFilial: true
+          }
+        ]
       };
       await RentalService.update('6171508962f47a7a91938d30', rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -546,9 +519,9 @@ describe('src :: api :: services :: rental', () => {
           number: '1234',
           localidade: 'Rio Grande',
           uf: 'SP',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     });
     await factory.createMany<Rental>('Rental', 5, {
       endereco: [
@@ -560,9 +533,9 @@ describe('src :: api :: services :: rental', () => {
           number: '1234',
           localidade: 'Rio Grande',
           uf: 'RS',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     });
 
     const rental = await RentalService.getAll({ uf: 'RS' });

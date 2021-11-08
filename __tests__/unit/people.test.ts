@@ -15,7 +15,7 @@ const personData = {
   data_nascimento: '03/03/2000',
   email: 'joazinho@email.com',
   senha: '123456',
-  habilitado: 'sim',
+  habilitado: 'sim'
 };
 
 describe('src :: api :: services :: people', () => {
@@ -37,9 +37,7 @@ describe('src :: api :: services :: people', () => {
     const person = await PeopleService.create(personData);
     expect(person.id).toBeDefined();
     expect(person.cpf).toBe(personData.cpf);
-    expect(person.data_nascimento).toEqual(
-      new Date(personData.data_nascimento)
-    );
+    expect(person.data_nascimento).toEqual(new Date(personData.data_nascimento));
     expect(person.email).toBe(personData.email);
     expect(person.nome).toBe(personData.nome);
     expect(person.senha).toBeUndefined();
@@ -53,16 +51,14 @@ describe('src :: api :: services :: people', () => {
       data_nascimento: '03/03/2021',
       email: 'joazinho@email.com',
       senha: '123456',
-      habilitado: 'sim',
+      habilitado: 'sim'
     };
     try {
       await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'data_nascimento' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'data_nascimento' is out of the standard format");
     }
   });
 
@@ -73,7 +69,7 @@ describe('src :: api :: services :: people', () => {
       data_nascimento: '03/03/2000',
       email: 'joazinho@email.com',
       senha: '123456',
-      habilitado: 'sim',
+      habilitado: 'sim'
     };
     try {
       await PeopleService.create(temp);
@@ -92,7 +88,7 @@ describe('src :: api :: services :: people', () => {
       data_nascimento: '03/03/2000',
       email: 'joazinho@email.com',
       senha: '123456',
-      habilitado: 'sim',
+      habilitado: 'sim'
     };
     try {
       await PeopleService.create(temp);
@@ -154,9 +150,7 @@ describe('src :: api :: services :: people', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -166,9 +160,7 @@ describe('src :: api :: services :: people', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -191,9 +183,7 @@ describe('src :: api :: services :: people', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -203,9 +193,7 @@ describe('src :: api :: services :: people', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -222,15 +210,13 @@ describe('src :: api :: services :: people', () => {
         data_nascimento: '03/03/2000',
         email: 'joazinho@email.com',
         senha: '123456',
-        habilitado: 'não',
+        habilitado: 'não'
       };
       const person = await PeopleService.update(personGenerated.id, tempData);
 
       expect(person.id).toBe(personGenerated.id);
       expect(person.cpf).toBe(tempData.cpf);
-      expect(person.data_nascimento).toEqual(
-        new Date(tempData.data_nascimento)
-      );
+      expect(person.data_nascimento).toEqual(new Date(tempData.data_nascimento));
       expect(person.email).toBe(tempData.email);
       expect(person.nome).toBe(tempData.nome);
       expect(person.habilitado).toBe('não');
@@ -245,15 +231,13 @@ describe('src :: api :: services :: people', () => {
         data_nascimento: '03/03/2000',
         email: 'joazinho@email.com',
         senha: '123456',
-        habilitado: 'não',
+        habilitado: 'não'
       };
       await PeopleService.update('12', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidValue>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -264,12 +248,12 @@ describe('src :: api :: services :: people', () => {
       data_nascimento: '03/03/2000',
       email: 'joazinho@email.com',
       senha: '123456',
-      habilitado: 'não',
+      habilitado: 'não'
     };
     try {
       await factory.create<Person>('People', {
         email: 'joazinho@email.com',
-        cpf: '131.147.860-49',
+        cpf: '131.147.860-49'
       });
       const personGenerated = await factory.create<Person>('People');
       if (personGenerated.id) {
@@ -289,12 +273,12 @@ describe('src :: api :: services :: people', () => {
       data_nascimento: '03/03/2000',
       email: 'joazinho@email.com',
       senha: '123456',
-      habilitado: 'não',
+      habilitado: 'não'
     };
     try {
       const personWithEmail = await factory.create<Person>('People', {
         email: 'joazinho@email.com',
-        cpf: '131.147.860-49',
+        cpf: '131.147.860-49'
       });
 
       if (personWithEmail.id) {
@@ -315,15 +299,13 @@ describe('src :: api :: services :: people', () => {
         data_nascimento: '03/03/2000',
         email: 'joazinho@email.com',
         senha: '123456',
-        habilitado: 'não',
+        habilitado: 'não'
       };
       await PeopleService.update('6171508962f47a7a91938d30', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -335,7 +317,7 @@ describe('src :: api :: services :: people', () => {
       data_nascimento: '12/12/2020',
       email: 'joazinho@email.com',
       senha: '123456',
-      habilitado: 'não',
+      habilitado: 'não'
     };
     if (personGenerated.id) {
       try {
@@ -343,9 +325,7 @@ describe('src :: api :: services :: people', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidField);
         expect((<InvalidValue>e).description).toBe('Bad Request');
-        expect((<InvalidField>e).name).toBe(
-          "The field 'data_nascimento' is out of the standard format"
-        );
+        expect((<InvalidField>e).name).toBe("The field 'data_nascimento' is out of the standard format");
       }
     }
   });

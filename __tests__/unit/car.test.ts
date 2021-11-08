@@ -12,7 +12,7 @@ const carData = {
   cor: 'Verde',
   ano: 2021,
   acessorios: [{ descricao: 'Ar-condicionado' }],
-  quantidadePassageiros: 5,
+  quantidadePassageiros: 5
 };
 
 describe('src :: api :: services :: car', () => {
@@ -45,15 +45,13 @@ describe('src :: api :: services :: car', () => {
         cor: 'Verde',
         ano: 2021,
         acessorios: [],
-        quantidadePassageiros: 5,
+        quantidadePassageiros: 5
       };
       await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'acessorios' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -64,15 +62,13 @@ describe('src :: api :: services :: car', () => {
         cor: 'Verde',
         ano: 2023,
         acessorios: [{ descricao: 'Ar-condicionado' }],
-        quantidadePassageiros: 5,
+        quantidadePassageiros: 5
       };
       await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'ano' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -83,15 +79,13 @@ describe('src :: api :: services :: car', () => {
         cor: 'Verde',
         ano: 1949,
         acessorios: [{ descricao: 'Ar-condicionado' }],
-        quantidadePassageiros: 5,
+        quantidadePassageiros: 5
       };
       await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'ano' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -101,19 +95,14 @@ describe('src :: api :: services :: car', () => {
         modelo: 'GM S10 2.8',
         cor: 'Verde',
         ano: 2021,
-        acessorios: [
-          { descricao: 'Ar-condicionado' },
-          { descricao: 'Ar-condicionado' },
-        ],
-        quantidadePassageiros: 5,
+        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        quantidadePassageiros: 5
       };
       await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'acessorios' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -136,7 +125,7 @@ describe('src :: api :: services :: car', () => {
 
     const result = await CarService.list({
       limit: `${carTemp.length}`,
-      offset: '0',
+      offset: '0'
     });
 
     expect(result.veiculos.length).toEqual(carTemp.length);
@@ -146,13 +135,11 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.createMany<Car>('Car', 5);
 
     const result = await CarService.list({
-      descricao: car[0].acessorios[0].descricao as string,
+      descricao: car[0].acessorios[0].descricao as string
     });
 
     result.veiculos.forEach((element) => {
-      expect(element.acessorios[0].descricao).toBe(
-        car[0].acessorios[0].descricao
-      );
+      expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao);
     });
   });
 
@@ -180,9 +167,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -192,9 +177,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -219,9 +202,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -231,9 +212,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -248,15 +227,13 @@ describe('src :: api :: services :: car', () => {
       cor: 'Verde',
       ano: 2021,
       acessorios: [{ descricao: 'Ar-condicionado' }],
-      quantidadePassageiros: 5,
+      quantidadePassageiros: 5
     };
     if (car.id) {
       const result = await CarService.update(car.id, tempData);
 
       expect(result.id).toBe(car.id);
-      expect(result.acessorios[0].descricao).toBe(
-        tempData.acessorios[0].descricao
-      );
+      expect(result.acessorios[0].descricao).toBe(tempData.acessorios[0].descricao);
       expect(result.modelo).toBe('Abacaxi');
       expect(result.ano).toBe(tempData.ano);
       expect(result.cor).toBe(tempData.cor);
@@ -271,7 +248,7 @@ describe('src :: api :: services :: car', () => {
         cor: 'Verde',
         ano: 2023,
         acessorios: [],
-        quantidadePassageiros: 5,
+        quantidadePassageiros: 5
       };
       if (car.id) {
         await CarService.update(car.id, tempData);
@@ -279,9 +256,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'acessorios' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -293,7 +268,7 @@ describe('src :: api :: services :: car', () => {
         cor: 'Verde',
         ano: 2023,
         acessorios: [{ descricao: 'Ar-condicionado' }],
-        quantidadePassageiros: 5,
+        quantidadePassageiros: 5
       };
       if (car.id) {
         await CarService.update(car.id, tempData);
@@ -301,9 +276,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'ano' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -315,7 +288,7 @@ describe('src :: api :: services :: car', () => {
         cor: 'Verde',
         ano: 1949,
         acessorios: [{ descricao: 'Ar-condicionado' }],
-        quantidadePassageiros: 5,
+        quantidadePassageiros: 5
       };
       if (car.id) {
         await CarService.update(car.id, tempData);
@@ -323,9 +296,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'ano' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'ano' is out of the standard format");
     }
   });
 
@@ -336,11 +307,8 @@ describe('src :: api :: services :: car', () => {
         modelo: 'GM S10 2.8',
         cor: 'Verde',
         ano: 2021,
-        acessorios: [
-          { descricao: 'Ar-condicionado' },
-          { descricao: 'Ar-condicionado' },
-        ],
-        quantidadePassageiros: 5,
+        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        quantidadePassageiros: 5
       };
 
       if (car.id) {
@@ -349,9 +317,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'acessorios' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 
@@ -361,19 +327,14 @@ describe('src :: api :: services :: car', () => {
         modelo: 'GM S10 2.8',
         cor: 'Verde',
         ano: 2021,
-        acessorios: [
-          { descricao: 'Ar-condicionado' },
-          { descricao: 'Ar-condicionado' },
-        ],
-        quantidadePassageiros: 5,
+        acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
+        quantidadePassageiros: 5
       };
       await CarService.update('6171508962f47a7a91938d30', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        'Value 6171508962f47a7a91938d30 not found'
-      );
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 
@@ -385,11 +346,7 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: 'Ar-condicionado' };
 
-    const carResult = await CarService.updateAccessory(
-      car.id as string,
-      car.acessorios[0].id as string,
-      tempData
-    );
+    const carResult = await CarService.updateAccessory(car.id as string, car.acessorios[0].id as string, tempData);
 
     expect(carResult.id).toBe(car.id);
     expect(carResult.ano).toBe(car.ano);
@@ -404,11 +361,7 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
 
-    const carResult = await CarService.updateAccessory(
-      car.id as string,
-      car.acessorios[0].id as string,
-      tempData
-    );
+    const carResult = await CarService.updateAccessory(car.id as string, car.acessorios[0].id as string, tempData);
 
     expect(carResult.id).toBe(car.id);
     expect(carResult.ano).toBe(car.ano);
@@ -422,17 +375,11 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory(
-        '156',
-        car.acessorios[0].id as string,
-        tempData
-      );
+      await CarService.updateAccessory('156', car.acessorios[0].id as string, tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'id' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
@@ -440,11 +387,7 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory(
-        '6171508962f47a7a91938d30',
-        car.acessorios[0].id as string,
-        tempData
-      );
+      await CarService.updateAccessory('6171508962f47a7a91938d30', car.acessorios[0].id as string, tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
@@ -462,9 +405,7 @@ describe('src :: api :: services :: car', () => {
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe(
-        "The field 'idAccessory' is out of the standard format"
-      );
+      expect((<InvalidField>e).name).toBe("The field 'idAccessory' is out of the standard format");
     }
   });
 
@@ -472,17 +413,11 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory(
-        car.id as string,
-        '6171508962f47a7a91938d30',
-        tempData
-      );
+      await CarService.updateAccessory(car.id as string, '6171508962f47a7a91938d30', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        `Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 not found`
-      );
+      expect((<NotFound>e).name).toBe(`Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 not found`);
     }
   });
 });

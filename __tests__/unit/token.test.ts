@@ -6,7 +6,7 @@ describe('src :: api :: services :: token', () => {
     const result = await generateToken({
       email: 'jao@mail.com',
       habilitado: 'sim',
-      id: 'sajhdjaks45454asd4sa5d465as4',
+      id: 'sajhdjaks45454asd4sa5d465as4'
     });
 
     expect(result).toBeDefined();

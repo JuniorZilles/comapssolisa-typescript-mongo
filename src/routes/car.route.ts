@@ -11,12 +11,7 @@ export default (prefix = '/car'): Router => {
   router.post(`${prefix}/`, PostPutCarValidation, CarController.create);
   router.get(`${prefix}/`, GetCarValidation, CarController.get);
   router.get(`${prefix}/:id`, IdValidation, CarController.getById);
-  router.put(
-    `${prefix}/:id`,
-    IdValidation,
-    PostPutCarValidation,
-    CarController.update
-  );
+  router.put(`${prefix}/:id`, IdValidation, PostPutCarValidation, CarController.update);
   router.delete(`${prefix}/:id`, IdValidation, CarController.delete);
   router.patch(
     `${prefix}/:id/acessorios/:idAccessory`,

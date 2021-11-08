@@ -20,7 +20,7 @@ describe('src :: api :: controllers :: authenticate', () => {
 
   test('Should authenticate and return token, email, habilitado', async () => {
     const personData = await factory.create<Person>('People', {
-      senha: '123456',
+      senha: '123456'
     });
     const response = await request(app)
       .post(PREFIX)
@@ -34,9 +34,7 @@ describe('src :: api :: controllers :: authenticate', () => {
 
   test('Should not authenticate and return status 400 with invalid field', async () => {
     const personData = await factory.create<Person>('People');
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ email: personData.email, senha: '123456' });
+    const response = await request(app).post(PREFIX).send({ email: personData.email, senha: '123456' });
 
     const { body } = response;
 
@@ -47,9 +45,7 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   test('Should not authenticate and return status 404 with not found value', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ email: 'joazinho@mail.com', senha: '123456' });
+    const response = await request(app).post(PREFIX).send({ email: 'joazinho@mail.com', senha: '123456' });
 
     const { body } = response;
 
@@ -71,9 +67,7 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   test('Should return 400 with validation errors for missing password', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ email: 'joazinho@mail.com' });
+    const response = await request(app).post(PREFIX).send({ email: 'joazinho@mail.com' });
 
     const { body } = response;
 
@@ -84,9 +78,7 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   test('Should return 400 with validation errors for password that is empty', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ email: 'joazinho@mail.com', senha: '' });
+    const response = await request(app).post(PREFIX).send({ email: 'joazinho@mail.com', senha: '' });
 
     const { body } = response;
 
@@ -97,24 +89,18 @@ describe('src :: api :: controllers :: authenticate', () => {
   });
 
   test('Should return 400 with validation errors for password that has less than 6 characters', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ email: 'joazinho@mail.com', senha: '125' });
+    const response = await request(app).post(PREFIX).send({ email: 'joazinho@mail.com', senha: '125' });
 
     const { body } = response;
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
     expect(body[0].description).toBe('senha');
-    expect(body[0].name).toBe(
-      '"senha" length must be at least 6 characters long'
-    );
+    expect(body[0].name).toBe('"senha" length must be at least 6 characters long');
   });
 
   test('Should return 400 with validation errors for invalid email', async () => {
-    const response = await request(app)
-      .post(PREFIX)
-      .send({ email: 'joazinho', senha: '123456' });
+    const response = await request(app).post(PREFIX).send({ email: 'joazinho', senha: '123456' });
 
     const { body } = response;
 

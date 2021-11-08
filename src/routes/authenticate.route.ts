@@ -4,10 +4,6 @@ import AuthenticateValidation from '@validations/authentication/authenticationVa
 
 export default (prefix = '/authenticate'): Router => {
   const router = Router();
-  router.post(
-    `${prefix}/`,
-    AuthenticateValidation,
-    AuthenticateController.authenticate
-  );
+  router.post(`${prefix}/`, AuthenticateValidation, AuthenticateController.authenticate);
   return router;
 };

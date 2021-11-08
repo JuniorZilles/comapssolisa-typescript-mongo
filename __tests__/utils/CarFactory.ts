@@ -7,6 +7,6 @@ factory.define('Car', Car, {
   cor: factory.sequence(() => faker.vehicle.color()),
   ano: factory.sequence(() => faker.date.past().getFullYear()),
   acessorios: [{ descricao: factory.sequence(() => faker.vehicle.fuel()) }],
-  quantidadePassageiros: factory.sequence(() => faker.datatype.number(5)),
+  quantidadePassageiros: factory.sequence(() => faker.datatype.number(5))
 });
 export default factory;

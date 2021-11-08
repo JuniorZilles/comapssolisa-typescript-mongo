@@ -9,12 +9,7 @@ export default (prefix = '/rental'): Router => {
   router.post(`${prefix}/`, PostPutRentalValidation, RentalController.create);
   router.get(`${prefix}/`, GetRentalValidation, RentalController.getAll);
   router.get(`${prefix}/:id`, IdValidation, RentalController.getById);
-  router.put(
-    `${prefix}/:id`,
-    IdValidation,
-    PostPutRentalValidation,
-    RentalController.update
-  );
+  router.put(`${prefix}/:id`, IdValidation, PostPutRentalValidation, RentalController.update);
   router.delete(`${prefix}/:id`, IdValidation, RentalController.delete);
   return router;
 };

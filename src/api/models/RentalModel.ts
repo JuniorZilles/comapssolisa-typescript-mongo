@@ -9,50 +9,50 @@ const RentalSchema = new mongoose.Schema({
     {
       cep: {
         type: String,
-        required: true,
+        required: true
       },
       number: {
         type: String,
-        required: true,
+        required: true
       },
       complemento: {
         type: String,
-        required: false,
+        required: false
       },
       bairro: {
         type: String,
-        required: true,
+        required: true
       },
       localidade: {
         type: String,
-        required: true,
+        required: true
       },
       logradouro: {
         type: String,
-        required: true,
+        required: true
       },
       uf: {
         type: String,
-        required: true,
+        required: true
       },
       isFilial: {
         type: Boolean,
-        required: true,
-      },
-    },
+        required: true
+      }
+    }
   ],
   dataCriacao: {
     type: Date,
     default: Date.now,
     immutable: true,
-    transform: () => undefined,
+    transform: () => undefined
   },
   dataAtualizacao: {
     type: Date,
     default: Date.now,
-    transform: () => undefined,
+    transform: () => undefined
   },
-  __v: { type: Number, select: false, transform: () => undefined },
+  __v: { type: Number, select: false, transform: () => undefined }
 });
 
 export default Model('Rental', RentalSchema);

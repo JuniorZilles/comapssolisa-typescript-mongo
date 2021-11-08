@@ -15,15 +15,15 @@ const rentalData = {
     {
       cep: '96200-200',
       number: '1234',
-      isFilial: false,
+      isFilial: false
     },
     {
       cep: '96200-500',
       number: '5678',
       complemento: 'Muro A',
-      isFilial: true,
-    },
-  ],
+      isFilial: true
+    }
+  ]
 };
 
 describe('src :: api :: controllers :: rental', () => {
@@ -80,9 +80,9 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -102,9 +102,9 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -120,7 +120,7 @@ describe('src :: api :: controllers :: rental', () => {
       nome: 'Trevor Rental',
       cnpj: '16.670.085/0001-55',
       atividades: 'Aluguel de Carros E Gestão de Frotas',
-      endereco: [],
+      endereco: []
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -140,14 +140,14 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -160,7 +160,7 @@ describe('src :: api :: controllers :: rental', () => {
 
   test('should return 400 with errors if CNPJ already exists on create rental', async () => {
     const rentalAuto = await factory.create<Rental>('Rental', {
-      cnpj: '08.450.508/0001-01',
+      cnpj: '08.450.508/0001-01'
     });
     const rentalTemp = {
       nome: 'Trevor Rental',
@@ -170,14 +170,14 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -197,14 +197,14 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -224,14 +224,14 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -251,14 +251,14 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const response = await request(app).post(PREFIX).send(rentalTemp);
     const { body } = response;
@@ -266,9 +266,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
     expect(body[0].description).toBe('endereco.0.cep');
-    expect(body[0].name).toBe(
-      '"cep" with incorrect format, it should be XXXXX-XXX'
-    );
+    expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });
 
   /**
@@ -318,9 +316,7 @@ describe('src :: api :: controllers :: rental', () => {
   });
 
   test('should return 404 with error if ID is not found when searching', async () => {
-    const response = await request(app).get(
-      `${PREFIX}/6171508962f47a7a91938d30`
-    );
+    const response = await request(app).get(`${PREFIX}/6171508962f47a7a91938d30`);
     const { body } = response;
 
     expect(response.status).toBe(404);
@@ -353,9 +349,7 @@ describe('src :: api :: controllers :: rental', () => {
   });
 
   test('should return 404 with error if ID is not found when removing', async () => {
-    const response = await request(app).delete(
-      `${PREFIX}/6171508962f47a7a91938d30`
-    );
+    const response = await request(app).delete(`${PREFIX}/6171508962f47a7a91938d30`);
     const { body } = response;
 
     expect(response.status).toBe(404);
@@ -371,9 +365,7 @@ describe('src :: api :: controllers :: rental', () => {
   test('Should update a rental place and return 200 with new database content', async () => {
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalData);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalData);
 
     const { body } = response;
 
@@ -411,15 +403,13 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -438,15 +428,13 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -461,13 +449,11 @@ describe('src :: api :: controllers :: rental', () => {
       nome: 'Trevor Rental',
       cnpj: '16.670.085/0001-55',
       atividades: 'Aluguel de Carros E Gestão de Frotas',
-      endereco: [],
+      endereco: []
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -486,20 +472,18 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -511,7 +495,7 @@ describe('src :: api :: controllers :: rental', () => {
 
   test('should return 400 with errors if CNPJ already exists when updating a rental company', async () => {
     const rentalAuto = await factory.create<Rental>('Rental', {
-      cnpj: '08.450.508/0001-01',
+      cnpj: '08.450.508/0001-01'
     });
     const rentalTemp = {
       nome: 'Trevor Rental',
@@ -521,20 +505,18 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -553,20 +535,18 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -585,20 +565,18 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -617,29 +595,25 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app)
-      .put(`${PREFIX}/${tempData.id}`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
 
     const { body } = response;
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
     expect(body[0].description).toBe('endereco.0.cep');
-    expect(body[0].name).toBe(
-      '"cep" with incorrect format, it should be XXXXX-XXX'
-    );
+    expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });
 
   test('should return 400 with errors if ID is invalid when updating a rental company', async () => {
@@ -662,18 +636,16 @@ describe('src :: api :: controllers :: rental', () => {
         {
           cep: '96200-200',
           number: '1234',
-          isFilial: false,
+          isFilial: false
         },
         {
           cep: '96200-500',
           number: '124',
-          isFilial: true,
-        },
-      ],
+          isFilial: true
+        }
+      ]
     };
-    const response = await request(app)
-      .put(`${PREFIX}/6171508962f47a7a91938d30`)
-      .send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/6171508962f47a7a91938d30`).send(rentalTemp);
 
     const { body } = response;
 
@@ -721,13 +693,11 @@ describe('src :: api :: controllers :: rental', () => {
 
   test('should get all rental company that by nome', async () => {
     const locadora = await factory.create<Rental>('Rental', {
-      nome: 'Trevor Rental',
+      nome: 'Trevor Rental'
     });
     await factory.createMany<Rental>('Rental', 5);
 
-    const response = await request(app).get(
-      `${PREFIX}?offset=0&limit=10&nome=Trevor Rental`
-    );
+    const response = await request(app).get(`${PREFIX}?offset=0&limit=10&nome=Trevor Rental`);
     const { body } = response;
 
     expect(response.status).toBe(200);
@@ -756,15 +726,13 @@ describe('src :: api :: controllers :: rental', () => {
           number: '1234',
           localidade: 'Rio Grande',
           uf: 'SP',
-          isFilial: false,
-        },
-      ],
+          isFilial: false
+        }
+      ]
     });
     await factory.createMany<Rental>('Rental', 5);
 
-    const response = await request(app).get(
-      `${PREFIX}?offset=0&limit=10&bairro=Centro`
-    );
+    const response = await request(app).get(`${PREFIX}?offset=0&limit=10&bairro=Centro`);
     const { body } = response;
 
     expect(response.status).toBe(200);
@@ -783,9 +751,7 @@ describe('src :: api :: controllers :: rental', () => {
   });
 
   test('should not get any rental company', async () => {
-    const response = await request(app).get(
-      `${PREFIX}?offset=0&limit=10&nome=Trevor Rental`
-    );
+    const response = await request(app).get(`${PREFIX}?offset=0&limit=10&nome=Trevor Rental`);
     const { body } = response;
 
     expect(response.status).toBe(200);
@@ -798,9 +764,7 @@ describe('src :: api :: controllers :: rental', () => {
   });
 
   test('should not get any rental company when inputed CNPJ is invalid', async () => {
-    const response = await request(app).get(
-      `${PREFIX}?offset=0&limit=10&cnpj=16670085000155`
-    );
+    const response = await request(app).get(`${PREFIX}?offset=0&limit=10&cnpj=16670085000155`);
     const { body } = response;
 
     expect(response.status).toBe(400);
@@ -810,16 +774,12 @@ describe('src :: api :: controllers :: rental', () => {
   });
 
   test('should not get any rental company when inputed CEP is invalid', async () => {
-    const response = await request(app).get(
-      `${PREFIX}?offset=0&limit=10&cep=15678911`
-    );
+    const response = await request(app).get(`${PREFIX}?offset=0&limit=10&cep=15678911`);
     const { body } = response;
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
     expect(body[0].description).toBe('cep');
-    expect(body[0].name).toBe(
-      '"cep" with incorrect format, it should be XXXXX-XXX'
-    );
+    expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });
 });

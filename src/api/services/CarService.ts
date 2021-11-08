@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
@@ -31,10 +30,7 @@ class CarService {
   }
 
   hasDuplicate(list: Accessory[]) {
-    const newList = list.filter(
-      (elem, index, arr) =>
-        arr.findIndex((t) => t.descricao === elem.descricao) === index
-    );
+    const newList = list.filter((elem, index, arr) => arr.findIndex((t) => t.descricao === elem.descricao) === index);
     if (newList.length !== list.length) {
       throw new InvalidField('acessorios');
     }

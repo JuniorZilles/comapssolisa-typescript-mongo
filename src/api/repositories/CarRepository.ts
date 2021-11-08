@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import CarModel from '@models/CarModel';
 import { CarSearch } from '@interfaces/CarSearch';
 import VehiclesModel from '@models/VehicleModel';
@@ -11,11 +10,7 @@ class CarRepository {
     return (await CarModel.create(payload)) as Car;
   }
 
-  async findAll(
-    payload: CarSearch,
-    offset: number,
-    limit: number
-  ): Promise<VehiclesModel> {
+  async findAll(payload: CarSearch, offset: number, limit: number): Promise<VehiclesModel> {
     const count = await CarModel.countDocuments(payload);
     const cars = await CarModel.find(payload)
       .skip(offset * limit)
@@ -40,14 +35,14 @@ class CarRepository {
 
   async update(id: string, payload: Car) {
     return (await CarModel.findByIdAndUpdate(id, payload, {
-      returnOriginal: false,
+      returnOriginal: false
     }).exec()) as Car;
   }
 
   async updateAccessory(id: string, idAccessory: string, payload: Accessory) {
     const car = await CarModel.findOne({
       _id: id,
-      'acessorios._id': idAccessory,
+      'acessorios._id': idAccessory
     }).exec();
     if (car) {
       const { descricao } = car.acessorios.id(idAccessory);

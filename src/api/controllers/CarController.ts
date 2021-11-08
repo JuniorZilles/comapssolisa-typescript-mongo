@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { CarSearch } from '@interfaces/CarSearch';
 import CarService from '@services/CarService';
 import { Request, Response, NextFunction } from 'express';
@@ -39,9 +38,7 @@ class CarController {
       if (updated) {
         return res.status(200).json(updated);
       }
-      return res
-        .status(400)
-        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
       return next(e);
     }
@@ -54,9 +51,7 @@ class CarController {
       if (removed) {
         return res.status(204).end();
       }
-      return res
-        .status(400)
-        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
       return next(e);
     }
@@ -65,11 +60,7 @@ class CarController {
   async patchAcessorios(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idAccessory } = req.params;
-      const updated = await CarService.updateAccessory(
-        id,
-        idAccessory,
-        req.body
-      );
+      const updated = await CarService.updateAccessory(id, idAccessory, req.body);
       return res.status(200).json(updated);
     } catch (e) {
       return next(e);

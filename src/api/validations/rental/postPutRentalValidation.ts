@@ -4,11 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import transformToArray from '@validations/utils/transformJoiResult';
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void | Response> => {
+export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       nome: Joi.string().trim().required(),
@@ -29,10 +25,10 @@ export default async (
               .required(),
             number: Joi.string().trim().required(),
             complemento: Joi.string().trim(),
-            isFilial: Joi.boolean().valid(true, false).required(),
+            isFilial: Joi.boolean().valid(true, false).required()
           })
         )
-        .required(),
+        .required()
     });
 
     const { error } = schema.validate(req.body, { abortEarly: false });

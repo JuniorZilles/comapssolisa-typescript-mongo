@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import PeopleModel from '@models/PeopleModel';
 import { Person } from '@interfaces/Person';
 import PersonModel from '@models/PersonModel';
@@ -11,15 +10,11 @@ class PeopleRepository {
     return (await PersonModel.create(payload)) as Person;
   }
 
-  async findAll(
-    payload: PersonSearch,
-    offset: number,
-    limit: number
-  ): Promise<PeopleModel> {
+  async findAll(payload: PersonSearch, offset: number, limit: number): Promise<PeopleModel> {
     const count = await PersonModel.countDocuments(payload);
     const people = await PersonModel.find(payload, null, {
       skip: offset * limit,
-      limit,
+      limit
     }).exec();
     const offsets = Math.round(count / limit);
     return new PeopleModel(people, count, limit, offset, offsets);
@@ -40,7 +35,7 @@ class PeopleRepository {
 
   async update(id: string, payload: Person) {
     return (await PersonModel.findByIdAndUpdate(id, payload, {
-      returnOriginal: false,
+      returnOriginal: false
     }).exec()) as Person;
   }
 
@@ -48,7 +43,7 @@ class PeopleRepository {
     return (await PersonModel.findOne(payload, {
       senha: true,
       habilitado: true,
-      email: true,
+      email: true
     }).exec()) as Person;
   }
 
@@ -62,7 +57,7 @@ class PeopleRepository {
 
     return (await PersonModel.findOne(filter, {
       email: true,
-      cpf: true,
+      cpf: true
     }).exec()) as Person;
   }
 }

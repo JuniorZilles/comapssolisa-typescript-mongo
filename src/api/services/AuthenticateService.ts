@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import bcrypt from 'bcryptjs';
 import NotFound from '@errors/NotFound';
 import { generateToken } from '@services/TokenService';
@@ -14,17 +13,13 @@ class AuthenticateService {
     }
 
     if (!(await bcrypt.compare(senha, user.senha))) {
-      throw new InvalidValue(
-        'senha',
-        'The value ****** for senha is invalid',
-        true
-      );
+      throw new InvalidValue('senha', 'The value ****** for senha is invalid', true);
     }
 
     const token = generateToken({
       id: user.id as string,
       email: user.email as string,
-      habilitado: user.habilitado as string,
+      habilitado: user.habilitado as string
     });
 
     return token;

@@ -8,18 +8,18 @@ factory.define('People', PersonModel, {
     () =>
       `${faker.datatype.number({
         max: 999,
-        min: 100,
+        min: 100
       })}.${faker.datatype.number({
         max: 999,
-        min: 100,
+        min: 100
       })}.${faker.datatype.number({
         max: 999,
-        min: 100,
+        min: 100
       })}-${faker.datatype.number({ max: 99, min: 10 })}`
   ),
   data_nascimento: factory.sequence(() => faker.datatype.datetime()),
   email: factory.sequence(() => `${faker.internet.email()}`),
   senha: factory.sequence(() => faker.internet.password()),
-  habilitado: faker.random.arrayElement(['sim', 'não']),
+  habilitado: faker.random.arrayElement(['sim', 'não'])
 });
 export default factory;

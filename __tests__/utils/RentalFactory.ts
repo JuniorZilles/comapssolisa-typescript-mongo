@@ -8,16 +8,16 @@ factory.define('Rental', Rental, {
     () =>
       `${faker.datatype.number({
         max: 99,
-        min: 10,
+        min: 10
       })}.${faker.datatype.number({
         max: 999,
-        min: 100,
+        min: 100
       })}.${faker.datatype.number({
         max: 999,
-        min: 100,
+        min: 100
       })}/${faker.datatype.number({
         max: 9999,
-        min: 1000,
+        min: 1000
       })}-${faker.datatype.number({ max: 99, min: 10 })}`
   ),
   atividades: factory.sequence(() => `${faker.company.catchPhrase()}`),
@@ -27,7 +27,7 @@ factory.define('Rental', Rental, {
         () =>
           `${faker.datatype.number({
             max: 99999,
-            min: 10000,
+            min: 10000
           })}-${faker.datatype.number({ max: 999, min: 100 })}`
       ),
       number: factory.sequence(() => `${faker.random.alpha()}`),
@@ -35,14 +35,14 @@ factory.define('Rental', Rental, {
       uf: factory.sequence(() => `${faker.address.stateAbbr()}`),
       bairro: factory.sequence(() => `${faker.address.secondaryAddress()}`),
       localidade: factory.sequence(() => `${faker.address.cityName()}`),
-      isFilial: factory.sequence(() => `${!Math.round(Math.random())}`),
+      isFilial: factory.sequence(() => `${!Math.round(Math.random())}`)
     },
     {
       cep: factory.sequence(
         () =>
           `${faker.datatype.number({
             max: 99999,
-            min: 10000,
+            min: 10000
           })}-${faker.datatype.number({ max: 999, min: 100 })}`
       ),
       logradouro: factory.sequence(() => `${faker.address.streetName()}`),
@@ -50,8 +50,8 @@ factory.define('Rental', Rental, {
       bairro: factory.sequence(() => `${faker.address.secondaryAddress()}`),
       localidade: factory.sequence(() => `${faker.address.cityName()}`),
       number: factory.sequence(() => `${faker.random.alpha()}`),
-      isFilial: factory.sequence(() => `${!Math.round(Math.random())}`),
-    },
-  ],
+      isFilial: factory.sequence(() => `${!Math.round(Math.random())}`)
+    }
+  ]
 });
 export default factory;

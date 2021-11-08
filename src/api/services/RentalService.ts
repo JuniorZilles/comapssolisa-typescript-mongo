@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable class-methods-use-this */
 import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
@@ -27,17 +26,11 @@ class RentalService {
       return address.isFilial === false;
     });
     if (indexes.length > 1) {
-      throw new InvalidValue(
-        'Bad Request',
-        `isFilial has more than one headquarters`,
-        true
-      );
+      throw new InvalidValue('Bad Request', `isFilial has more than one headquarters`, true);
     }
   }
 
-  private async getCepLocations(
-    addresses: EnderecoPayload[]
-  ): Promise<Endereco[]> {
+  private async getCepLocations(addresses: EnderecoPayload[]): Promise<Endereco[]> {
     const addressesNew: Endereco[] = await Promise.all(
       addresses.map(async function findCep(address) {
         const { cep } = address;
@@ -54,10 +47,7 @@ class RentalService {
     return addressesNew;
   }
 
-  private async checkIfExistsCNPJ(
-    cnpj: string,
-    id: string | undefined = undefined
-  ) {
+  private async checkIfExistsCNPJ(cnpj: string, id: string | undefined = undefined) {
     const result = await RentalRepository.getRentalByCNPJ(cnpj, id);
     if (result) {
       if (result.id !== id) {
@@ -144,11 +134,7 @@ class RentalService {
       offset = parseInt(payload.offset, 10);
       payload.offset = undefined;
     }
-    return (await RentalRepository.findAll(
-      payload,
-      offset,
-      limit
-    )) as RentalsModel;
+    return (await RentalRepository.findAll(payload, offset, limit)) as RentalsModel;
   }
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import AuthenticateService from '@services/AuthenticateService';
 import { Request, Response, NextFunction } from 'express';
 

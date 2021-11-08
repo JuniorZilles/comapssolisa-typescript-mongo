@@ -32,10 +32,7 @@ const validateCNPJ = (cnpj: string): boolean => {
   if (restoDigito13 === 10) {
     restoDigito13 = 0;
   }
-  if (
-    restoDigito12 === parseInt(cnpjSplited[12], 10) &&
-    restoDigito13 === parseInt(cnpjSplited[13], 10)
-  ) {
+  if (restoDigito12 === parseInt(cnpjSplited[12], 10) && restoDigito13 === parseInt(cnpjSplited[13], 10)) {
     return true;
   }
   return false;

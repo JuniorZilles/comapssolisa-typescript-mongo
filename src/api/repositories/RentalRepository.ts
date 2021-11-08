@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { Rental, RentalPayload } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
 import { isValid } from '@models/Model';
@@ -10,11 +9,7 @@ class RentalRepository {
     return (await RentalModel.create(paylod)) as Rental;
   }
 
-  async findAll(
-    payload: RentalSearch,
-    offset: number,
-    limit: number
-  ): Promise<RentalsModel> {
+  async findAll(payload: RentalSearch, offset: number, limit: number): Promise<RentalsModel> {
     const count = await RentalModel.countDocuments(payload);
     const rental = (await RentalModel.find(payload)
       .skip(offset * limit)
@@ -39,7 +34,7 @@ class RentalRepository {
 
   async update(id: string, payload: RentalPayload): Promise<Rental> {
     return (await RentalModel.findByIdAndUpdate(id, payload, {
-      returnOriginal: false,
+      returnOriginal: false
     })) as Rental;
   }
 
@@ -52,7 +47,7 @@ class RentalRepository {
     }
 
     return (await RentalModel.findOne(filter, {
-      cnpj: true,
+      cnpj: true
     }).exec()) as Rental;
   }
 }

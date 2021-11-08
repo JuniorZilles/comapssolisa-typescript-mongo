@@ -3,14 +3,10 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import transformToArray from '@validations/utils/transformJoiResult';
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void | Response> => {
+export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
-      descricao: Joi.string().trim().required(),
+      descricao: Joi.string().trim().required()
     }).required();
 
     const { error } = schema.validate(req.body, { abortEarly: false });

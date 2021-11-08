@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import RentalService from '@services/RentalService';
 import { NextFunction, Response, Request } from 'express';
 
@@ -28,9 +26,7 @@ class RentalController {
       if (removed) {
         return res.status(204).end();
       }
-      return res
-        .status(400)
-        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
       return next(e);
     }
@@ -42,9 +38,7 @@ class RentalController {
       if (rental) {
         return res.status(200).json(rental);
       }
-      return res
-        .status(400)
-        .send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
       return next(e);
     }

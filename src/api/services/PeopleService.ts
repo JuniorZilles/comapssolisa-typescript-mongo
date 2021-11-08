@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable class-methods-use-this */
 import moment from 'moment';
 import bcrypt from 'bcryptjs';
 import { Person } from '@interfaces/Person';
@@ -13,9 +12,7 @@ import validateCPF from './CpfService';
 moment.locale('pt-BR');
 class PeopleService {
   async create(payload: Person): Promise<PersonSearch> {
-    payload.data_nascimento = this.isOlderAndTransfromToDateString(
-      payload.data_nascimento as string
-    );
+    payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento as string);
     const { cpf, email } = payload;
     this.checkCpf(cpf);
     await this.checkIfExistsEmailOrCpf(email, cpf);
@@ -24,11 +21,7 @@ class PeopleService {
     return person;
   }
 
-  private async checkIfExistsEmailOrCpf(
-    email: string,
-    cpf: string,
-    id: string | undefined = undefined
-  ) {
+  private async checkIfExistsEmailOrCpf(email: string, cpf: string, id: string | undefined = undefined) {
     const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
     if (result) {
       if (result.id !== id) {
@@ -83,9 +76,7 @@ class PeopleService {
       payload.senha = undefined;
     }
     if (payload.data_nascimento) {
-      payload.data_nascimento = this.transfromToDateString(
-        payload.data_nascimento as string
-      );
+      payload.data_nascimento = this.transfromToDateString(payload.data_nascimento as string);
     }
     return PeopleRepository.findAll(payload, offset, limit);
   }
@@ -105,9 +96,7 @@ class PeopleService {
 
   async update(id: string, payload: Person) {
     await this.getById(id);
-    payload.data_nascimento = this.isOlderAndTransfromToDateString(
-      payload.data_nascimento as string
-    );
+    payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento as string);
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }

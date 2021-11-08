@@ -10,13 +10,13 @@ const PersonSchema = new mongoose.Schema({
   data_nascimento: {
     type: Date,
     required: true,
-    transform: (val: Date) => moment(val).format('DD/MM/YYYY'),
+    transform: (val: Date) => moment(val).format('DD/MM/YYYY')
   },
   email: {
     type: String,
     required: true,
     lowercase: true,
-    unique: true,
+    unique: true
   },
   senha: { type: String, required: true, select: false },
   habilitado: { type: String, required: true, enum: ['sim', 'não'] },
@@ -24,14 +24,14 @@ const PersonSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     immutable: true,
-    transform: () => undefined,
+    transform: () => undefined
   },
   dataAtualizacao: {
     type: Date,
     default: Date.now,
-    transform: () => undefined,
+    transform: () => undefined
   },
-  __v: { type: Number, transform: () => undefined },
+  __v: { type: Number, transform: () => undefined }
 });
 
 PersonSchema.pre('save', async function onSave(next) {
