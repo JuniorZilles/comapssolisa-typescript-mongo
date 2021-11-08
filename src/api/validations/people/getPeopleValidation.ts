@@ -17,7 +17,7 @@ export default async (
       nome: Joi.string().trim(),
       cpf: Joi.string()
         .trim()
-        .regex(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/)
+        .regex(/\d{3}.\d{3}.\d{3}-\d{2}/)
         .message('Invalid CPF'),
       data_nascimento: JoiDate.date().format('DD/MM/YYYY'),
       email: Joi.string().trim().email(),

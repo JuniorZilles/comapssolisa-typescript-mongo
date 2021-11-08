@@ -14,7 +14,7 @@ export default async (
       nome: Joi.string().trim().required(),
       cnpj: Joi.string()
         .trim()
-        .regex(/[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/)
+        .regex(/\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}/)
         .message('"cnpj" has a invalid format')
         .required(),
       atividades: Joi.string().trim().required(),
@@ -24,7 +24,7 @@ export default async (
           Joi.object({
             cep: Joi.string()
               .trim()
-              .regex(/[0-9]{5}\-?[0-9]{3}/)
+              .regex(/\d{5}-\d{3}/)
               .message('"cep" with incorrect format, it should be XXXXX-XXX')
               .required(),
             number: Joi.string().trim().required(),
