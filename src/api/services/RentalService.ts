@@ -14,7 +14,7 @@ import validateCNPJ from './CnpjService';
 
 class RentalService {
   async create(payload: RentalPayload): Promise<Rental> {
-    this.checkCNPJ(payload.cnpj);
+    this.checkIfValidCNPJ(payload.cnpj);
     await this.checkIfExistsCNPJ(payload.cnpj);
     this.checkIfExistsMoreThanOneFilial(payload.endereco);
     payload.endereco = await this.getCepLocations(payload.endereco);
@@ -72,15 +72,15 @@ class RentalService {
     }
   }
 
-  private checkCNPJ(cnpj: string): void {
+  private checkIfValidCNPJ(cnpj: string): void {
     if (!validateCNPJ(cnpj)) {
       throw new InvalidValue('invalid', `CNPJ ${cnpj} is invalid`, true);
     }
   }
 
   async update(id: string, payload: RentalPayload): Promise<Rental> {
-    this.checkCNPJ(payload.cnpj);
-    await this.checkIfExistsCNPJ(payload.cnpj);
+    this.checkIfValidCNPJ(payload.cnpj);
+    await this.checkIfExistsCNPJ(payload.cnpj, id);
     this.checkIfExistsMoreThanOneFilial(payload.endereco);
     payload.endereco = await this.getCepLocations(payload.endereco);
     await this.getById(id);
