@@ -24,6 +24,10 @@
       "description": "CRUD de pessoas da Compassolisa"
     },
     {
+      "name": "Rental",
+      "description": "CRUD de locadoras da Compassolisa"
+    },
+    {
       "name": "Authenticate",
       "description": "Autenticação das pessoas da Compassolisa"
     }
@@ -45,7 +49,7 @@
           "Car"
         ],
         "summary": "Inclusão de veículos da Compassolisa",
-        "description": "A inclusão é realizada e retornado os dados com o id e data da criação",
+        "description": "A inclusão é realizada e retornado os dados com o id",
         "requestBody": {
           "content": {
             "application/json": {
@@ -285,7 +289,7 @@
           "Car"
         ],
         "summary": "Atualização de veículos da Compassolisa",
-        "description": "A atualização pode ser feita com apenas um campo",
+        "description": "Atualiza os registros de um veículo",
         "requestBody": {
           "content": {
             "application/json": {
@@ -297,8 +301,15 @@
           "required": true
         },
         "responses": {
-          "204": {
-            "description": "Atualização realizada com sucesso"
+          "200": {
+            "description": "Atualização realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/car-response"
+                }
+              }
+            }
           },
           "400": {
             "description": "Erro de validação",
@@ -401,6 +412,26 @@
       }
     },
     "/car/{id}/acessorios/{idAccessory}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id do carro",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "idAccessory",
+          "in": "path",
+          "description": "id da descrição",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "patch": {
         "security": [
           {
@@ -482,7 +513,7 @@
           "People"
         ],
         "summary": "Inclusão de uma pessoa no Compassolisa",
-        "description": "A inclusão é realizada e retornado os dados com o id e data da criação",
+        "description": "A inclusão é realizada e retornado os dados com o id",
         "requestBody": {
           "content": {
             "application/json": {
@@ -544,7 +575,8 @@
             "name": "cpf",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "XXX.XXX.XXX-XX"
             }
           },
           {
@@ -552,7 +584,8 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "example": "01/11/2021"
             }
           },
           {
@@ -689,7 +722,7 @@
           "People"
         ],
         "summary": "Atualização de uma pessoa da Compassolisa",
-        "description": "A atualização pode ser feita com apenas um campo",
+        "description": "Atualiza os registros da pessoa",
         "requestBody": {
           "content": {
             "application/json": {
@@ -701,8 +734,15 @@
           "required": true
         },
         "responses": {
-          "204": {
-            "description": "Atualização realizada com sucesso"
+          "200": {
+            "description": "Atualização realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/person-response"
+                }
+              }
+            }
           },
           "400": {
             "description": "Erro de validação",
@@ -820,6 +860,329 @@
           }
         }
       }
+    },
+    "/rental": {
+      "post": {
+        "tags": [
+          "Rental"
+        ],
+        "summary": "Inclusão de uma locadora do Compassolisa",
+        "description": "A inclusão é realizada e retornado os dados com o id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rental-request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Inclusão realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rental-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Rental"
+        ],
+        "summary": "Consulta sobre as locadoras cadastradas no Compassolisa",
+        "description": "A consulta retorna uma lista de locadoras que atendem aos parametros informados",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cnpj",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "XX.XXX.XXX/XXXX-XX"   
+            }
+          },
+          {
+            "name": "atividades",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cep",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "XXXXX-XXX" 
+            }
+          },
+          {
+            "name": "logradouro",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "complemento",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bairro",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "number",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "localidade",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uf",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rental-response-list"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rental/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id da locadora",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Rental"
+        ],
+        "summary": "Consulta uma locadora da Compassolisa",
+        "description": "A consulta é realizada utilizando o atributo id",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rental-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Rental"
+        ],
+        "summary": "Atualização de uma locadora da Compassolisa",
+        "description": "Atualiza os registros da locadora",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rental-request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Atualização realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rental-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Rental"
+        ],
+        "summary": "Remoção de uma locadora da Compassolisa",
+        "description": "Uma locadora é removida ao realizar a requisição",
+        "responses": {
+          "204": {
+            "description": "Remoção realizada com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar a solicitação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erro"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -844,6 +1207,120 @@
           }
         }
       },
+      "rental-request": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "cnpj": {
+            "type": "string",
+            "example": "XX.XXX.XXX/XXXX-XX"   
+          },
+          "atividades": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cep": {
+                  "type": "string",
+                  "example": "XXXXX-XXX"   
+                },
+                "number": {
+                  "type": "string"
+                },
+                "isFilial": {
+                  "type": "boolean"
+                },
+                "complemento": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "rental-response": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "cnpj": {
+            "type": "string",
+            "example": "XX.XXX.XXX/XXXX-XX"   
+          },
+          "atividades": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cep": {
+                  "type": "string",
+                  "example": "XXXXX-XXX" 
+                },
+                "number": {
+                  "type": "string"
+                },
+                "isFilial": {
+                  "type": "boolean"
+                },
+                "complemento": {
+                  "type": "string"
+                },
+                "bairro": {
+                  "type": "string"
+                },
+                "logradouro": {
+                  "type": "string"
+                },
+                "localidade": {
+                  "type": "string"
+                },
+                "uf": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "rental-response-list": {
+        "type": "object",
+        "properties": {
+          "locadoras": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/rental-response"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "offsets": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "person-request": {
         "type": "object",
         "properties": {
@@ -851,11 +1328,13 @@
             "type": "string"
           },
           "cpf": {
-            "type": "string"
+            "type": "string",
+              "example": "XXX.XXX.XXX-XX"
           },
           "data_nascimento": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "example": "01/11/2021"
           },
           "email": {
             "type": "string",
@@ -885,11 +1364,13 @@
             "type": "string"
           },
           "cpf": {
-            "type": "string"
+            "type": "string",
+            "example": "XXX.XXX.XXX-XX"
           },
           "data_nascimento": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "example": "01/11/2021"
           },
           "email": {
             "type": "string",
