@@ -46,6 +46,7 @@ describe('src :: api :: services :: authenticate', () => {
       );
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('senha');
       expect((<InvalidValue>e).name).toBe(
         'The value ****** for senha is invalid'
       );
@@ -60,6 +61,7 @@ describe('src :: api :: services :: authenticate', () => {
       );
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe('Value Joazinho@mail.com not found');
     }
   });

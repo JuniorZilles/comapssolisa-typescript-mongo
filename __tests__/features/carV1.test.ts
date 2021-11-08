@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import request from 'supertest';
 import CarModel from '@models/CarModel';
@@ -73,7 +72,7 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   test('should return 400 when white spaces on descricao', async () => {
-    const temp = await factory.create<Car>('Car');
+    await factory.create<Car>('Car');
     const response = await request(app)
       .post(PREFIX)
       .set(token)
@@ -223,7 +222,7 @@ describe('src :: api :: controllers :: car', () => {
   });
 
   test('should not get any cars when doesnt have any register for the query', async () => {
-    const carTemp = await factory.createMany<Car>('Car', 5);
+    await factory.createMany<Car>('Car', 5);
     const response = await request(app)
       .get(`${PREFIX}?modelo=Chevy`)
       .set(token);

@@ -89,7 +89,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.create(rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('invalid');
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidValue>e).message).toBe(
         'CNPJ 16.670.085/0001-57 is invalid'
       );
@@ -116,7 +116,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.create(rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('conflict');
+      expect((<InvalidValue>e).description).toBe('Conflict');
       expect((<InvalidValue>e).message).toBe(
         'CNPJ 08.450.508/0001-01 already in use'
       );
@@ -145,7 +145,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.create(rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('invalid');
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidValue>e).name).toBe(
         'isFilial has more than one headquarters'
       );
@@ -323,7 +323,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.update(generated.id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('invalid');
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidValue>e).message).toBe(
         'CNPJ 16.670.085/0001-57 is invalid'
       );
@@ -353,7 +353,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.update(rentalAuto1.id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('conflict');
+      expect((<InvalidValue>e).description).toBe('Conflict');
       expect((<InvalidValue>e).message).toBe(
         'CNPJ 08.450.508/0001-01 already in use'
       );
@@ -383,7 +383,7 @@ describe('src :: api :: services :: rental', () => {
       await RentalService.update(generated.id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('invalid');
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidValue>e).name).toBe(
         'isFilial has more than one headquarters'
       );

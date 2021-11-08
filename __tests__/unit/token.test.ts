@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { generateToken, verifyToken } from '@services/TokenService';
 import { JwtPayload } from 'jsonwebtoken';
 
@@ -24,7 +23,7 @@ describe('src :: api :: services :: token', () => {
     const result =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     try {
-      const content = verifyToken(result);
+      verifyToken(result);
     } catch (e) {
       expect(e).toBeInstanceOf(Error);
     }

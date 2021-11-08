@@ -154,7 +154,7 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('invalid');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('isFilial has more than one headquarters');
   });
 
@@ -184,7 +184,7 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('conflict');
+    expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-01 already in use');
   });
 
@@ -238,7 +238,7 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('invalid');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-78 is invalid');
   });
 
@@ -505,7 +505,7 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('invalid');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('isFilial has more than one headquarters');
   });
 
@@ -540,7 +540,7 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('conflict');
+    expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-01 already in use');
   });
 
@@ -604,7 +604,7 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('invalid');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-78 is invalid');
   });
 

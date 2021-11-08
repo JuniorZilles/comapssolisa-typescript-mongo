@@ -38,12 +38,12 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: personData.email, senha: '123456' });
 
-    const person = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(person.length).toEqual(1);
-    expect(person[0].description).toBe('senha');
-    expect(person[0].name).toBe('The value ****** for senha is invalid');
+    expect(body.length).toEqual(1);
+    expect(body[0].description).toBe('senha');
+    expect(body[0].name).toBe('The value ****** for senha is invalid');
   });
 
   test('Should not authenticate and return status 404 with not found value', async () => {
@@ -51,23 +51,23 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: 'joazinho@mail.com', senha: '123456' });
 
-    const person = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(person.length).toEqual(1);
-    expect(person[0].description).toBe('Not Found');
-    expect(person[0].name).toBe('Value joazinho@mail.com not found');
+    expect(body.length).toEqual(1);
+    expect(body[0].description).toBe('Not Found');
+    expect(body[0].name).toBe('Value joazinho@mail.com not found');
   });
 
   test('Should return 400 with validation errors for missing email', async () => {
     const response = await request(app).post(PREFIX).send({ senha: '123456' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('email');
-    expect(value[0].name).toBe('"email" is required');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('email');
+    expect(body[0].name).toBe('"email" is required');
   });
 
   test('Should return 400 with validation errors for missing password', async () => {
@@ -75,12 +75,12 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: 'joazinho@mail.com' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('senha');
-    expect(value[0].name).toBe('"senha" is required');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('senha');
+    expect(body[0].name).toBe('"senha" is required');
   });
 
   test('Should return 400 with validation errors for password that is empty', async () => {
@@ -88,12 +88,12 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: 'joazinho@mail.com', senha: '' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('senha');
-    expect(value[0].name).toBe('"senha" is not allowed to be empty');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('senha');
+    expect(body[0].name).toBe('"senha" is not allowed to be empty');
   });
 
   test('Should return 400 with validation errors for password that has less than 6 characters', async () => {
@@ -101,12 +101,12 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: 'joazinho@mail.com', senha: '125' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('senha');
-    expect(value[0].name).toBe(
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('senha');
+    expect(body[0].name).toBe(
       '"senha" length must be at least 6 characters long'
     );
   });
@@ -116,11 +116,11 @@ describe('src :: api :: controllers :: authenticate', () => {
       .post(PREFIX)
       .send({ email: 'joazinho', senha: '123456' });
 
-    const value = response.body;
+    const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(value.length).toBeGreaterThanOrEqual(1);
-    expect(value[0].description).toBe('email');
-    expect(value[0].name).toBe('"email" must be a valid email');
+    expect(body.length).toBeGreaterThanOrEqual(1);
+    expect(body[0].description).toBe('email');
+    expect(body[0].name).toBe('"email" must be a valid email');
   });
 });

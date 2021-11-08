@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import InvalidField from '@errors/InvalidField';
 import PersonModel from '@models/PersonModel';
 import PeopleService from '@services/PeopleService';
@@ -57,9 +56,10 @@ describe('src :: api :: services :: people', () => {
       habilitado: 'sim',
     };
     try {
-      const person = await PeopleService.create(temp);
+      await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'data_nascimento' is out of the standard format"
       );
@@ -76,11 +76,30 @@ describe('src :: api :: services :: people', () => {
       habilitado: 'sim',
     };
     try {
-      const person1 = await PeopleService.create(temp);
-      const person2 = await PeopleService.create(temp);
+      await PeopleService.create(temp);
+      await PeopleService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('Conflict');
       expect((<InvalidValue>e).name).toBe('CPF 131.147.860-49 already in use');
+    }
+  });
+
+  test('should not create a person if CPF is not valid', async () => {
+    const temp = {
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'sim',
+    };
+    try {
+      await PeopleService.create(temp);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
+      expect((<InvalidValue>e).name).toBe(`CPF ${temp.cpf} is invalid`);
     }
   });
 
@@ -131,9 +150,10 @@ describe('src :: api :: services :: people', () => {
 
   test('should not get a person by ID and throw a InvalidField error', async () => {
     try {
-      const person = await PeopleService.getById('12');
+      await PeopleService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
@@ -142,9 +162,10 @@ describe('src :: api :: services :: people', () => {
 
   test('should not get a person by ID and throw a NotFound error', async () => {
     try {
-      const person = await PeopleService.getById('6171508962f47a7a91938d30');
+      await PeopleService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
@@ -166,9 +187,10 @@ describe('src :: api :: services :: people', () => {
 
   test('should not remove a person by ID and throw a InvalidField error', async () => {
     try {
-      const person = await PeopleService.delete('12');
+      await PeopleService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
@@ -177,9 +199,10 @@ describe('src :: api :: services :: people', () => {
 
   test('should not remove a person by ID and throw a NotFound error', async () => {
     try {
-      const person = await PeopleService.delete('6171508962f47a7a91938d30');
+      await PeopleService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
@@ -224,9 +247,10 @@ describe('src :: api :: services :: people', () => {
         senha: '123456',
         habilitado: 'não',
       };
-      const person = await PeopleService.update('12', tempData);
+      await PeopleService.update('12', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
@@ -243,17 +267,43 @@ describe('src :: api :: services :: people', () => {
       habilitado: 'não',
     };
     try {
-      const personWithEmail = await factory.create<Person>('People', {
+      await factory.create<Person>('People', {
         email: 'joazinho@email.com',
         cpf: '131.147.860-49',
       });
       const personGenerated = await factory.create<Person>('People');
       if (personGenerated.id) {
-        const person = await PeopleService.update(personGenerated.id, tempData);
+        await PeopleService.update(personGenerated.id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('Conflict');
       expect((<InvalidValue>e).name).toBe(`CPF ${tempData.cpf} already in use`);
+    }
+  });
+
+  test('should not update a person if CPF is not valid', async () => {
+    const tempData = {
+      nome: 'joaozinho ciclano',
+      cpf: '131.147.860-',
+      data_nascimento: '03/03/2000',
+      email: 'joazinho@email.com',
+      senha: '123456',
+      habilitado: 'não',
+    };
+    try {
+      const personWithEmail = await factory.create<Person>('People', {
+        email: 'joazinho@email.com',
+        cpf: '131.147.860-49',
+      });
+
+      if (personWithEmail.id) {
+        await PeopleService.update(personWithEmail.id, tempData);
+      }
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
+      expect((<InvalidValue>e).name).toBe(`CPF ${tempData.cpf} is invalid`);
     }
   });
 
@@ -267,12 +317,10 @@ describe('src :: api :: services :: people', () => {
         senha: '123456',
         habilitado: 'não',
       };
-      const person = await PeopleService.update(
-        '6171508962f47a7a91938d30',
-        tempData
-      );
+      await PeopleService.update('6171508962f47a7a91938d30', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
@@ -291,12 +339,10 @@ describe('src :: api :: services :: people', () => {
     };
     if (personGenerated.id) {
       try {
-        const personUpdate = await PeopleService.update(
-          personGenerated.id,
-          tempData
-        );
+        await PeopleService.update(personGenerated.id, tempData);
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidField);
+        expect((<InvalidValue>e).description).toBe('Bad Request');
         expect((<InvalidField>e).name).toBe(
           "The field 'data_nascimento' is out of the standard format"
         );

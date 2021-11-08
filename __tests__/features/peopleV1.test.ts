@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import request from 'supertest';
 import moment from 'moment';
@@ -96,7 +95,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toEqual(1);
-    expect(body[0].description).toBe('InvalidField');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe(
       "The field 'data_nascimento' is out of the standard format"
     );
@@ -134,7 +133,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('invalid');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
   });
 
@@ -211,7 +210,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toEqual(1);
-    expect(body[0].description).toBe('conflict');
+    expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe(`CPF ${peopleData.cpf} already in use`);
   });
 
@@ -255,11 +254,11 @@ describe('src :: api :: controllers :: people', () => {
   });
 
   test('should get all people that by habilitado', async () => {
-    const peopleNoData = await factory.createMany<Person>('People', 5, {
+    await factory.createMany<Person>('People', 5, {
       habilitado: 'sim',
       nome: 'joaozinho',
     });
-    const peopleYesData = await factory.createMany<Person>('People', 5, {
+    await factory.createMany<Person>('People', 5, {
       habilitado: 'sim',
     });
 
@@ -437,7 +436,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toEqual(1);
-    expect(body[0].description).toBe('InvalidField');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe(
       "The field 'data_nascimento' is out of the standard format"
     );
@@ -478,7 +477,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('invalid');
+    expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
   });
 
@@ -559,7 +558,7 @@ describe('src :: api :: controllers :: people', () => {
 
     expect(response.status).toBe(400);
     expect(body.length).toEqual(1);
-    expect(body[0].description).toBe('conflict');
+    expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe(`CPF ${tempData.cpf} already in use`);
   });
 

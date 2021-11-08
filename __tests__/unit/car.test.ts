@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import CarService from '@services/CarService';
 import InvalidField from '@errors/InvalidField';
 import CarModel from '@models/CarModel';
@@ -48,9 +47,10 @@ describe('src :: api :: services :: car', () => {
         acessorios: [],
         quantidadePassageiros: 5,
       };
-      const car = await CarService.create(temp);
+      await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'acessorios' is out of the standard format"
       );
@@ -66,9 +66,10 @@ describe('src :: api :: services :: car', () => {
         acessorios: [{ descricao: 'Ar-condicionado' }],
         quantidadePassageiros: 5,
       };
-      const car = await CarService.create(temp);
+      await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'ano' is out of the standard format"
       );
@@ -84,9 +85,10 @@ describe('src :: api :: services :: car', () => {
         acessorios: [{ descricao: 'Ar-condicionado' }],
         quantidadePassageiros: 5,
       };
-      const car = await CarService.create(temp);
+      await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'ano' is out of the standard format"
       );
@@ -105,9 +107,10 @@ describe('src :: api :: services :: car', () => {
         ],
         quantidadePassageiros: 5,
       };
-      const car = await CarService.create(temp);
+      await CarService.create(temp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'acessorios' is out of the standard format"
       );
@@ -173,9 +176,10 @@ describe('src :: api :: services :: car', () => {
 
   test("should not get a car by it's ID and throw a InvalidField error", async () => {
     try {
-      const result = await CarService.getById('12');
+      await CarService.getById('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
@@ -184,9 +188,10 @@ describe('src :: api :: services :: car', () => {
 
   test("should not get a car by it's ID and throw a NotFound error", async () => {
     try {
-      const result = await CarService.getById('6171508962f47a7a91938d30');
+      await CarService.getById('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
@@ -210,9 +215,10 @@ describe('src :: api :: services :: car', () => {
 
   test("should not remove a car by it's ID and throw a InvalidField error", async () => {
     try {
-      const result = await CarService.delete('12');
+      await CarService.delete('12');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
@@ -221,9 +227,10 @@ describe('src :: api :: services :: car', () => {
 
   test("should not remove a car by it's ID and throw a NotFound error", async () => {
     try {
-      const result = await CarService.delete('6171508962f47a7a91938d30');
+      await CarService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
@@ -271,6 +278,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'acessorios' is out of the standard format"
       );
@@ -292,6 +300,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'ano' is out of the standard format"
       );
@@ -313,6 +322,7 @@ describe('src :: api :: services :: car', () => {
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'ano' is out of the standard format"
       );
@@ -334,10 +344,11 @@ describe('src :: api :: services :: car', () => {
       };
 
       if (car.id) {
-        const result = await CarService.update(car.id, tempData);
+        await CarService.update(car.id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'acessorios' is out of the standard format"
       );
@@ -356,12 +367,10 @@ describe('src :: api :: services :: car', () => {
         ],
         quantidadePassageiros: 5,
       };
-      const result = await CarService.update(
-        '6171508962f47a7a91938d30',
-        tempData
-      );
+      await CarService.update('6171508962f47a7a91938d30', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         'Value 6171508962f47a7a91938d30 not found'
       );
@@ -420,6 +429,7 @@ describe('src :: api :: services :: car', () => {
       );
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'id' is out of the standard format"
       );
@@ -437,6 +447,7 @@ describe('src :: api :: services :: car', () => {
       );
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0].id} not found`
       );
@@ -450,6 +461,7 @@ describe('src :: api :: services :: car', () => {
       await CarService.updateAccessory(car.id as string, '125', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
+      expect((<InvalidField>e).description).toBe('Bad Request');
       expect((<InvalidField>e).name).toBe(
         "The field 'idAccessory' is out of the standard format"
       );
@@ -467,6 +479,7 @@ describe('src :: api :: services :: car', () => {
       );
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe(
         `Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 not found`
       );
