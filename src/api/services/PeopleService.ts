@@ -39,7 +39,7 @@ class PeopleService {
 
   private checkCpf(cpf: string) {
     if (!validateCPF(cpf)) {
-      throw new InvalidValue('invalid', `CPF ${cpf} is invalid`, true);
+      throw new InvalidValue('Bad Request', `CPF ${cpf} is invalid`, true);
     }
   }
 
