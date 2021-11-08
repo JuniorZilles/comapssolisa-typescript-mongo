@@ -11,8 +11,8 @@ class AuthenticateService {
     if (!user) {
       throw new NotFound(email);
     }
-
-    if (!(await bcrypt.compare(senha, user.senha))) {
+    const isSame = await bcrypt.compare(senha, user.senha);
+    if (!isSame) {
       throw new InvalidValue('senha', 'The value ****** for senha is invalid', true);
     }
 
