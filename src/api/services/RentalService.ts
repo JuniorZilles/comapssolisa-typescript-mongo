@@ -94,35 +94,19 @@ class RentalService {
     return rental;
   }
 
-  async getAll(query: RentalSearch): Promise<RentalsModel> {
-    if (query.uf) {
-      query['endereco.uf'] = query.uf;
-      delete query.uf;
-    }
-    if (query.bairro) {
-      query['endereco.bairro'] = query.bairro;
-      delete query.bairro;
-    }
-    if (query.cep) {
-      query['endereco.cep'] = query.cep;
-      delete query.cep;
-    }
-    if (query.complemento) {
-      query['endereco.complemento'] = query.complemento;
-      delete query.complemento;
-    }
-    if (query.localidade) {
-      query['endereco.localidade'] = query.localidade;
-      delete query.localidade;
-    }
-    if (query.logradouro) {
-      query['endereco.logradouro'] = query.logradouro;
-      delete query.logradouro;
-    }
-    if (query.number) {
-      query['endereco.number'] = query.number;
-      delete query.number;
-    }
+  private transformToQuery(query: RentalSearch): RentalSearch {
+    const fields = ['bairro', 'uf', 'cep', 'complemento', 'localidade', 'logradouro', 'number'];
+    fields.forEach(function updateQuery(index) {
+      if (query[index]) {
+        query[`endereco.${index}`] = query[index];
+        delete query[index];
+      }
+    });
+    return query;
+  }
+
+  async getAll(payload: RentalSearch): Promise<RentalsModel> {
+    const query = this.transformToQuery(payload);
     const result = await RentalRepository.findAll(query);
     return result;
   }
