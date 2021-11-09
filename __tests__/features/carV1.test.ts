@@ -174,14 +174,12 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.veiculos.length).toEqual(carTemp.length);
   });
 
-  test('should get all cars by accessory', async () => {
-    const carTemp = await factory.createMany<Car>('Car', 5, {
+  test('should get all two cars by accessory', async () => {
+    await factory.createMany<Car>('Car', 5, {
       acessorios: [{ descricao: 'Ar-condicionado' }]
     });
 
-    const response = await request(app)
-      .get(`${PREFIX}?offset=0&limit=${carTemp.length}&descricao=Ar-condicionado`)
-      .set(token);
+    const response = await request(app).get(`${PREFIX}?offset=0&limit=2&descricao=Ar-condicionado`).set(token);
     const { body } = response;
 
     expect(response.status).toBe(200);
@@ -190,7 +188,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body).toHaveProperty('limit');
     expect(body).toHaveProperty('offset');
     expect(body).toHaveProperty('offsets');
-    expect(body.veiculos.length).toEqual(carTemp.length);
+    expect(body.veiculos.length).toEqual(2);
     body.veiculos.forEach((element: Car) => {
       expect(element.acessorios[0].descricao).toBe('Ar-condicionado');
     });
