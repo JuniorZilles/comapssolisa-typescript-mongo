@@ -241,9 +241,13 @@ describe('src :: api :: controllers :: people', () => {
     expect(response.status).toBe(200);
     expect(body).toHaveProperty('pessoas');
     expect(body).toHaveProperty('total');
+    expect(body.total).toEqual(5);
     expect(body).toHaveProperty('limit');
+    expect(body.limit).toEqual(5);
     expect(body).toHaveProperty('offset');
+    expect(body.offset).toEqual(0);
     expect(body).toHaveProperty('offsets');
+    expect(body.offsets).toEqual(1);
     expect(body.pessoas.length).toEqual(peopleData.length);
   });
 
@@ -262,9 +266,13 @@ describe('src :: api :: controllers :: people', () => {
     expect(response.status).toBe(200);
     expect(body).toHaveProperty('pessoas');
     expect(body).toHaveProperty('total');
+    expect(body.total).toEqual(10);
     expect(body).toHaveProperty('limit');
+    expect(body.limit).toEqual(5);
     expect(body).toHaveProperty('offset');
+    expect(body.offset).toEqual(1);
     expect(body).toHaveProperty('offsets');
+    expect(body.offsets).toEqual(2);
     expect(body.pessoas.length).toEqual(5);
   });
 
@@ -275,9 +283,13 @@ describe('src :: api :: controllers :: people', () => {
     expect(response.status).toBe(200);
     expect(body).toHaveProperty('pessoas');
     expect(body).toHaveProperty('total');
+    expect(body.total).toEqual(0);
     expect(body).toHaveProperty('limit');
+    expect(body.limit).toEqual(5);
     expect(body).toHaveProperty('offset');
+    expect(body.offset).toEqual(1);
     expect(body).toHaveProperty('offsets');
+    expect(body.offsets).toEqual(0);
     expect(body.pessoas.length).toEqual(0);
   });
 

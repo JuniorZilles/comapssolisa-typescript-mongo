@@ -1,6 +1,4 @@
-import { Pagination } from './Pagination';
-
-export interface CarSearch extends Pagination {
+export interface CarSearch {
   modelo?: string;
   cor?: string;
   ano?: number;

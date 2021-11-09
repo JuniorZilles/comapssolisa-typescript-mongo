@@ -1,4 +1,3 @@
-import { CarSearch } from '@interfaces/CarSearch';
 import CarService from '@services/CarService';
 import { Request, Response, NextFunction } from 'express';
 
@@ -14,7 +13,10 @@ class CarController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const cars = await CarService.list(req.query as CarSearch);
+      const { offset, limit, ...query } = req.query;
+      const limitNumber = limit ? parseInt(limit as string, 10) : 100;
+      const offsetNumber = offset ? parseInt(offset as string, 10) : 0;
+      const cars = await CarService.list(offsetNumber, limitNumber, query);
       return res.status(200).json(cars);
     } catch (e) {
       return next(e);

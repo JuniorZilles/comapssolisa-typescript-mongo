@@ -233,7 +233,10 @@ describe('src :: api :: services :: rental', () => {
     const generated = await factory.create<Rental>('Rental');
     if (generated.id) {
       const rental = await RentalService.delete(generated.id);
-      expect(rental).toBe(true);
+      expect(rental.id).toBe(generated.id);
+      expect(rental.cnpj).toBe(generated.cnpj);
+      expect(rental.nome).toBe(generated.nome);
+      expect(rental.atividades).toBe(generated.atividades);
     }
   });
 
@@ -453,7 +456,7 @@ describe('src :: api :: services :: rental', () => {
 
   test('should get 10 paginated rental companies', async () => {
     await factory.createMany<Rental>('Rental', 25);
-    const rentalP0 = await RentalService.getAll({ limit: '5', offset: '0' });
+    const rentalP0 = await RentalService.getAll(0, 5, {});
 
     expect(rentalP0.locadoras.length).toEqual(5);
     expect(rentalP0.offset).toEqual(0);
@@ -461,7 +464,7 @@ describe('src :: api :: services :: rental', () => {
     expect(rentalP0.total).toEqual(25);
     expect(rentalP0.offsets).toEqual(5);
 
-    const rentalP1 = await RentalService.getAll({ limit: '5', offset: '1' });
+    const rentalP1 = await RentalService.getAll(1, 5, {});
     expect(rentalP1.locadoras.length).toEqual(5);
     expect(rentalP1.offset).toEqual(1);
     expect(rentalP1.limit).toEqual(5);
@@ -471,10 +474,10 @@ describe('src :: api :: services :: rental', () => {
 
   test('should get a rental company by cnpj', async () => {
     const tempData = await factory.createMany<Rental>('Rental', 5);
-    const rental = await RentalService.getAll({ cnpj: tempData[0].cnpj });
+    const rental = await RentalService.getAll(0, 100, { cnpj: tempData[0].cnpj });
 
     expect(rental).toHaveProperty('limit');
-    expect(rental.limit).toEqual(10);
+    expect(rental.limit).toEqual(100);
     expect(rental).toHaveProperty('offset');
     expect(rental.offset).toEqual(0);
     expect(rental).toHaveProperty('offsets');
@@ -538,10 +541,10 @@ describe('src :: api :: services :: rental', () => {
       ]
     });
 
-    const rental = await RentalService.getAll({ uf: 'RS' });
+    const rental = await RentalService.getAll(0, 100, { uf: 'RS' });
 
     expect(rental).toHaveProperty('limit');
-    expect(rental.limit).toEqual(10);
+    expect(rental.limit).toEqual(100);
     expect(rental).toHaveProperty('offset');
     expect(rental.offset).toEqual(0);
     expect(rental).toHaveProperty('offsets');
@@ -559,10 +562,10 @@ describe('src :: api :: services :: rental', () => {
   test('should return nothing if doesnt match a rental company by uf', async () => {
     await factory.createMany<Rental>('Rental', 5);
 
-    const rental = await RentalService.getAll({ uf: 'RS' });
+    const rental = await RentalService.getAll(0, 100, { uf: 'RS' });
 
     expect(rental).toHaveProperty('limit');
-    expect(rental.limit).toEqual(10);
+    expect(rental.limit).toEqual(100);
     expect(rental).toHaveProperty('offset');
     expect(rental.offset).toEqual(0);
     expect(rental).toHaveProperty('offsets');

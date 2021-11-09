@@ -12,16 +12,16 @@ class RentalRepository {
   async findAll(payload: RentalSearch, offset: number, limit: number): Promise<RentalsModel> {
     const count = await RentalModel.countDocuments(payload);
     const rental = (await RentalModel.find(payload)
-      .skip(offset * limit)
-      .limit(limit)
+      .skip((offset as number) * (limit as number))
+      .limit(limit as number)
       .exec()) as Rental[];
     const offsets = Math.round(count / limit);
     return new RentalsModel(rental, count, limit, offset, offsets);
   }
 
-  async delete(id: string): Promise<boolean> {
-    await RentalModel.findByIdAndDelete(id);
-    return true;
+  async delete(id: string): Promise<Rental> {
+    const result = (await RentalModel.findByIdAndDelete(id).exec()) as Rental;
+    return result;
   }
 
   async findById(id: string): Promise<Rental> {

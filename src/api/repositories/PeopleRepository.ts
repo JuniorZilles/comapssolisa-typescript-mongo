@@ -12,17 +12,17 @@ class PeopleRepository {
 
   async findAll(payload: PersonSearch, offset: number, limit: number): Promise<PeopleModel> {
     const count = await PersonModel.countDocuments(payload);
-    const people = await PersonModel.find(payload, null, {
-      skip: offset * limit,
-      limit
-    }).exec();
+    const people = (await PersonModel.find(payload)
+      .skip((offset as number) * (limit as number))
+      .limit(limit as number)
+      .exec()) as PersonSearch[];
     const offsets = Math.round(count / limit);
     return new PeopleModel(people, count, limit, offset, offsets);
   }
 
-  async delete(id: string): Promise<boolean> {
-    await PersonModel.findByIdAndRemove(id).exec();
-    return true;
+  async delete(id: string): Promise<Person> {
+    const result = (await PersonModel.findByIdAndDelete(id).exec()) as Person;
+    return result;
   }
 
   async findById(id: string): Promise<PersonSearch> {

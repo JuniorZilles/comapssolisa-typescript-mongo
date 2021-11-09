@@ -60,30 +60,21 @@ class PeopleService {
     return person;
   }
 
-  async list(payload: PersonSearch) {
-    let offset = 0;
-    let limit = 10;
-
-    if (payload.limit) {
-      limit = parseInt(payload.limit, 10);
-      payload.limit = undefined;
+  async list(offset: number, limit: number, query: PersonSearch) {
+    if (query.senha) {
+      delete query.senha;
     }
-    if (payload.offset) {
-      offset = parseInt(payload.offset, 10);
-      payload.offset = undefined;
+    if (query.data_nascimento) {
+      query.data_nascimento = this.transfromToDateString(query.data_nascimento as string);
     }
-    if (payload.senha) {
-      payload.senha = undefined;
-    }
-    if (payload.data_nascimento) {
-      payload.data_nascimento = this.transfromToDateString(payload.data_nascimento as string);
-    }
-    return PeopleRepository.findAll(payload, offset, limit);
+    const result = await PeopleRepository.findAll(query, offset, limit);
+    return result;
   }
 
   async delete(id: string) {
     await this.getById(id);
-    return PeopleRepository.delete(id);
+    const result = await PeopleRepository.delete(id);
+    return result;
   }
 
   private checkIfIsValid(result: Person, cpf: string, email: string) {

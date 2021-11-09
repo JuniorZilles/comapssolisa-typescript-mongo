@@ -112,8 +112,16 @@ describe('src :: api :: services :: car', () => {
 
   test('should get all cars by modelo', async () => {
     const car = await factory.create<Car>('Car');
-    const result = await CarService.list({ modelo: car.modelo });
+    const result = await CarService.list(0, 100, { modelo: car.modelo });
 
+    expect(result).toHaveProperty('limit');
+    expect(result.limit).toEqual(100);
+    expect(result).toHaveProperty('offset');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('offsets');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('total');
+    expect(result.total).toEqual(1);
     expect(result.veiculos.length).toBeGreaterThan(0);
     result.veiculos.forEach((element) => {
       expect(element.modelo).toBe(car.modelo);
@@ -123,21 +131,34 @@ describe('src :: api :: services :: car', () => {
   test('should get all cars', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
 
-    const result = await CarService.list({
-      limit: `${carTemp.length}`,
-      offset: '0'
-    });
+    const result = await CarService.list(0, carTemp.length, {});
 
+    expect(result).toHaveProperty('limit');
+    expect(result.limit).toEqual(5);
+    expect(result).toHaveProperty('offset');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('offsets');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('total');
+    expect(result.total).toEqual(5);
     expect(result.veiculos.length).toEqual(carTemp.length);
   });
 
   test('should get all cars by accessory', async () => {
-    const car = await factory.createMany<Car>('Car', 5);
+    await factory.createMany<Car>('Car', 5);
+    const car = await factory.createMany<Car>('Car', 2, { acessorios: [{ descricao: 'Ar-condicionado' }] });
 
-    const result = await CarService.list({
+    const result = await CarService.list(0, 100, {
       descricao: car[0].acessorios[0].descricao as string
     });
-
+    expect(result).toHaveProperty('limit');
+    expect(result.limit).toEqual(100);
+    expect(result).toHaveProperty('offset');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('offsets');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('total');
+    expect(result.total).toEqual(2);
     result.veiculos.forEach((element) => {
       expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao);
     });
@@ -190,7 +211,12 @@ describe('src :: api :: services :: car', () => {
 
     if (car.id) {
       const result = await CarService.delete(car.id);
-      expect(result).toBe(true);
+      expect(result.id).toBe(car.id);
+      expect(result.acessorios.length).toEqual(car.acessorios.length);
+      expect(result.ano).toBe(car.ano);
+      expect(result.cor).toBe(car.cor);
+      expect(result.modelo).toBe(car.modelo);
+      expect(result.quantidadePassageiros).toBe(car.quantidadePassageiros);
     } else {
       expect(car.id).toBeDefined();
     }

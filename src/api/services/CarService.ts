@@ -14,7 +14,8 @@ class CarService {
 
     this.hasDuplicate(payload.acessorios);
 
-    return CarRepository.create(payload);
+    const result = await CarRepository.create(payload);
+    return result;
   }
 
   private isValidAccessories(acessories: Accessory[]) {
@@ -45,28 +46,19 @@ class CarService {
     return car;
   }
 
-  async list(payload: CarSearch) {
-    let offset = 0;
-    let limit = 10;
-    if (payload.descricao) {
-      payload['acessorios.descricao'] = payload.descricao;
-      payload.descricao = undefined;
-    }
-    if (payload.limit) {
-      limit = parseInt(payload.limit, 10);
-      payload.limit = undefined;
-    }
-    if (payload.offset) {
-      offset = parseInt(payload.offset, 10);
-      payload.offset = undefined;
+  async list(offset: number, limit: number, query: CarSearch) {
+    if (query.descricao) {
+      query['acessorios.descricao'] = query.descricao;
+      delete query.descricao;
     }
 
-    return CarRepository.findAll(payload, offset, limit);
+    return CarRepository.findAll(query, offset, limit);
   }
 
   async delete(id: string) {
     await this.getById(id);
-    return CarRepository.delete(id);
+    const result = await CarRepository.delete(id);
+    return result;
   }
 
   async update(id: string, payload: Car) {
@@ -78,7 +70,8 @@ class CarService {
     if (payload.ano) {
       this.isValidYear(payload.ano);
     }
-    return CarRepository.update(id, payload);
+    const result = await CarRepository.update(id, payload);
+    return result;
   }
 
   private checkInvalidId(id: string, name: string) {

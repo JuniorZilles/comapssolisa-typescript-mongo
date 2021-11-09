@@ -105,26 +105,49 @@ describe('src :: api :: services :: people', () => {
 
   test('should get all people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
-    const person = await PeopleService.list({});
-
-    expect(person.pessoas.length).toEqual(temp.length);
+    const result = await PeopleService.list(0, 100, {});
+    expect(result).toHaveProperty('limit');
+    expect(result.limit).toEqual(100);
+    expect(result).toHaveProperty('offset');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('offsets');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('total');
+    expect(result.total).toEqual(5);
+    expect(result.pessoas.length).toEqual(temp.length);
   });
 
   test('should get all by nome people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
-    const person = await PeopleService.list({ habilitado: temp[0].habilitado });
+    const result = await PeopleService.list(0, 100, { habilitado: temp[0].habilitado });
 
-    expect(person.pessoas.length).toBeGreaterThanOrEqual(1);
-    person.pessoas.forEach((element) => {
+    expect(result).toHaveProperty('limit');
+    expect(result.limit).toEqual(100);
+    expect(result).toHaveProperty('offset');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('offsets');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('total');
+    expect(result.total).toEqual(5);
+    expect(result.pessoas.length).toBeGreaterThanOrEqual(1);
+    result.pessoas.forEach((element) => {
       expect(element.habilitado).toEqual(temp[0].habilitado);
     });
   });
 
   test('should get not get all people by password', async () => {
     const temp = await factory.create<Person>('People');
-    const person = await PeopleService.list({ nome: temp.senha });
+    const result = await PeopleService.list(0, 100, { senha: temp.senha });
 
-    expect(person.pessoas.length).toEqual(0);
+    expect(result).toHaveProperty('limit');
+    expect(result.limit).toEqual(100);
+    expect(result).toHaveProperty('offset');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('offsets');
+    expect(result.offset).toEqual(0);
+    expect(result).toHaveProperty('total');
+    expect(result.total).toEqual(1);
+    expect(result.pessoas.length).toEqual(1);
   });
 
   /**
@@ -173,7 +196,11 @@ describe('src :: api :: services :: people', () => {
     if (personGenerated.id) {
       const person = await PeopleService.delete(personGenerated.id);
 
-      expect(person).toBe(true);
+      expect(person.id).toBe(personGenerated.id);
+      expect(person.cpf).toBe(personGenerated.cpf);
+      expect(person.email).toBe(personGenerated.email);
+      expect(person.habilitado).toBe(personGenerated.habilitado);
+      expect(person.nome).toBe(personGenerated.nome);
     }
   });
 

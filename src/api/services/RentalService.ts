@@ -78,7 +78,7 @@ class RentalService {
     return rental;
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string): Promise<Rental> {
     await this.getById(id);
     const result = await RentalRepository.delete(id);
     return result;
@@ -95,46 +95,37 @@ class RentalService {
     return rental;
   }
 
-  async getAll(payload: RentalSearch): Promise<RentalsModel> {
-    let offset = 0;
-    let limit = 10;
-    if (payload.uf) {
-      payload['endereco.uf'] = payload.uf;
-      payload.uf = undefined;
+  async getAll(offset: number, limit: number, query: RentalSearch): Promise<RentalsModel> {
+    if (query.uf) {
+      query['endereco.uf'] = query.uf;
+      delete query.uf;
     }
-    if (payload.bairro) {
-      payload['endereco.bairro'] = payload.bairro;
-      payload.bairro = undefined;
+    if (query.bairro) {
+      query['endereco.bairro'] = query.bairro;
+      delete query.bairro;
     }
-    if (payload.cep) {
-      payload['endereco.cep'] = payload.cep;
-      payload.cep = undefined;
+    if (query.cep) {
+      query['endereco.cep'] = query.cep;
+      delete query.cep;
     }
-    if (payload.complemento) {
-      payload['endereco.complemento'] = payload.complemento;
-      payload.complemento = undefined;
+    if (query.complemento) {
+      query['endereco.complemento'] = query.complemento;
+      delete query.complemento;
     }
-    if (payload.localidade) {
-      payload['endereco.localidade'] = payload.localidade;
-      payload.localidade = undefined;
+    if (query.localidade) {
+      query['endereco.localidade'] = query.localidade;
+      delete query.localidade;
     }
-    if (payload.logradouro) {
-      payload['endereco.logradouro'] = payload.logradouro;
-      payload.logradouro = undefined;
+    if (query.logradouro) {
+      query['endereco.logradouro'] = query.logradouro;
+      delete query.logradouro;
     }
-    if (payload.number) {
-      payload['endereco.number'] = payload.number;
-      payload.number = undefined;
+    if (query.number) {
+      query['endereco.number'] = query.number;
+      delete query.number;
     }
-    if (payload.limit) {
-      limit = parseInt(payload.limit, 10);
-      payload.limit = undefined;
-    }
-    if (payload.offset) {
-      offset = parseInt(payload.offset, 10);
-      payload.offset = undefined;
-    }
-    return (await RentalRepository.findAll(payload, offset, limit)) as RentalsModel;
+    const result = await RentalRepository.findAll(query, offset, limit);
+    return result;
   }
 }
 

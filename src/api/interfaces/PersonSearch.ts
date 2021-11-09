@@ -1,6 +1,4 @@
-import { Pagination } from './Pagination';
-
-export default interface PersonSearch extends Pagination {
+export default interface PersonSearch {
   id?: string;
   nome?: string;
   cpf?: string;

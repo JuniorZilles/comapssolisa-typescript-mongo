@@ -1,6 +1,4 @@
-import { Pagination } from './Pagination';
-
-export interface RentalSearch extends Pagination {
+export interface RentalSearch {
   nome?: string;
   cnpj?: string;
   atividades?: string;

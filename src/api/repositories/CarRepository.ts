@@ -12,17 +12,17 @@ class CarRepository {
 
   async findAll(payload: CarSearch, offset: number, limit: number): Promise<VehiclesModel> {
     const count = await CarModel.countDocuments(payload);
-    const cars = await CarModel.find(payload)
-      .skip(offset * limit)
-      .limit(limit)
-      .exec();
+    const cars = (await CarModel.find(payload)
+      .skip((offset as number) * (limit as number))
+      .limit(limit as number)
+      .exec()) as Car[];
     const offsets = Math.round(count / limit);
     return new VehiclesModel(cars, count, limit, offset, offsets);
   }
 
-  async delete(id: string): Promise<boolean> {
-    await CarModel.findByIdAndRemove(id).exec();
-    return true;
+  async delete(id: string): Promise<Car> {
+    const result = (await CarModel.findByIdAndDelete(id).exec()) as Car;
+    return result;
   }
 
   async findById(id: string): Promise<Car> {
