@@ -60,14 +60,14 @@ class PeopleService {
     return person;
   }
 
-  async list(offset: number, limit: number, query: PersonSearch) {
+  async list(query: PersonSearch) {
     if (query.senha) {
       delete query.senha;
     }
     if (query.data_nascimento) {
       query.data_nascimento = this.transfromToDateString(query.data_nascimento as string);
     }
-    const result = await PeopleRepository.findAll(query, offset, limit);
+    const result = await PeopleRepository.findAll(query);
     return result;
   }
 

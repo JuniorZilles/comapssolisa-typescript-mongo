@@ -105,7 +105,7 @@ describe('src :: api :: services :: people', () => {
 
   test('should get all people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
-    const result = await PeopleService.list(0, 100, {});
+    const result = await PeopleService.list({});
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
     expect(result).toHaveProperty('offset');
@@ -119,7 +119,7 @@ describe('src :: api :: services :: people', () => {
 
   test('should get all by nome people', async () => {
     const temp = await factory.createMany<Person>('People', 5);
-    const result = await PeopleService.list(0, 100, { habilitado: temp[0].habilitado });
+    const result = await PeopleService.list({ habilitado: temp[0].habilitado });
 
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
@@ -137,7 +137,7 @@ describe('src :: api :: services :: people', () => {
 
   test('should get not get all people by password', async () => {
     const temp = await factory.create<Person>('People');
-    const result = await PeopleService.list(0, 100, { senha: temp.senha });
+    const result = await PeopleService.list({ senha: temp.senha });
 
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);

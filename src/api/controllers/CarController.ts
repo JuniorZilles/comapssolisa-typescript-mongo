@@ -13,10 +13,7 @@ class CarController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const { offset, limit, ...query } = req.query;
-      const limitNumber = limit ? parseInt(limit as string, 10) : 100;
-      const offsetNumber = offset ? parseInt(offset as string, 10) : 0;
-      const cars = await CarService.list(offsetNumber, limitNumber, query);
+      const cars = await CarService.list(req.query);
       return res.status(200).json(cars);
     } catch (e) {
       return next(e);

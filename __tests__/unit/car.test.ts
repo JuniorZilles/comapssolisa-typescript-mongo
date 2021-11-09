@@ -112,7 +112,7 @@ describe('src :: api :: services :: car', () => {
 
   test('should get all cars by modelo', async () => {
     const car = await factory.create<Car>('Car');
-    const result = await CarService.list(0, 100, { modelo: car.modelo });
+    const result = await CarService.list({ modelo: car.modelo });
 
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
@@ -131,7 +131,7 @@ describe('src :: api :: services :: car', () => {
   test('should get all cars', async () => {
     const carTemp = await factory.createMany<Car>('Car', 5);
 
-    const result = await CarService.list(0, carTemp.length, {});
+    const result = await CarService.list({ offset: '0', limit: carTemp.length.toString() });
 
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(5);
@@ -148,7 +148,7 @@ describe('src :: api :: services :: car', () => {
     await factory.createMany<Car>('Car', 5);
     const car = await factory.createMany<Car>('Car', 2, { acessorios: [{ descricao: 'Ar-condicionado' }] });
 
-    const result = await CarService.list(0, 100, {
+    const result = await CarService.list({
       descricao: car[0].acessorios[0].descricao as string
     });
     expect(result).toHaveProperty('limit');

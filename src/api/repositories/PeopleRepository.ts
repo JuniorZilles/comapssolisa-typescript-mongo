@@ -10,14 +10,17 @@ class PeopleRepository {
     return (await PersonModel.create(payload)) as Person;
   }
 
-  async findAll(payload: PersonSearch, offset: number, limit: number): Promise<PeopleModel> {
-    const count = await PersonModel.countDocuments(payload);
-    const people = (await PersonModel.find(payload)
-      .skip((offset as number) * (limit as number))
-      .limit(limit as number)
+  async findAll(payload: PersonSearch): Promise<PeopleModel> {
+    const { offset, limit, ...query } = payload;
+    const limitNumber = limit ? parseInt(limit as string, 10) : 100;
+    const offsetNumber = offset ? parseInt(offset as string, 10) : 0;
+    const count = await PersonModel.countDocuments(query);
+    const people = (await PersonModel.find(query)
+      .skip(offsetNumber * limitNumber)
+      .limit(limitNumber)
       .exec()) as PersonSearch[];
-    const offsets = Math.round(count / limit);
-    return new PeopleModel(people, count, limit, offset, offsets);
+    const offsets = Math.round(count / limitNumber);
+    return new PeopleModel(people, count, limitNumber, offsetNumber, offsets);
   }
 
   async delete(id: string): Promise<Person> {

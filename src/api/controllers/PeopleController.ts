@@ -14,10 +14,7 @@ class PeopleController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const { offset, limit, ...query } = req.query;
-      const limitNumber = limit ? parseInt(limit as string, 10) : 100;
-      const offsetNumber = offset ? parseInt(offset as string, 10) : 0;
-      const people = await PeopleService.list(offsetNumber, limitNumber, query);
+      const people = await PeopleService.list(req.query);
       return res.status(200).json(people);
     } catch (e) {
       return next(e);

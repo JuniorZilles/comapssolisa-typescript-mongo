@@ -7,7 +7,6 @@ import { Rental, RentalPayload } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
 import RentalsModel from '@models/RentalsModel';
 import RentalRepository from '@repositories/RentalRepository';
-import { Promise } from 'mongoose';
 import getCEP from './CepService';
 import validateCNPJ from './CnpjService';
 
@@ -95,7 +94,7 @@ class RentalService {
     return rental;
   }
 
-  async getAll(offset: number, limit: number, query: RentalSearch): Promise<RentalsModel> {
+  async getAll(query: RentalSearch): Promise<RentalsModel> {
     if (query.uf) {
       query['endereco.uf'] = query.uf;
       delete query.uf;
@@ -124,7 +123,7 @@ class RentalService {
       query['endereco.number'] = query.number;
       delete query.number;
     }
-    const result = await RentalRepository.findAll(query, offset, limit);
+    const result = await RentalRepository.findAll(query);
     return result;
   }
 }

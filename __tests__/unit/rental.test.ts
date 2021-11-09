@@ -456,7 +456,7 @@ describe('src :: api :: services :: rental', () => {
 
   test('should get 10 paginated rental companies', async () => {
     await factory.createMany<Rental>('Rental', 25);
-    const rentalP0 = await RentalService.getAll(0, 5, {});
+    const rentalP0 = await RentalService.getAll({ offset: '0', limit: '5' });
 
     expect(rentalP0.locadoras.length).toEqual(5);
     expect(rentalP0.offset).toEqual(0);
@@ -464,7 +464,7 @@ describe('src :: api :: services :: rental', () => {
     expect(rentalP0.total).toEqual(25);
     expect(rentalP0.offsets).toEqual(5);
 
-    const rentalP1 = await RentalService.getAll(1, 5, {});
+    const rentalP1 = await RentalService.getAll({ offset: '1', limit: '5' });
     expect(rentalP1.locadoras.length).toEqual(5);
     expect(rentalP1.offset).toEqual(1);
     expect(rentalP1.limit).toEqual(5);
@@ -474,7 +474,7 @@ describe('src :: api :: services :: rental', () => {
 
   test('should get a rental company by cnpj', async () => {
     const tempData = await factory.createMany<Rental>('Rental', 5);
-    const rental = await RentalService.getAll(0, 100, { cnpj: tempData[0].cnpj });
+    const rental = await RentalService.getAll({ cnpj: tempData[0].cnpj });
 
     expect(rental).toHaveProperty('limit');
     expect(rental.limit).toEqual(100);
@@ -541,7 +541,7 @@ describe('src :: api :: services :: rental', () => {
       ]
     });
 
-    const rental = await RentalService.getAll(0, 100, { uf: 'RS' });
+    const rental = await RentalService.getAll({ uf: 'RS' });
 
     expect(rental).toHaveProperty('limit');
     expect(rental.limit).toEqual(100);
@@ -562,7 +562,7 @@ describe('src :: api :: services :: rental', () => {
   test('should return nothing if doesnt match a rental company by uf', async () => {
     await factory.createMany<Rental>('Rental', 5);
 
-    const rental = await RentalService.getAll(0, 100, { uf: 'RS' });
+    const rental = await RentalService.getAll({ uf: 'RS' });
 
     expect(rental).toHaveProperty('limit');
     expect(rental.limit).toEqual(100);

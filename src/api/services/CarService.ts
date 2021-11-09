@@ -46,13 +46,12 @@ class CarService {
     return car;
   }
 
-  async list(offset: number, limit: number, query: CarSearch) {
+  async list(query: CarSearch) {
     if (query.descricao) {
       query['acessorios.descricao'] = query.descricao;
       delete query.descricao;
     }
-
-    return CarRepository.findAll(query, offset, limit);
+    return CarRepository.findAll(query);
   }
 
   async delete(id: string) {
