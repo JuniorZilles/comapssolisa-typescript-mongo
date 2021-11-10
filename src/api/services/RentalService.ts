@@ -2,8 +2,8 @@
 import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
-import { Endereco, EnderecoPayload } from '@interfaces/Endereco';
-import { Rental, RentalPayload } from '@interfaces/Rental';
+import { Endereco } from '@interfaces/Endereco';
+import { Rental } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
 import RentalsModel from '@models/RentalsModel';
 import RentalRepository from '@repositories/RentalRepository';
@@ -11,7 +11,7 @@ import getCEP from './CepService';
 import validateCNPJ from './CnpjService';
 
 class RentalService {
-  async create(payload: RentalPayload): Promise<Rental> {
+  async create(payload: Rental): Promise<Rental> {
     this.checkIfValidCNPJ(payload.cnpj);
     await this.checkIfExistsCNPJ(payload.cnpj);
     this.checkIfExistsMoreThanOneFilial(payload.endereco);
@@ -20,7 +20,7 @@ class RentalService {
     return rental;
   }
 
-  private checkIfExistsMoreThanOneFilial(addresses: EnderecoPayload[]): void {
+  private checkIfExistsMoreThanOneFilial(addresses: Endereco[]): void {
     const indexes = addresses.filter((address) => {
       return address.isFilial === false;
     });
@@ -29,7 +29,7 @@ class RentalService {
     }
   }
 
-  private async getCepLocations(addresses: EnderecoPayload[]): Promise<Endereco[]> {
+  private async getCepLocations(addresses: Endereco[]): Promise<Endereco[]> {
     const addressesNew: Endereco[] = await Promise.all(
       addresses.map(async function findCep(address) {
         const { cep } = address;
@@ -67,7 +67,7 @@ class RentalService {
     }
   }
 
-  async update(id: string, payload: RentalPayload): Promise<Rental> {
+  async update(id: string, payload: Rental): Promise<Rental> {
     this.checkIfValidCNPJ(payload.cnpj);
     await this.getById(id);
     await this.checkIfExistsCNPJ(payload.cnpj, id);
@@ -107,7 +107,7 @@ class RentalService {
 
   async getAll(payload: RentalSearch): Promise<RentalsModel> {
     const query = this.transformToQuery(payload);
-    const result = await RentalRepository.findAll(query);
+    const result = await RentalRepository.findAll(query, 'locadoras');
     return result;
   }
 }

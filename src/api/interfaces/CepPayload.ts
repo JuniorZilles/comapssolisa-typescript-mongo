@@ -1,8 +1,8 @@
 export interface CepPayload {
   cep: string;
-  logradouro: string;
+  logradouro?: string;
   complemento?: string;
-  bairro: string;
-  localidade: string;
-  uf: string;
+  bairro?: string;
+  localidade?: string;
+  uf?: string;
 }

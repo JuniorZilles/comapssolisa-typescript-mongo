@@ -1,4 +1,4 @@
-import { Endereco, EnderecoPayload } from './Endereco';
+import { Endereco } from './Endereco';
 
 export interface Rental {
   id?: string;
@@ -6,12 +6,4 @@ export interface Rental {
   cnpj: string;
   atividades: string;
   endereco: Endereco[];
-}
-
-export interface RentalPayload {
-  id?: string;
-  nome: string;
-  cnpj: string;
-  atividades: string;
-  endereco: EnderecoPayload[] | Endereco[];
 }

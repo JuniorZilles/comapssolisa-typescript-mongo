@@ -3,43 +3,11 @@ import { Person } from '@interfaces/Person';
 import PersonModel from '@models/PersonModel';
 import PersonSearch from '@interfaces/PersonSearch';
 import { FindUserPayload } from '@interfaces/FindUserPayload';
-import { isValid } from '@models/Model';
+import Repository from './Repository';
 
-class PeopleRepository {
-  async create(payload: Person): Promise<Person> {
-    return (await PersonModel.create(payload)) as Person;
-  }
-
-  async findAll(payload: PersonSearch): Promise<PeopleModel> {
-    const { offset, limit, ...query } = payload;
-    const limitNumber = limit ? parseInt(limit as string, 10) : 100;
-    const offsetNumber = offset ? parseInt(offset as string, 10) : 0;
-    const count = await PersonModel.countDocuments(query);
-    const people = (await PersonModel.find(query)
-      .skip(offsetNumber * limitNumber)
-      .limit(limitNumber)
-      .exec()) as PersonSearch[];
-    const offsets = Math.round(count / limitNumber);
-    return new PeopleModel(people, count, limitNumber, offsetNumber, offsets);
-  }
-
-  async delete(id: string): Promise<Person> {
-    const result = (await PersonModel.findByIdAndDelete(id).exec()) as Person;
-    return result;
-  }
-
-  async findById(id: string): Promise<PersonSearch> {
-    return (await PersonModel.findById(id)) as PersonSearch;
-  }
-
-  validId(id: string): boolean {
-    return isValid(id);
-  }
-
-  async update(id: string, payload: Person) {
-    return (await PersonModel.findByIdAndUpdate(id, payload, {
-      returnOriginal: false
-    }).exec()) as Person;
+class PeopleRepository extends Repository<PersonSearch, PeopleModel, Person> {
+  constructor() {
+    super(PersonModel);
   }
 
   async findUser(payload: FindUserPayload) {

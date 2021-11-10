@@ -52,7 +52,7 @@ class CarService {
       query['acessorios.descricao'] = query.descricao;
       delete query.descricao;
     }
-    return CarRepository.findAll(query);
+    return CarRepository.findAll(query, 'veiculos');
   }
 
   async delete(id: string) {

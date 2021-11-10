@@ -67,7 +67,7 @@ class PeopleService {
     if (query.data_nascimento) {
       query.data_nascimento = this.transfromToDateString(query.data_nascimento as string);
     }
-    const result = await PeopleRepository.findAll(query);
+    const result = await PeopleRepository.findAll(query, 'pessoas');
     return result;
   }
 
