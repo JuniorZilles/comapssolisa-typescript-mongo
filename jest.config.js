@@ -1,5 +1,5 @@
-const { compilerOptions } = require('./tsconfig.json')
-const { pathsToModuleNameMapper } = require('ts-jest/utils')
+const { compilerOptions } = require('./tsconfig.json');
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
@@ -21,7 +21,7 @@ module.exports = {
   collectCoverageFrom: ['src/**'],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: '__tests__/coverage',
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: ['/node_modules/', '/src/static/'],
@@ -143,7 +143,7 @@ module.exports = {
   //],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: ['/node_modules/', '/utils/'],
+  testPathIgnorePatterns: ['/node_modules/', '/utils/', '/coverage/'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -164,7 +164,7 @@ module.exports = {
   // transform: undefined,
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ['/node_modules/']
+  transformIgnorePatterns: ['/node_modules/', '/coverage/']
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
@@ -177,4 +177,4 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-}
+};
