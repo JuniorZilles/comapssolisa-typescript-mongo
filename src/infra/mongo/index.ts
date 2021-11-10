@@ -10,14 +10,6 @@ class MongoDatabase {
       pass: config.database.password,
       authSource: 'admin'
     });
-
-    mongoose.connection.on('open', () => {
-      console.log('Connected to mongo');
-    });
-
-    mongoose.connection.on('error', (err: Error) => {
-      console.log(err);
-    });
   }
 
   async disconect() {
