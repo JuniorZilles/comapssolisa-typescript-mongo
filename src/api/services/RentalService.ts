@@ -5,7 +5,7 @@ import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
-import RentalsModel from '@models/RentalsModel';
+import Rentals from '@interfaces/Rentals';
 import RentalRepository from '@repositories/RentalRepository';
 import getCEP from './CepService';
 import validateCNPJ from './CnpjService';
@@ -105,7 +105,7 @@ class RentalService {
     return query;
   }
 
-  async getAll(payload: RentalSearch): Promise<RentalsModel> {
+  async getAll(payload: RentalSearch): Promise<Rentals> {
     const query = this.transformToQuery(payload);
     const result = await RentalRepository.findAll(query, 'locadoras');
     return result;

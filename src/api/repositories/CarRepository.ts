@@ -1,11 +1,11 @@
 import CarModel from '@models/CarModel';
 import { CarSearch } from '@interfaces/CarSearch';
-import VehiclesModel from '@models/VehicleModel';
+import Vehicles from '@interfaces/Vehicle';
 import Car from '@interfaces/Car';
 import Accessory from '@interfaces/Accessory';
 import Repository from './Repository';
 
-class CarRepository extends Repository<CarSearch, VehiclesModel, Car> {
+class CarRepository extends Repository<CarSearch, Vehicles, Car> {
   constructor() {
     super(CarModel);
   }
