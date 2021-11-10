@@ -501,6 +501,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.quantidadePassageiros).toBe(temp.quantidadePassageiros);
     expect(body.acessorios.length).toEqual(temp.acessorios.length);
     expect(body.acessorios[0].descricao).toBe('vidro eletrico');
+    expect(body.acessorios[0]._id).toBe(temp.acessorios[0].id);
     expect(body.acessorios[1].descricao).toBe('Ar-condicionado');
   });
 

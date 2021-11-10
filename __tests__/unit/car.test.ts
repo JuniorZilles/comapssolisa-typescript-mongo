@@ -382,6 +382,7 @@ describe('src :: api :: services :: car', () => {
     expect(carResult.quantidadePassageiros).toBe(car.quantidadePassageiros);
     expect(carResult.acessorios.length).toEqual(car.acessorios.length);
     expect(carResult.acessorios[0].descricao).toBe(tempData.descricao);
+    expect(carResult.acessorios[0].id).toBe(car.acessorios[0].id);
     expect(carResult.acessorios[1].descricao).not.toBe(tempData.descricao);
   });
 
