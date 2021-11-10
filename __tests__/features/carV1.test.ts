@@ -433,6 +433,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.quantidadePassageiros).toBe(temp.quantidadePassageiros);
     expect(body.acessorios.length).toEqual(temp.acessorios.length);
     expect(body.acessorios[0].descricao).toBe('Ar-condicionado');
+    expect(body.acessorios[1].descricao).not.toBe('Ar-condicionado');
   });
 
   test('should return 400 when missing body', async () => {
@@ -480,8 +481,10 @@ describe('src :: api :: controllers :: car', () => {
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
 
-  test('should return 400 when invalid accessory description on patch', async () => {
-    const temp = await factory.create<Car>('Car', { acessorios: [{ descricao: 'vidro eletrico' }] });
+  test('should return 200 when invalid accessory description on patch', async () => {
+    const temp = await factory.create<Car>('Car', {
+      acessorios: [{ descricao: 'vidro eletrico' }, { descricao: 'Ar-condicionado' }]
+    });
     const response = await request(app)
       .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
       .set(token)
@@ -489,12 +492,16 @@ describe('src :: api :: controllers :: car', () => {
 
     const { body } = response;
 
-    expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
-    expect(body[0].description).toBe('descricao');
-    expect(body[0].name).toBe(
-      `Value id: ${temp.id} - idAccessory: ${temp.acessorios[0].id} - descricao: ${temp.acessorios[0].descricao} not updated`
-    );
+    expect(response.status).toBe(200);
+    expect(body._id).toBe(temp.id);
+    expect(body.ano).toBe(temp.ano);
+    expect(body.cor).toBe(temp.cor);
+    expect(body.modelo).toBe(temp.modelo);
+    expect(body.__v).toBeUndefined();
+    expect(body.quantidadePassageiros).toBe(temp.quantidadePassageiros);
+    expect(body.acessorios.length).toEqual(temp.acessorios.length);
+    expect(body.acessorios[0].descricao).toBe('vidro eletrico');
+    expect(body.acessorios[1].descricao).toBe('Ar-condicionado');
   });
 
   test('should return 400 when invalid accessory ID on patch', async () => {

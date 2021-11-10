@@ -382,6 +382,7 @@ describe('src :: api :: services :: car', () => {
     expect(carResult.quantidadePassageiros).toBe(car.quantidadePassageiros);
     expect(carResult.acessorios.length).toEqual(car.acessorios.length);
     expect(carResult.acessorios[0].descricao).toBe(tempData.descricao);
+    expect(carResult.acessorios[1].descricao).not.toBe(tempData.descricao);
   });
 
   test('should return 400 if the car id its invalid', async () => {

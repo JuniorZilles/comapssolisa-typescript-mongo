@@ -46,12 +46,11 @@ class CarRepository {
     const car = await CarModel.findOneAndUpdate(
       {
         _id: id,
-        'acessorios._id': idAccessory,
-        'acessorios.descricao': { $ne: payload.descricao }
+        'acessorios._id': idAccessory
       },
       { $set: { 'acessorios.$.descricao': payload.descricao } },
       { returnOriginal: false }
-    ).exec();
+    );
     return car;
   }
 }
