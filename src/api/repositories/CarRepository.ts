@@ -52,9 +52,6 @@ class CarRepository {
       { $set: { 'acessorios.$.descricao': payload.descricao } },
       { returnOriginal: false }
     ).exec();
-    if (!car) {
-      return null;
-    }
     return car;
   }
 }
