@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import mongoose from 'mongoose';
 import config from '../../config/config';
