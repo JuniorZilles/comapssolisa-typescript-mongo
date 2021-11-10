@@ -17,9 +17,10 @@ class RentalRepository extends Repository<RentalSearch, Rentals, Rental> {
       filter = { cnpj };
     }
 
-    return (await RentalModel.findOne(filter, {
+    const result = await RentalModel.findOne(filter, {
       cnpj: true
-    }).exec()) as Rental;
+    });
+    return result;
   }
 }
 

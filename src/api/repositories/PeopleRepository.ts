@@ -11,11 +11,12 @@ class PeopleRepository extends Repository<PersonSearch, People, Person> {
   }
 
   async findUser(payload: FindUserPayload) {
-    return (await PersonModel.findOne(payload, {
+    const result = await PersonModel.findOne(payload, {
       senha: true,
       habilitado: true,
       email: true
-    }).exec()) as Person;
+    });
+    return result;
   }
 
   async getUserEmailOrCpf(email: string, cpf: string, id?: string) {
@@ -26,10 +27,12 @@ class PeopleRepository extends Repository<PersonSearch, People, Person> {
       filter = { $or: [{ email }, { cpf }] };
     }
 
-    return (await PersonModel.findOne(filter, {
+    const result = await PersonModel.findOne(filter, {
       email: true,
       cpf: true
-    }).exec()) as Person;
+    });
+
+    return result;
   }
 }
 

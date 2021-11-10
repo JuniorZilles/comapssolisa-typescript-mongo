@@ -10,7 +10,7 @@ class CarRepository extends Repository<CarSearch, Vehicles, Car> {
     super(CarModel);
   }
 
-  async updateAccessory(id: string, idAccessory: string, payload: Accessory) {
+  async updateAccessory(id: string, idAccessory: string, payload: Accessory): Promise<Car> {
     const car = await CarModel.findOneAndUpdate(
       {
         _id: id,

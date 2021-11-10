@@ -3,15 +3,15 @@ import { Pagination } from '@interfaces/Pagination';
 import { isValid } from '@models/Model';
 import { Model } from 'mongoose';
 
-class Repository<T extends Pagination, Z extends List, X> {
+class Repository<Search extends Pagination, Z extends List, Payload> {
   constructor(private model: typeof Model) {}
 
-  async create(payload: X): Promise<X> {
+  async create(payload: Payload): Promise<Payload> {
     const result = await this.model.create(payload);
     return result;
   }
 
-  async findAll(payload: T, name: string): Promise<Z> {
+  async findAll(payload: Search, name: string): Promise<Z> {
     const { offset, limit, ...query } = payload;
     const count = await this.model.countDocuments(query);
     const limitNumber = limit ? parseInt(limit as string, 10) : 100;
@@ -19,8 +19,7 @@ class Repository<T extends Pagination, Z extends List, X> {
     const list = await this.model
       .find(query)
       .skip(offsetNumber * limitNumber)
-      .limit(limitNumber)
-      .exec();
+      .limit(limitNumber);
     const offsets = Math.round(count / limitNumber);
     const obj = {
       offset: offsetNumber,
@@ -33,25 +32,25 @@ class Repository<T extends Pagination, Z extends List, X> {
     return obj as Z;
   }
 
-  async delete(id: string): Promise<X> {
-    const result = (await this.model.findByIdAndDelete(id).exec()) as X;
+  async delete(id: string): Promise<Payload> {
+    const result = await this.model.findByIdAndDelete(id);
     return result;
   }
 
-  async findById(id: string): Promise<X> {
-    return (await this.model.findById(id)) as X;
+  async findById(id: string): Promise<Payload> {
+    const result = await this.model.findById(id);
+    return result;
   }
 
   validId(id: string): boolean {
     return isValid(id);
   }
 
-  async update(id: string, payload: X): Promise<X> {
-    return (await this.model
-      .findByIdAndUpdate(id, payload, {
-        returnOriginal: false
-      })
-      .exec()) as X;
+  async update(id: string, payload: Payload): Promise<Payload> {
+    const result = await this.model.findByIdAndUpdate(id, payload, {
+      returnOriginal: false
+    });
+    return result;
   }
 }
 
