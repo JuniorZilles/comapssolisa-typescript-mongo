@@ -5,6 +5,7 @@ import Car from '@interfaces/Car';
 import Accessory from '@interfaces/Accessory';
 import { CarSearch } from '@interfaces/CarSearch';
 import CarRepository from '@repositories/CarRepository';
+import InvalidValue from '@errors/InvalidValue';
 
 class CarService {
   async create(payload: Car) {
@@ -84,7 +85,11 @@ class CarService {
     this.checkInvalidId(idAccessory, 'idAccessory');
     const car = await CarRepository.updateAccessory(id, idAccessory, payload);
     if (!car) {
-      throw new NotFound(`id: ${id} - idAccessory: ${idAccessory}`);
+      throw new InvalidValue(
+        'descricao',
+        `Value id: ${id} - idAccessory: ${idAccessory} - descricao: ${payload.descricao} not updated`,
+        true
+      );
     }
     return car;
   }

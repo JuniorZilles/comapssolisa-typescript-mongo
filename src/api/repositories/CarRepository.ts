@@ -43,22 +43,19 @@ class CarRepository {
   }
 
   async updateAccessory(id: string, idAccessory: string, payload: Accessory) {
-    const car = await CarModel.findOne({
-      _id: id,
-      'acessorios._id': idAccessory
-    }).exec();
-    if (car) {
-      const { descricao } = car.acessorios.id(idAccessory);
-      if (descricao !== payload.descricao) {
-        car.acessorios.id(idAccessory).descricao = payload.descricao;
-      } else {
-        car.acessorios.id(idAccessory).remove();
-      }
-      car.markModified('acessorios');
-      await car.save();
-      return car as Car;
+    const car = await CarModel.findOneAndUpdate(
+      {
+        _id: id,
+        'acessorios._id': idAccessory,
+        'acessorios.descricao': { $ne: payload.descricao }
+      },
+      { $set: { 'acessorios.$.descricao': payload.descricao } },
+      { returnOriginal: false }
+    ).exec();
+    if (!car) {
+      return null;
     }
-    return null;
+    return car;
   }
 }
 

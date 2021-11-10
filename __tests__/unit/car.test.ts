@@ -3,6 +3,7 @@ import InvalidField from '@errors/InvalidField';
 import CarModel from '@models/CarModel';
 import NotFound from '@errors/NotFound';
 import Car from '@interfaces/Car';
+import InvalidValue from '@errors/InvalidValue';
 import factory from '../utils/CarFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 
@@ -383,20 +384,6 @@ describe('src :: api :: services :: car', () => {
     expect(carResult.acessorios[0].descricao).toBe(tempData.descricao);
   });
 
-  test('should remove a car accessory by its ID', async () => {
-    const car = await factory.create<Car>('Car');
-    const tempData = { descricao: car.acessorios[0].descricao };
-
-    const carResult = await CarService.updateAccessory(car.id as string, car.acessorios[0].id as string, tempData);
-
-    expect(carResult.id).toBe(car.id);
-    expect(carResult.ano).toBe(car.ano);
-    expect(carResult.modelo).toBe(car.modelo);
-    expect(carResult.cor).toBe(car.cor);
-    expect(carResult.quantidadePassageiros).toBe(car.quantidadePassageiros);
-    expect(carResult.acessorios.length).toEqual(0);
-  });
-
   test('should return 400 if the car id its invalid', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
@@ -409,21 +396,21 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  test('should return 400 if the car id its not found', async () => {
+  test('should throw InvalidValue if the car id its not found', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
       await CarService.updateAccessory('6171508962f47a7a91938d30', car.acessorios[0].id as string, tempData);
     } catch (e) {
-      expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(
-        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0].id} not found`
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('descricao');
+      expect((<InvalidValue>e).name).toBe(
+        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0].id} - descricao: ${car.acessorios[0].descricao} not updated`
       );
     }
   });
 
-  test('should return 400 if the accessory id its invalid', async () => {
+  test('should throw InvalidField if the accessory id its invalid', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
@@ -435,15 +422,31 @@ describe('src :: api :: services :: car', () => {
     }
   });
 
-  test('should return 400 if the accessory id its not found', async () => {
+  test('should throw InvalidValue if the accessory id its not found', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
       await CarService.updateAccessory(car.id as string, '6171508962f47a7a91938d30', tempData);
     } catch (e) {
-      expect(e).toBeInstanceOf(NotFound);
-      expect((<NotFound>e).description).toBe('Not Found');
-      expect((<NotFound>e).name).toBe(`Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 not found`);
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('descricao');
+      expect((<InvalidValue>e).name).toBe(
+        `Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 - descricao: ${car.acessorios[0].descricao} not updated`
+      );
+    }
+  });
+
+  test('should throw InvalidValue if the accessory description already exist', async () => {
+    const car = await factory.create<Car>('Car');
+    const tempData = { descricao: car.acessorios[0].descricao };
+    try {
+      await CarService.updateAccessory(car.id as string, car.acessorios[0].id as string, tempData);
+    } catch (e) {
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('descricao');
+      expect((<InvalidValue>e).name).toBe(
+        `Value id: ${car.id} - idAccessory: ${car.acessorios[0].id} - descricao: ${car.acessorios[0].descricao} not updated`
+      );
     }
   });
 });
