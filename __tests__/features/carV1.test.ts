@@ -4,6 +4,7 @@ import CarModel from '@models/CarModel';
 
 import { generateToken } from '@services/TokenService';
 import Car from '@interfaces/Car';
+import Accessory from '@interfaces/Accessory';
 import factory from '../utils/CarFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';
@@ -36,6 +37,58 @@ describe('src :: api :: controllers :: car', () => {
     await CarModel.deleteMany();
   });
 
+  const checkDefaultErrorFormat = (body) => {
+    expect(body).toEqual(
+      expect.arrayContaining([
+        {
+          name: expect.any(String),
+          description: expect.any(String)
+        }
+      ])
+    );
+  };
+
+  const checkDefaultCarFormat = (body) => {
+    expect(body).toEqual({
+      _id: expect.any(String),
+      acessorios: expect.any(Array),
+      ano: expect.any(Number),
+      modelo: expect.any(String),
+      cor: expect.any(String),
+      quantidadePassageiros: expect.any(Number)
+    });
+    body.acessorios.forEach((accessory: Accessory) => {
+      expect(accessory).toEqual({
+        _id: expect.any(String),
+        descricao: expect.any(String)
+      });
+    });
+  };
+
+  const checkDefaultVehiclesFormat = (body) => {
+    expect(body).toEqual({
+      veiculos: expect.arrayContaining([
+        {
+          _id: expect.any(String),
+          acessorios: expect.arrayContaining([
+            {
+              _id: expect.any(String),
+              descricao: expect.any(String)
+            }
+          ]),
+          modelo: expect.any(String),
+          cor: expect.any(String),
+          quantidadePassageiros: expect.any(Number),
+          ano: expect.any(Number)
+        }
+      ]),
+      total: expect.any(Number),
+      limit: expect.any(Number),
+      offset: expect.any(Number),
+      offsets: expect.any(Number)
+    });
+  };
+
   /**
    * POST CREATE
    */
@@ -46,10 +99,11 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(201);
+    checkDefaultCarFormat(body);
     expect(body._id).toBeDefined();
-    expect(body.acessorios.length).toEqual(1);
-    expect(body.ano).toBe(carData.ano);
+    expect(body.acessorios).toHaveLength(1);
     expect(body.__v).toBeUndefined();
+    expect(body.ano).toBe(carData.ano);
     expect(body.modelo).toBe(carData.modelo);
     expect(body.cor).toBe(carData.cor);
     expect(body.quantidadePassageiros).toBe(carData.quantidadePassageiros);
@@ -59,14 +113,15 @@ describe('src :: api :: controllers :: car', () => {
     const temp = {
       modelo: 'GM S10 2.8',
       ano: 2021,
-      acessorios: [],
+      acessorios: [{ descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5
     };
     const response = await request(app).post(PREFIX).set(token).send(temp);
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cor');
     expect(body[0].name).toBe('"cor" is required');
   });
@@ -79,14 +134,16 @@ describe('src :: api :: controllers :: car', () => {
       .send({
         modelo: '  ',
         ano: 2021,
-        acessorios: [{ descricao: '  ' }],
+        cor: 'Verde',
+        acessorios: [{ descricao: 'Ar-condicionado' }],
         quantidadePassageiros: 5
       });
 
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('modelo');
     expect(body[0].name).toBe('"modelo" is not allowed to be empty');
   });
@@ -103,7 +160,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('acessorios');
     expect(body[0].name).toBe('"acessorios" must contain at least 1 items');
   });
@@ -120,7 +178,8 @@ describe('src :: api :: controllers :: car', () => {
 
     const { body } = response;
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('ano');
     expect(body[0].name).toBe('"ano" must be less than or equal to 2022');
   });
@@ -137,7 +196,8 @@ describe('src :: api :: controllers :: car', () => {
 
     const { body } = response;
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('ano');
     expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
@@ -154,7 +214,8 @@ describe('src :: api :: controllers :: car', () => {
 
     const { body } = response;
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('acessorios.1');
     expect(body[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
@@ -170,8 +231,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('veiculos');
-    expect(body.veiculos.length).toEqual(carTemp.length);
+    checkDefaultVehiclesFormat(body);
+    expect(body.veiculos).toHaveLength(carTemp.length);
   });
 
   test('should get all two cars by accessory', async () => {
@@ -183,12 +244,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('veiculos');
-    expect(body).toHaveProperty('total');
-    expect(body).toHaveProperty('limit');
-    expect(body).toHaveProperty('offset');
-    expect(body).toHaveProperty('offsets');
-    expect(body.veiculos.length).toEqual(2);
+    checkDefaultVehiclesFormat(body);
+    expect(body.veiculos).toHaveLength(2);
     body.veiculos.forEach((element: Car) => {
       expect(element.acessorios[0].descricao).toBe('Ar-condicionado');
     });
@@ -202,12 +259,11 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('veiculos');
-    expect(body).toHaveProperty('total');
-    expect(body).toHaveProperty('limit');
-    expect(body).toHaveProperty('offset');
-    expect(body).toHaveProperty('offsets');
+    checkDefaultVehiclesFormat(body);
     expect(body.veiculos.length).toEqual(5);
+    body.veiculos.forEach((element: Car) => {
+      expect(element.modelo).toBe('GM S10 2.8');
+    });
   });
 
   test('should not get any cars when doesnt have any register for the query', async () => {
@@ -216,12 +272,14 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('veiculos');
-    expect(body).toHaveProperty('total');
-    expect(body).toHaveProperty('limit');
-    expect(body).toHaveProperty('offset');
-    expect(body).toHaveProperty('offsets');
-    expect(body.veiculos.length).toEqual(0);
+    expect(body).toEqual({
+      veiculos: expect.any(Array),
+      total: expect.any(Number),
+      limit: expect.any(Number),
+      offset: expect.any(Number),
+      offsets: expect.any(Number)
+    });
+    expect(body.veiculos).toHaveLength(0);
   });
 
   /**
@@ -236,6 +294,7 @@ describe('src :: api :: controllers :: car', () => {
       const { body } = response;
 
       expect(response.status).toBe(200);
+      checkDefaultCarFormat(body);
       expect(body._id).toBe(carUsed._id?.toString());
       expect(body.modelo).toBe(carUsed.modelo);
       expect(body.__v).toBeUndefined();
@@ -251,7 +310,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -261,7 +321,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -289,7 +350,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -300,7 +362,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -315,6 +378,7 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
+    checkDefaultCarFormat(body);
     expect(body.acessorios[0].descricao).toEqual(carData.acessorios[0].descricao);
     expect(body.__v).toBeUndefined();
     expect(body.ano).toBe(carData.ano);
@@ -375,7 +439,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('ano');
     expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
   });
@@ -394,7 +459,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('acessorios.1');
     expect(body[0].name).toBe('"acessorios[1]" contains a duplicate value');
   });
@@ -406,6 +472,7 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
     expect(body.length).toBeGreaterThanOrEqual(1);
     expect(body[0].description).toBe('modelo');
     expect(body[0].name).toBe('"modelo" is required');
@@ -446,6 +513,7 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
     expect(body.length).toBeGreaterThanOrEqual(1);
     expect(body[0].description).toBe('descricao');
     expect(body[0].name).toBe('"descricao" is required');
@@ -461,7 +529,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('descricao');
     expect(body[0].name).toBe('"descricao" is not allowed to be empty');
   });
@@ -476,7 +545,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -493,6 +563,7 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
+    checkDefaultCarFormat(body);
     expect(body._id).toBe(temp._id?.toString());
     expect(body.ano).toBe(temp.ano);
     expect(body.cor).toBe(temp.cor);
@@ -503,6 +574,7 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.acessorios[0].descricao).toBe('vidro eletrico');
     expect(body.acessorios[0]._id).toBe(temp.acessorios[0]._id?.toString());
     expect(body.acessorios[1].descricao).toBe('Ar-condicionado');
+    expect(body.acessorios[1]._id).toBe(temp.acessorios[1]._id?.toString());
   });
 
   test('should return 400 when invalid accessory ID on patch', async () => {
@@ -515,7 +587,8 @@ describe('src :: api :: controllers :: car', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('idAccessory');
     expect(body[0].name).toBe('"idAccessory" length must be 24 characters long');
   });
