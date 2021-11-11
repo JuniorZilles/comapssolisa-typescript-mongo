@@ -61,9 +61,6 @@ class PeopleService {
   }
 
   async list(query: PersonSearch): Promise<Paginate<Person>> {
-    if (query.senha) {
-      delete query.senha;
-    }
     if (query.data_nascimento) {
       query.data_nascimento = this.transfromToDateString(query.data_nascimento as string);
     }

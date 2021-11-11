@@ -6,6 +6,5 @@ export default interface PersonSearch extends Pagination {
   cpf?: string;
   data_nascimento?: string | Date;
   email?: string;
-  senha?: string;
   habilitado?: string;
 }
