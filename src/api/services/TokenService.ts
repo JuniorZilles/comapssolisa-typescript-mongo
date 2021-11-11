@@ -1,6 +1,6 @@
 import { GenerateTokenContent } from '@interfaces/GenerateTokenContent';
 import jwt from 'jsonwebtoken';
-import auth from '../../config/auth';
+import auth from '../../config/config';
 
 export const generateToken = (obj: GenerateTokenContent): string =>
   jwt.sign({ content: obj }, auth.secret, { expiresIn: 86400 });

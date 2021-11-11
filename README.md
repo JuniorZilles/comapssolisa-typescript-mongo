@@ -88,6 +88,7 @@ MONGO_PASSWORD=MongoDB2021
 MONGO_COLLECTION=teste_compassolisa
 PORT=3000
 NODE_ENV=test
+SECRET=bab2ada84cd5dd8f0185e6d673e3800f
 ```
 
 ## Requirements
