@@ -1,5 +1,6 @@
+import { Rental } from '@interfaces/Rental';
 import mongoose from 'mongoose';
-import { Model } from './Model';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const RentalSchema = new mongoose.Schema({
   nome: { type: String, required: true },
@@ -44,15 +45,16 @@ const RentalSchema = new mongoose.Schema({
   dataCriacao: {
     type: Date,
     default: Date.now,
-    immutable: true,
-    transform: () => undefined
+    immutable: true
   },
   dataAtualizacao: {
     type: Date,
-    default: Date.now,
-    transform: () => undefined
-  },
-  __v: { type: Number, select: false, transform: () => undefined }
+    default: Date.now
+  }
 });
-
-export default Model('Rental', RentalSchema);
+RentalSchema.plugin(mongoosePaginate);
+RentalSchema.pre('findOneAndUpdate', async function onSave(next) {
+  this.set('dataAtualizacao', new Date());
+  next();
+});
+export default mongoose.model<Rental>('Rental', RentalSchema);

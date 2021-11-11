@@ -33,7 +33,7 @@ describe('src :: api :: services :: car', () => {
 
   test('should create a car', async () => {
     const car = await CarService.create(carData);
-    expect(car.id).toBeDefined();
+    expect(car._id).toBeDefined();
     expect(car.ano).toBe(carData.ano);
     expect(car.cor).toBe(carData.cor);
     expect(car.quantidadePassageiros).toBe(carData.quantidadePassageiros);
@@ -118,13 +118,13 @@ describe('src :: api :: services :: car', () => {
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
     expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('offsets');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('total');
     expect(result.total).toEqual(1);
-    expect(result.veiculos.length).toBeGreaterThan(0);
-    result.veiculos.forEach((element) => {
+    expect(result.docs.length).toBeGreaterThan(0);
+    result.docs.forEach((element) => {
       expect(element.modelo).toBe(car.modelo);
     });
   });
@@ -137,12 +137,12 @@ describe('src :: api :: services :: car', () => {
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(5);
     expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('offsets');
-    expect(result.offset).toEqual(0);
+    expect(result.offsets).toEqual(1);
     expect(result).toHaveProperty('total');
     expect(result.total).toEqual(5);
-    expect(result.veiculos.length).toEqual(carTemp.length);
+    expect(result.docs.length).toEqual(carTemp.length);
   });
 
   test('should get all cars by accessory', async () => {
@@ -155,12 +155,12 @@ describe('src :: api :: services :: car', () => {
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
     expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('offsets');
-    expect(result.offset).toEqual(0);
+    expect(result.offsets).toEqual(1);
     expect(result).toHaveProperty('total');
     expect(result.total).toEqual(2);
-    result.veiculos.forEach((element) => {
+    result.docs.forEach((element) => {
       expect(element.acessorios[0].descricao).toBe(car[0].acessorios[0].descricao);
     });
   });
@@ -172,14 +172,14 @@ describe('src :: api :: services :: car', () => {
   test("should get a car by it's ID", async () => {
     const car = await factory.create<Car>('Car');
 
-    if (car.id) {
-      const result = await CarService.getById(car.id);
-      expect(result.id).toBe(car.id);
+    if (car._id) {
+      const result = await CarService.getById(car._id);
+      expect(result._id).toEqual(car._id);
       expect(result.modelo).toBe(car.modelo);
       expect(result.ano).toBe(car.ano);
       expect(result.cor).toBe(car.cor);
     } else {
-      expect(car.id).toBeDefined();
+      expect(car._id).toBeDefined();
     }
   });
 
@@ -210,16 +210,16 @@ describe('src :: api :: services :: car', () => {
   test("should remove a car by it's ID", async () => {
     const car = await factory.create<Car>('Car');
 
-    if (car.id) {
-      const result = await CarService.delete(car.id);
-      expect(result.id).toBe(car.id);
+    if (car._id) {
+      const result = await CarService.delete(car._id);
+      expect(result._id).toEqual(car._id);
       expect(result.acessorios.length).toEqual(car.acessorios.length);
       expect(result.ano).toBe(car.ano);
       expect(result.cor).toBe(car.cor);
       expect(result.modelo).toBe(car.modelo);
       expect(result.quantidadePassageiros).toBe(car.quantidadePassageiros);
     } else {
-      expect(car.id).toBeDefined();
+      expect(car._id).toBeDefined();
     }
   });
 
@@ -256,10 +256,10 @@ describe('src :: api :: services :: car', () => {
       acessorios: [{ descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5
     };
-    if (car.id) {
-      const result = await CarService.update(car.id, tempData);
+    if (car._id) {
+      const result = await CarService.update(car._id, tempData);
 
-      expect(result.id).toBe(car.id);
+      expect(result._id).toEqual(car._id);
       expect(result.acessorios[0].descricao).toBe(tempData.acessorios[0].descricao);
       expect(result.modelo).toBe('Abacaxi');
       expect(result.ano).toBe(tempData.ano);
@@ -277,8 +277,8 @@ describe('src :: api :: services :: car', () => {
         acessorios: [],
         quantidadePassageiros: 5
       };
-      if (car.id) {
-        await CarService.update(car.id, tempData);
+      if (car._id) {
+        await CarService.update(car._id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
@@ -297,8 +297,8 @@ describe('src :: api :: services :: car', () => {
         acessorios: [{ descricao: 'Ar-condicionado' }],
         quantidadePassageiros: 5
       };
-      if (car.id) {
-        await CarService.update(car.id, tempData);
+      if (car._id) {
+        await CarService.update(car._id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
@@ -317,8 +317,8 @@ describe('src :: api :: services :: car', () => {
         acessorios: [{ descricao: 'Ar-condicionado' }],
         quantidadePassageiros: 5
       };
-      if (car.id) {
-        await CarService.update(car.id, tempData);
+      if (car._id) {
+        await CarService.update(car._id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
@@ -338,8 +338,8 @@ describe('src :: api :: services :: car', () => {
         quantidadePassageiros: 5
       };
 
-      if (car.id) {
-        await CarService.update(car.id, tempData);
+      if (car._id) {
+        await CarService.update(car._id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
@@ -373,16 +373,16 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: 'Ar-condicionado' };
 
-    const carResult = await CarService.updateAccessory(car.id as string, car.acessorios[0].id as string, tempData);
+    const carResult = await CarService.updateAccessory(car._id as string, car.acessorios[0]._id as string, tempData);
 
-    expect(carResult.id).toBe(car.id);
+    expect(carResult._id).toEqual(car._id);
     expect(carResult.ano).toBe(car.ano);
     expect(carResult.cor).toBe(car.cor);
     expect(carResult.modelo).toBe(car.modelo);
     expect(carResult.quantidadePassageiros).toBe(car.quantidadePassageiros);
     expect(carResult.acessorios.length).toEqual(car.acessorios.length);
     expect(carResult.acessorios[0].descricao).toBe(tempData.descricao);
-    expect(carResult.acessorios[0].id).toBe(car.acessorios[0].id);
+    expect(carResult.acessorios[0]._id).toEqual(car.acessorios[0]._id);
     expect(carResult.acessorios[1].descricao).not.toBe(tempData.descricao);
   });
 
@@ -390,7 +390,7 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory('156', car.acessorios[0].id as string, tempData);
+      await CarService.updateAccessory('156', car.acessorios[0]._id as string, tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
@@ -402,12 +402,12 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory('6171508962f47a7a91938d30', car.acessorios[0].id as string, tempData);
+      await CarService.updateAccessory('6171508962f47a7a91938d30', car.acessorios[0]._id as string, tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('descricao');
       expect((<InvalidValue>e).name).toBe(
-        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0].id} - descricao: ${car.acessorios[0].descricao} not updated`
+        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not updated`
       );
     }
   });
@@ -416,7 +416,7 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory(car.id as string, '125', tempData);
+      await CarService.updateAccessory(car._id as string, '125', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidField);
       expect((<InvalidField>e).description).toBe('Bad Request');
@@ -428,12 +428,12 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory(car.id as string, '6171508962f47a7a91938d30', tempData);
+      await CarService.updateAccessory(car._id as string, '6171508962f47a7a91938d30', tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('descricao');
       expect((<InvalidValue>e).name).toBe(
-        `Value id: ${car.id} - idAccessory: 6171508962f47a7a91938d30 - descricao: ${car.acessorios[0].descricao} not updated`
+        `Value id: ${car._id} - idAccessory: 6171508962f47a7a91938d30 - descricao: ${car.acessorios[0].descricao} not updated`
       );
     }
   });
@@ -442,12 +442,12 @@ describe('src :: api :: services :: car', () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
     try {
-      await CarService.updateAccessory(car.id as string, car.acessorios[0].id as string, tempData);
+      await CarService.updateAccessory(car._id as string, car.acessorios[0]._id as string, tempData);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('descricao');
       expect((<InvalidValue>e).name).toBe(
-        `Value id: ${car.id} - idAccessory: ${car.acessorios[0].id} - descricao: ${car.acessorios[0].descricao} not updated`
+        `Value id: ${car._id} - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not updated`
       );
     }
   });

@@ -1,11 +1,10 @@
-import People from '@interfaces/People';
 import { Person } from '@interfaces/Person';
 import PersonModel from '@models/PersonModel';
 import PersonSearch from '@interfaces/PersonSearch';
 import { FindUserPayload } from '@interfaces/FindUserPayload';
 import Repository from './Repository';
 
-class PeopleRepository extends Repository<PersonSearch, People, Person> {
+class PeopleRepository extends Repository<PersonSearch, Person> {
   constructor() {
     super(PersonModel);
   }

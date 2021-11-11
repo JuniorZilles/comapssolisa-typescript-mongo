@@ -32,7 +32,7 @@ describe('src :: api :: services :: authenticate', () => {
 
     const tempContent = content.content;
 
-    expect(tempContent.id).toBe(temp.id);
+    expect(tempContent.id).toEqual(temp._id?.toString());
     expect(tempContent.email).toBe(temp.email);
     expect(tempContent.habilitado).toBe(temp.habilitado);
   });

@@ -245,7 +245,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body).toHaveProperty('limit');
     expect(body.limit).toEqual(5);
     expect(body).toHaveProperty('offset');
-    expect(body.offset).toEqual(0);
+    expect(body.offset).toEqual(1);
     expect(body).toHaveProperty('offsets');
     expect(body.offsets).toEqual(1);
     expect(body.pessoas.length).toEqual(peopleData.length);
@@ -289,7 +289,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body).toHaveProperty('offset');
     expect(body.offset).toEqual(1);
     expect(body).toHaveProperty('offsets');
-    expect(body.offsets).toEqual(0);
+    expect(body.offsets).toEqual(1);
     expect(body.pessoas.length).toEqual(0);
   });
 
@@ -302,7 +302,7 @@ describe('src :: api :: controllers :: people', () => {
       data_nascimento: '2020-10-30'
     });
 
-    const response = await request(app).get(`${PREFIX}/${peopleData.id}`);
+    const response = await request(app).get(`${PREFIX}/${peopleData._id}`);
 
     const { body } = response;
 
@@ -342,7 +342,7 @@ describe('src :: api :: controllers :: people', () => {
   test("should remove a person by it's ID", async () => {
     const peopleData = await factory.create<Person>('People');
 
-    const response = await request(app).delete(`${PREFIX}/${peopleData.id}`);
+    const response = await request(app).delete(`${PREFIX}/${peopleData._id}`);
 
     expect(response.status).toBe(204);
     expect(response.body).toEqual({});
@@ -384,13 +384,13 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim'
     };
-    const responseput = await request(app).put(`${PREFIX}/${peopleData.id}`).send(tempData);
+    const responseput = await request(app).put(`${PREFIX}/${peopleData._id}`).send(tempData);
 
     const { body } = responseput;
 
     expect(responseput.status).toBe(200);
 
-    expect(body._id).toBe(peopleData.id);
+    expect(body._id).toBe(peopleData._id?.toString());
     expect(body.nome).toBe(tempData.nome);
     expect(body.cpf).toBe(tempData.cpf);
     expect(body.data_nascimento).toEqual(tempData.data_nascimento);
@@ -400,7 +400,7 @@ describe('src :: api :: controllers :: people', () => {
 
   test('should return 400 with errors if missing an attribute when trying to update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
       data_nascimento: '03/03/2000',
@@ -418,7 +418,7 @@ describe('src :: api :: controllers :: people', () => {
 
   test('should return 400 with errors if age is less than 18 on update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
       data_nascimento: '03/03/2010',
@@ -436,7 +436,7 @@ describe('src :: api :: controllers :: people', () => {
 
   test('should return 400 with errors if cpf is invalid on update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: 'joaozinho ciclano',
       cpf: '131.147.',
       data_nascimento: '03/03/2000',
@@ -462,7 +462,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim'
     };
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send(tempData);
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send(tempData);
     const { body } = response;
 
     expect(response.status).toBe(400);
@@ -473,7 +473,7 @@ describe('src :: api :: controllers :: people', () => {
 
   test('should return 400 with errors if senha has lenght less than 6 caracteres on update', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
       data_nascimento: '03/03/2000',
@@ -491,7 +491,7 @@ describe('src :: api :: controllers :: people', () => {
 
   test('should return 400 with errors if email is invalid', async () => {
     const peopleData = await factory.create<Person>('People');
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: 'joaozinho ciclano',
       cpf: '847.331.290-25',
       data_nascimento: '03/03/2000',
@@ -510,7 +510,7 @@ describe('src :: api :: controllers :: people', () => {
   test('should return 400 with errors if habilitado has other option than sim or não', async () => {
     const peopleData = await factory.create<Person>('People');
 
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: 'joaozinho ciclano',
       cpf: '131.147.860-49',
       data_nascimento: '03/03/2000',
@@ -539,7 +539,7 @@ describe('src :: api :: controllers :: people', () => {
       senha: '123456',
       habilitado: 'sim'
     };
-    const response = await request(app).put(`${PREFIX}/${peopleData1.id}`).send(tempData);
+    const response = await request(app).put(`${PREFIX}/${peopleData1._id}`).send(tempData);
     const { body } = response;
 
     expect(response.status).toBe(400);
@@ -551,7 +551,7 @@ describe('src :: api :: controllers :: people', () => {
   test('should return 400 with errors if nome is empty', async () => {
     const peopleData = await factory.create<Person>('People');
 
-    const response = await request(app).put(`${PREFIX}/${peopleData.id}`).send({
+    const response = await request(app).put(`${PREFIX}/${peopleData._id}`).send({
       nome: '   ',
       cpf: '131.147.860-49',
       data_nascimento: '03/03/2000',

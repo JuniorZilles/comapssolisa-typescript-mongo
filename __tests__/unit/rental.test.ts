@@ -48,7 +48,7 @@ describe('src :: api :: services :: rental', () => {
     const rental = await RentalService.create(rentalData);
 
     expect(rental).toHaveProperty('_id');
-    expect(rental.id).toBeDefined();
+    expect(rental._id).toBeDefined();
     expect(rental).toHaveProperty('nome');
     expect(rental.nome).toBe(rentalData.nome);
     expect(rental).toHaveProperty('cnpj');
@@ -58,7 +58,7 @@ describe('src :: api :: services :: rental', () => {
     expect(rental).toHaveProperty('endereco');
     expect(rental.endereco).toHaveLength(2);
     rental.endereco.forEach((endereco: Endereco) => {
-      expect(endereco.id).toBeDefined();
+      expect(endereco._id).toBeDefined();
       const index = rentalData.endereco.findIndex(function get(enderecoData) {
         return enderecoData.cep === endereco.cep;
       });
@@ -179,10 +179,10 @@ describe('src :: api :: services :: rental', () => {
 
   test('should get a rental by id', async () => {
     const generated = await factory.create<Rental>('Rental');
-    if (generated.id) {
-      const rental = await RentalService.getById(generated.id);
+    if (generated._id) {
+      const rental = await RentalService.getById(generated._id);
       expect(rental).toHaveProperty('_id');
-      expect(rental.id).toBeDefined();
+      expect(rental._id).toBeDefined();
       expect(rental).toHaveProperty('nome');
       expect(rental.nome).toBe(generated.nome);
       expect(rental).toHaveProperty('cnpj');
@@ -192,7 +192,7 @@ describe('src :: api :: services :: rental', () => {
       expect(rental).toHaveProperty('endereco');
       expect(rental.endereco).toHaveLength(2);
       rental.endereco.forEach((endereco: Endereco) => {
-        expect(endereco.id).toBeDefined();
+        expect(endereco._id).toBeDefined();
         const index = generated.endereco.findIndex(function get(enderecoData) {
           return enderecoData.cep === endereco.cep;
         });
@@ -231,9 +231,9 @@ describe('src :: api :: services :: rental', () => {
 
   test('should delete a rental by id', async () => {
     const generated = await factory.create<Rental>('Rental');
-    if (generated.id) {
-      const rental = await RentalService.delete(generated.id);
-      expect(rental.id).toBe(generated.id);
+    if (generated._id) {
+      const rental = await RentalService.delete(generated._id);
+      expect(rental._id).toEqual(generated._id);
       expect(rental.cnpj).toBe(generated.cnpj);
       expect(rental.nome).toBe(generated.nome);
       expect(rental.atividades).toBe(generated.atividades);
@@ -264,10 +264,10 @@ describe('src :: api :: services :: rental', () => {
 
   test('should update a rental place with two addresses', async () => {
     const generated = await factory.create<Rental>('Rental');
-    const rental = await RentalService.update(generated.id as string, rentalData);
+    const rental = await RentalService.update(generated._id as string, rentalData);
 
     expect(rental).toHaveProperty('_id');
-    expect(rental.id).toBeDefined();
+    expect(rental._id).toBeDefined();
     expect(rental).toHaveProperty('nome');
     expect(rental.nome).toBe(rentalData.nome);
     expect(rental).toHaveProperty('cnpj');
@@ -277,7 +277,7 @@ describe('src :: api :: services :: rental', () => {
     expect(rental).toHaveProperty('endereco');
     expect(rental.endereco).toHaveLength(2);
     rental.endereco.forEach((endereco: Endereco) => {
-      expect(endereco.id).toBeDefined();
+      expect(endereco._id).toBeDefined();
       const index = rentalData.endereco.findIndex(function get(enderecoData) {
         return enderecoData.cep === endereco.cep;
       });
@@ -306,7 +306,7 @@ describe('src :: api :: services :: rental', () => {
     };
     try {
       const generated = await factory.create<Rental>('Rental');
-      await RentalService.update(generated.id as string, rentalTemp);
+      await RentalService.update(generated._id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
@@ -334,7 +334,7 @@ describe('src :: api :: services :: rental', () => {
       ]
     };
     try {
-      await RentalService.update(rentalAuto1.id as string, rentalTemp);
+      await RentalService.update(rentalAuto1._id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Conflict');
@@ -362,7 +362,7 @@ describe('src :: api :: services :: rental', () => {
       ]
     };
     try {
-      await RentalService.update(generated.id as string, rentalTemp);
+      await RentalService.update(generated._id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
@@ -390,7 +390,7 @@ describe('src :: api :: services :: rental', () => {
       ]
     };
     try {
-      await RentalService.update(generated.id as string, rentalTemp);
+      await RentalService.update(generated._id as string, rentalTemp);
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
@@ -458,14 +458,14 @@ describe('src :: api :: services :: rental', () => {
     await factory.createMany<Rental>('Rental', 25);
     const rentalP0 = await RentalService.getAll({ offset: '0', limit: '5' });
 
-    expect(rentalP0.locadoras.length).toEqual(5);
-    expect(rentalP0.offset).toEqual(0);
+    expect(rentalP0.docs.length).toEqual(5);
+    expect(rentalP0.offset).toEqual(1);
     expect(rentalP0.limit).toEqual(5);
     expect(rentalP0.total).toEqual(25);
     expect(rentalP0.offsets).toEqual(5);
 
     const rentalP1 = await RentalService.getAll({ offset: '1', limit: '5' });
-    expect(rentalP1.locadoras.length).toEqual(5);
+    expect(rentalP1.docs.length).toEqual(5);
     expect(rentalP1.offset).toEqual(1);
     expect(rentalP1.limit).toEqual(5);
     expect(rentalP1.total).toEqual(25);
@@ -479,25 +479,25 @@ describe('src :: api :: services :: rental', () => {
     expect(rental).toHaveProperty('limit');
     expect(rental.limit).toEqual(100);
     expect(rental).toHaveProperty('offset');
-    expect(rental.offset).toEqual(0);
+    expect(rental.offset).toEqual(1);
     expect(rental).toHaveProperty('offsets');
-    expect(rental.offset).toEqual(0);
+    expect(rental.offsets).toEqual(1);
     expect(rental).toHaveProperty('total');
     expect(rental.total).toEqual(1);
-    expect(rental.locadoras.length).toEqual(1);
-    const { locadoras } = rental;
-    expect(locadoras[0]).toHaveProperty('_id');
-    expect(locadoras[0].id).toBeDefined();
-    expect(locadoras[0]).toHaveProperty('nome');
-    expect(locadoras[0].nome).toBe(tempData[0].nome);
-    expect(locadoras[0]).toHaveProperty('cnpj');
-    expect(locadoras[0].cnpj).toBe(tempData[0].cnpj);
-    expect(locadoras[0]).toHaveProperty('atividades');
-    expect(locadoras[0].atividades).toBe(tempData[0].atividades);
-    expect(locadoras[0]).toHaveProperty('endereco');
-    expect(locadoras[0].endereco).toHaveLength(2);
-    locadoras[0].endereco.forEach((endereco: Endereco) => {
-      expect(endereco.id).toBeDefined();
+    expect(rental.docs.length).toEqual(1);
+    const { docs } = rental;
+    expect(docs[0]).toHaveProperty('_id');
+    expect(docs[0]._id).toBeDefined();
+    expect(docs[0]).toHaveProperty('nome');
+    expect(docs[0].nome).toBe(tempData[0].nome);
+    expect(docs[0]).toHaveProperty('cnpj');
+    expect(docs[0].cnpj).toBe(tempData[0].cnpj);
+    expect(docs[0]).toHaveProperty('atividades');
+    expect(docs[0].atividades).toBe(tempData[0].atividades);
+    expect(docs[0]).toHaveProperty('endereco');
+    expect(docs[0].endereco).toHaveLength(2);
+    docs[0].endereco.forEach((endereco: Endereco) => {
+      expect(endereco._id).toBeDefined();
       const index = tempData[0].endereco.findIndex(function get(enderecoData) {
         return enderecoData.cep === endereco.cep;
       });
@@ -546,13 +546,13 @@ describe('src :: api :: services :: rental', () => {
     expect(rental).toHaveProperty('limit');
     expect(rental.limit).toEqual(100);
     expect(rental).toHaveProperty('offset');
-    expect(rental.offset).toEqual(0);
+    expect(rental.offset).toEqual(1);
     expect(rental).toHaveProperty('offsets');
-    expect(rental.offset).toEqual(0);
+    expect(rental.offsets).toEqual(1);
     expect(rental).toHaveProperty('total');
     expect(rental.total).toEqual(5);
-    expect(rental.locadoras.length).toEqual(5);
-    rental.locadoras.forEach((locadora: Rental) => {
+    expect(rental.docs.length).toEqual(5);
+    rental.docs.forEach((locadora: Rental) => {
       locadora.endereco.forEach((endereco: Endereco) => {
         expect(endereco.uf).toBe('RS');
       });
@@ -567,11 +567,11 @@ describe('src :: api :: services :: rental', () => {
     expect(rental).toHaveProperty('limit');
     expect(rental.limit).toEqual(100);
     expect(rental).toHaveProperty('offset');
-    expect(rental.offset).toEqual(0);
+    expect(rental.offset).toEqual(1);
     expect(rental).toHaveProperty('offsets');
-    expect(rental.offset).toEqual(0);
+    expect(rental.offsets).toEqual(1);
     expect(rental).toHaveProperty('total');
     expect(rental.total).toEqual(0);
-    expect(rental.locadoras.length).toEqual(0);
+    expect(rental.docs.length).toEqual(0);
   });
 });

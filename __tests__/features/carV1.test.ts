@@ -231,18 +231,18 @@ describe('src :: api :: controllers :: car', () => {
   test("should get a car by it's ID", async () => {
     const carUsed = await factory.create<Car>('Car');
 
-    if (carUsed.id) {
-      const response = await request(app).get(`${PREFIX}/${carUsed.id}`).set(token);
+    if (carUsed._id) {
+      const response = await request(app).get(`${PREFIX}/${carUsed._id}`).set(token);
       const { body } = response;
 
       expect(response.status).toBe(200);
-      expect(body._id).toBe(carUsed.id);
+      expect(body._id).toBe(carUsed._id?.toString());
       expect(body.modelo).toBe(carUsed.modelo);
       expect(body.__v).toBeUndefined();
       expect(body.ano).toBe(carUsed.ano);
       expect(body.cor).toBe(carUsed.cor);
     } else {
-      expect(carUsed.id).toBeDefined();
+      expect(carUsed._id).toBeDefined();
     }
   });
 
@@ -273,14 +273,14 @@ describe('src :: api :: controllers :: car', () => {
   test("should remove a car by it's ID", async () => {
     const carUsed = await factory.create<Car>('Car');
 
-    if (carUsed.id) {
-      const response = await request(app).delete(`${PREFIX}/${carUsed.id}`).set(token);
+    if (carUsed._id) {
+      const response = await request(app).delete(`${PREFIX}/${carUsed._id}`).set(token);
       const { body } = response;
 
       expect(response.status).toBe(204);
       expect(body).toEqual({});
     } else {
-      expect(carUsed.id).toBeDefined();
+      expect(carUsed._id).toBeDefined();
     }
   });
 
@@ -311,7 +311,7 @@ describe('src :: api :: controllers :: car', () => {
 
   test('should update a car', async () => {
     const temp = await factory.create<Car>('Car');
-    const response = await request(app).put(`${PREFIX}/${temp.id}`).set(token).send(carData);
+    const response = await request(app).put(`${PREFIX}/${temp._id}`).set(token).send(carData);
     const { body } = response;
 
     expect(response.status).toBe(200);
@@ -332,7 +332,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [],
       quantidadePassageiros: 5
     };
-    const response = await request(app).put(`${PREFIX}/${temp.id}`).set(token).send(tempData);
+    const response = await request(app).put(`${PREFIX}/${temp._id}`).set(token).send(tempData);
 
     const { body } = response;
 
@@ -351,7 +351,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [{ descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5
     };
-    const response = await request(app).put(`${PREFIX}/${temp.id}`).set(token).send(tempData);
+    const response = await request(app).put(`${PREFIX}/${temp._id}`).set(token).send(tempData);
 
     const { body } = response;
 
@@ -370,7 +370,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [{ descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5
     };
-    const response = await request(app).put(`${PREFIX}/${temp.id}`).set(token).send(tempData);
+    const response = await request(app).put(`${PREFIX}/${temp._id}`).set(token).send(tempData);
 
     const { body } = response;
 
@@ -389,7 +389,7 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [{ descricao: 'Ar-condicionado' }, { descricao: 'Ar-condicionado' }],
       quantidadePassageiros: 5
     };
-    const response = await request(app).put(`${PREFIX}/${temp.id}`).set(token).send(tempData);
+    const response = await request(app).put(`${PREFIX}/${temp._id}`).set(token).send(tempData);
 
     const { body } = response;
 
@@ -401,7 +401,7 @@ describe('src :: api :: controllers :: car', () => {
 
   test('should return 400 with errors if empty body when updating', async () => {
     const temp = await factory.create<Car>('Car');
-    const response = await request(app).put(`${PREFIX}/${temp.id}`).set(token).send({});
+    const response = await request(app).put(`${PREFIX}/${temp._id}`).set(token).send({});
 
     const { body } = response;
 
@@ -418,14 +418,14 @@ describe('src :: api :: controllers :: car', () => {
   test('should update a car accessory by its ID', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
-      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .patch(`${PREFIX}/${temp._id}/acessorios/${temp.acessorios[0]._id}`)
       .set(token)
       .send({ descricao: 'Ar-condicionado' });
 
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body._id).toBe(temp.id);
+    expect(body._id).toBe(temp._id?.toString());
     expect(body.ano).toBe(temp.ano);
     expect(body.cor).toBe(temp.cor);
     expect(body.modelo).toBe(temp.modelo);
@@ -439,7 +439,7 @@ describe('src :: api :: controllers :: car', () => {
   test('should return 400 when missing body', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
-      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .patch(`${PREFIX}/${temp._id}/acessorios/${temp.acessorios[0]._id}`)
       .set(token)
       .send({});
 
@@ -454,7 +454,7 @@ describe('src :: api :: controllers :: car', () => {
   test('should return 400 when white spaces on descricao', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
-      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .patch(`${PREFIX}/${temp._id}/acessorios/${temp.acessorios[0]._id}`)
       .set(token)
       .send({ descricao: '   ' });
 
@@ -469,7 +469,7 @@ describe('src :: api :: controllers :: car', () => {
   test('should return 400 when invalid car ID on patch', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
-      .patch(`${PREFIX}/125/acessorios/${temp.acessorios[0].id}`)
+      .patch(`${PREFIX}/125/acessorios/${temp.acessorios[0]._id}`)
       .set(token)
       .send({ descricao: 'vidro eletrico' });
 
@@ -486,14 +486,14 @@ describe('src :: api :: controllers :: car', () => {
       acessorios: [{ descricao: 'vidro eletrico' }, { descricao: 'Ar-condicionado' }]
     });
     const response = await request(app)
-      .patch(`${PREFIX}/${temp.id}/acessorios/${temp.acessorios[0].id}`)
+      .patch(`${PREFIX}/${temp._id}/acessorios/${temp.acessorios[0]._id}`)
       .set(token)
       .send({ descricao: 'vidro eletrico' });
 
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body._id).toBe(temp.id);
+    expect(body._id).toBe(temp._id?.toString());
     expect(body.ano).toBe(temp.ano);
     expect(body.cor).toBe(temp.cor);
     expect(body.modelo).toBe(temp.modelo);
@@ -501,14 +501,14 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.quantidadePassageiros).toBe(temp.quantidadePassageiros);
     expect(body.acessorios.length).toEqual(temp.acessorios.length);
     expect(body.acessorios[0].descricao).toBe('vidro eletrico');
-    expect(body.acessorios[0]._id).toBe(temp.acessorios[0].id);
+    expect(body.acessorios[0]._id).toBe(temp.acessorios[0]._id?.toString());
     expect(body.acessorios[1].descricao).toBe('Ar-condicionado');
   });
 
   test('should return 400 when invalid accessory ID on patch', async () => {
     const temp = await factory.create<Car>('Car');
     const response = await request(app)
-      .patch(`${PREFIX}/${temp.id}/acessorios/789asd`)
+      .patch(`${PREFIX}/${temp._id}/acessorios/789asd`)
       .set(token)
       .send({ descricao: 'vidro eletrico' });
 

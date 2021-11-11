@@ -1,6 +1,6 @@
-/* eslint-disable no-underscore-dangle */
+import Car from '@interfaces/Car';
 import mongoose from 'mongoose';
-import { Model } from './Model';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const CarSchema = new mongoose.Schema({
   modelo: { type: String, required: true },
@@ -18,20 +18,17 @@ const CarSchema = new mongoose.Schema({
   dataCriacao: {
     type: Date,
     default: Date.now,
-    immutable: true,
-    transform: () => undefined
+    immutable: true
   },
   dataAtualizacao: {
     type: Date,
-    default: Date.now,
-    transform: () => undefined
-  },
-  __v: { type: Number, select: false, transform: () => undefined }
+    default: Date.now
+  }
 });
-
+CarSchema.plugin(mongoosePaginate);
 CarSchema.pre('findOneAndUpdate', async function onSave(next) {
   this.set('dataAtualizacao', new Date());
   next();
 });
 
-export default Model('Car', CarSchema);
+export default mongoose.model<Car>('Car', CarSchema);

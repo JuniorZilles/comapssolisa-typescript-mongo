@@ -35,12 +35,11 @@ describe('src :: api :: services :: people', () => {
 
   test('should create a person', async () => {
     const person = await PeopleService.create(personData);
-    expect(person.id).toBeDefined();
+    expect(person._id).toBeDefined();
     expect(person.cpf).toBe(personData.cpf);
     expect(person.data_nascimento).toEqual(new Date(personData.data_nascimento));
     expect(person.email).toBe(personData.email);
     expect(person.nome).toBe(personData.nome);
-    expect(person.senha).toBeUndefined();
     expect(person.habilitado).toBe(personData.habilitado);
   });
 
@@ -109,12 +108,12 @@ describe('src :: api :: services :: people', () => {
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
     expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('offsets');
-    expect(result.offset).toEqual(0);
+    expect(result.offsets).toEqual(1);
     expect(result).toHaveProperty('total');
     expect(result.total).toEqual(5);
-    expect(result.pessoas.length).toEqual(temp.length);
+    expect(result.docs.length).toEqual(temp.length);
   });
 
   test('should get all by nome people', async () => {
@@ -124,13 +123,13 @@ describe('src :: api :: services :: people', () => {
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
     expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('offsets');
-    expect(result.offset).toEqual(0);
+    expect(result.offsets).toEqual(1);
     expect(result).toHaveProperty('total');
     expect(result.total).toEqual(5);
-    expect(result.pessoas.length).toBeGreaterThanOrEqual(1);
-    result.pessoas.forEach((element) => {
+    expect(result.docs.length).toBeGreaterThanOrEqual(1);
+    result.docs.forEach((element) => {
       expect(element.habilitado).toEqual(temp[0].habilitado);
     });
   });
@@ -142,12 +141,12 @@ describe('src :: api :: services :: people', () => {
     expect(result).toHaveProperty('limit');
     expect(result.limit).toEqual(100);
     expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(0);
+    expect(result.offset).toEqual(1);
     expect(result).toHaveProperty('offsets');
-    expect(result.offset).toEqual(0);
+    expect(result.offsets).toEqual(1);
     expect(result).toHaveProperty('total');
     expect(result.total).toEqual(1);
-    expect(result.pessoas.length).toEqual(1);
+    expect(result.docs.length).toEqual(1);
   });
 
   /**
@@ -156,9 +155,9 @@ describe('src :: api :: services :: people', () => {
 
   test('should get a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
-    if (personGenerated.id) {
-      const person = await PeopleService.getById(personGenerated.id);
-      expect(person.id).toBe(personGenerated.id);
+    if (personGenerated._id) {
+      const person = await PeopleService.getById(personGenerated._id);
+      expect(person._id).toEqual(personGenerated._id);
       expect(person.cpf).toBe(personGenerated.cpf);
       expect(person.data_nascimento).toEqual(personGenerated.data_nascimento);
       expect(person.email).toBe(personGenerated.email);
@@ -193,10 +192,10 @@ describe('src :: api :: services :: people', () => {
 
   test('should remove a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
-    if (personGenerated.id) {
-      const person = await PeopleService.delete(personGenerated.id);
+    if (personGenerated._id) {
+      const person = await PeopleService.delete(personGenerated._id);
 
-      expect(person.id).toBe(personGenerated.id);
+      expect(person._id).toEqual(personGenerated._id);
       expect(person.cpf).toBe(personGenerated.cpf);
       expect(person.email).toBe(personGenerated.email);
       expect(person.habilitado).toBe(personGenerated.habilitado);
@@ -230,7 +229,7 @@ describe('src :: api :: services :: people', () => {
 
   test('should update a person by ID', async () => {
     const personGenerated = await factory.create<Person>('People');
-    if (personGenerated.id) {
+    if (personGenerated._id) {
       const tempData = {
         nome: 'joaozinho ciclano',
         cpf: '131.147.860-49',
@@ -239,9 +238,9 @@ describe('src :: api :: services :: people', () => {
         senha: '123456',
         habilitado: 'não'
       };
-      const person = await PeopleService.update(personGenerated.id, tempData);
+      const person = await PeopleService.update(personGenerated._id, tempData);
 
-      expect(person.id).toBe(personGenerated.id);
+      expect(person._id).toEqual(personGenerated._id);
       expect(person.cpf).toBe(tempData.cpf);
       expect(person.data_nascimento).toEqual(new Date(tempData.data_nascimento));
       expect(person.email).toBe(tempData.email);
@@ -283,8 +282,8 @@ describe('src :: api :: services :: people', () => {
         cpf: '131.147.860-49'
       });
       const personGenerated = await factory.create<Person>('People');
-      if (personGenerated.id) {
-        await PeopleService.update(personGenerated.id, tempData);
+      if (personGenerated._id) {
+        await PeopleService.update(personGenerated._id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
@@ -308,8 +307,8 @@ describe('src :: api :: services :: people', () => {
         cpf: '131.147.860-49'
       });
 
-      if (personWithEmail.id) {
-        await PeopleService.update(personWithEmail.id, tempData);
+      if (personWithEmail._id) {
+        await PeopleService.update(personWithEmail._id, tempData);
       }
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
@@ -346,9 +345,9 @@ describe('src :: api :: services :: people', () => {
       senha: '123456',
       habilitado: 'não'
     };
-    if (personGenerated.id) {
+    if (personGenerated._id) {
       try {
-        await PeopleService.update(personGenerated.id, tempData);
+        await PeopleService.update(personGenerated._id, tempData);
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidField);
         expect((<InvalidValue>e).description).toBe('Bad Request');

@@ -276,7 +276,7 @@ describe('src :: api :: controllers :: rental', () => {
   test('should get a rental company by ID', async () => {
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).get(`${PREFIX}/${tempData.id}`);
+    const response = await request(app).get(`${PREFIX}/${tempData._id}`);
 
     const { body } = response;
 
@@ -332,7 +332,7 @@ describe('src :: api :: controllers :: rental', () => {
   test("should remove a rental company by it's ID", async () => {
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).delete(`${PREFIX}/${tempData.id}`);
+    const response = await request(app).delete(`${PREFIX}/${tempData._id}`);
 
     expect(response.status).toBe(204);
     expect(response.body).toEqual({});
@@ -365,7 +365,7 @@ describe('src :: api :: controllers :: rental', () => {
   test('Should update a rental place and return 200 with new database content', async () => {
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalData);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalData);
 
     const { body } = response;
 
@@ -409,7 +409,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -434,7 +434,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -453,7 +453,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -483,7 +483,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -516,7 +516,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -546,7 +546,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -576,7 +576,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -606,7 +606,7 @@ describe('src :: api :: controllers :: rental', () => {
     };
     const tempData = await factory.create<Rental>('Rental');
 
-    const response = await request(app).put(`${PREFIX}/${tempData.id}`).send(rentalTemp);
+    const response = await request(app).put(`${PREFIX}/${tempData._id}`).send(rentalTemp);
 
     const { body } = response;
 
@@ -672,7 +672,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(rentalP0).toHaveProperty('offsets');
     expect(rentalP0).toHaveProperty('locadoras');
     expect(rentalP0.locadoras.length).toEqual(5);
-    expect(rentalP0.offset).toEqual(0);
+    expect(rentalP0.offset).toEqual(1);
     expect(rentalP0.limit).toEqual(5);
     expect(rentalP0.total).toEqual(25);
     expect(rentalP0.offsets).toEqual(5);
@@ -708,7 +708,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body).toHaveProperty('offsets');
     expect(body.locadoras.length).toEqual(1);
     expect(body.locadoras[0].__v).toBeUndefined();
-    expect(body.locadoras[0]._id).toBe(locadora.id);
+    expect(body.locadoras[0]._id).toBe(locadora._id?.toString());
     expect(body.locadoras[0].atividades).toBe(locadora.atividades);
     expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);
     expect(body.locadoras[0].nome).toBe(locadora.nome);
@@ -743,7 +743,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body).toHaveProperty('offsets');
     expect(body.locadoras.length).toEqual(1);
     expect(body.locadoras[0].__v).toBeUndefined();
-    expect(body.locadoras[0]._id).toBe(locadora.id);
+    expect(body.locadoras[0]._id).toBe(locadora._id?.toString());
     expect(body.locadoras[0].atividades).toBe(locadora.atividades);
     expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);
     expect(body.locadoras[0].nome).toBe(locadora.nome);

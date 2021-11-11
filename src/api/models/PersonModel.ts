@@ -1,16 +1,14 @@
 import mongoose from 'mongoose';
-import moment from 'moment';
 import bcrypt from 'bcryptjs';
 import { Person } from '@interfaces/Person';
-import { Model } from './Model';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const PersonSchema = new mongoose.Schema({
   nome: { type: String, required: true },
   cpf: { type: String, required: true, unique: true },
   data_nascimento: {
     type: Date,
-    required: true,
-    transform: (val: Date) => moment(val).format('DD/MM/YYYY')
+    required: true
   },
   email: {
     type: String,
@@ -23,17 +21,14 @@ const PersonSchema = new mongoose.Schema({
   dataCriacao: {
     type: Date,
     default: Date.now,
-    immutable: true,
-    transform: () => undefined
+    immutable: true
   },
   dataAtualizacao: {
     type: Date,
-    default: Date.now,
-    transform: () => undefined
-  },
-  __v: { type: Number, transform: () => undefined }
+    default: Date.now
+  }
 });
-
+PersonSchema.plugin(mongoosePaginate);
 PersonSchema.pre('save', async function onSave(next) {
   const hash = await bcrypt.hash(this.senha, 10);
   this.senha = hash;
@@ -45,4 +40,4 @@ PersonSchema.pre('findOneAndUpdate', async function onSave(next) {
   next();
 });
 
-export default Model('People', PersonSchema) as mongoose.Model<Person>;
+export default mongoose.model<Person>('Person', PersonSchema);

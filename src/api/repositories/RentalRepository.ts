@@ -1,10 +1,9 @@
 import { Rental } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
 import RentalModel from '@models/RentalModel';
-import Rentals from '@interfaces/Rentals';
 import Repository from './Repository';
 
-class RentalRepository extends Repository<RentalSearch, Rentals, Rental> {
+class RentalRepository extends Repository<RentalSearch, Rental> {
   constructor() {
     super(RentalModel);
   }

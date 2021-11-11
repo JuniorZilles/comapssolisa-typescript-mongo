@@ -3,9 +3,9 @@ import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
+import { Paginate } from '@interfaces/Paginate';
 import { Rental } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
-import Rentals from '@interfaces/Rentals';
 import RentalRepository from '@repositories/RentalRepository';
 import getCEP from './CepService';
 import validateCNPJ from './CnpjService';
@@ -46,7 +46,7 @@ class RentalService {
     return addressesNew;
   }
 
-  private async checkIfExistsCNPJ(cnpj: string, id: string | undefined = undefined) {
+  private async checkIfExistsCNPJ(cnpj: string, id: string | undefined = undefined): Promise<void> {
     const result = await RentalRepository.getRentalByCNPJ(cnpj, id);
     if (result) {
       if (result.id !== id) {
@@ -55,7 +55,7 @@ class RentalService {
     }
   }
 
-  private checkIfIsValid(result: Rental, cnpj: string) {
+  private checkIfIsValid(result: Rental, cnpj: string): void {
     if (result.cnpj === cnpj) {
       throw new InvalidValue('Conflict', `CNPJ ${cnpj} already in use`, true);
     }
@@ -105,9 +105,9 @@ class RentalService {
     return query;
   }
 
-  async getAll(payload: RentalSearch): Promise<Rentals> {
+  async getAll(payload: RentalSearch): Promise<Paginate<Rental>> {
     const query = this.transformToQuery(payload);
-    const result = await RentalRepository.findAll(query, 'locadoras');
+    const result = await RentalRepository.findAll(query);
     return result;
   }
 }

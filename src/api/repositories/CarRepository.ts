@@ -1,11 +1,10 @@
 import CarModel from '@models/CarModel';
 import { CarSearch } from '@interfaces/CarSearch';
-import Vehicles from '@interfaces/Vehicle';
 import Car from '@interfaces/Car';
 import Accessory from '@interfaces/Accessory';
 import Repository from './Repository';
 
-class CarRepository extends Repository<CarSearch, Vehicles, Car> {
+class CarRepository extends Repository<CarSearch, Car> {
   constructor() {
     super(CarModel);
   }
@@ -19,7 +18,7 @@ class CarRepository extends Repository<CarSearch, Vehicles, Car> {
       { $set: { 'acessorios.$.descricao': payload.descricao } },
       { returnOriginal: false }
     );
-    return car;
+    return car as Car;
   }
 }
 
