@@ -1,12 +1,13 @@
+import { paginatePerson, serializePerson } from '@serialize/PersonSerialize';
 import PeopleService from '@services/PeopleService';
 import { Request, Response, NextFunction } from 'express';
 
 class PeopleController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const people = await PeopleService.create(req.body);
+      const person = await PeopleService.create(req.body);
 
-      return res.status(201).json(people);
+      return res.status(201).json(serializePerson(person));
     } catch (e) {
       return next(e);
     }
@@ -15,7 +16,7 @@ class PeopleController {
   async get(req: Request, res: Response, next: NextFunction) {
     try {
       const people = await PeopleService.list(req.query);
-      return res.status(200).json(people);
+      return res.status(200).json(paginatePerson(people));
     } catch (e) {
       return next(e);
     }
@@ -23,8 +24,8 @@ class PeopleController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const people = await PeopleService.getById(req.params.id);
-      return res.status(200).json(people);
+      const person = await PeopleService.getById(req.params.id);
+      return res.status(200).json(serializePerson(person));
     } catch (e) {
       return next(e);
     }
@@ -33,9 +34,9 @@ class PeopleController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const updated = await PeopleService.update(id, req.body);
-      if (updated) {
-        return res.status(200).json(updated);
+      const person = await PeopleService.update(id, req.body);
+      if (person) {
+        return res.status(200).json(serializePerson(person));
       }
       return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {

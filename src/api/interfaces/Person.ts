@@ -1,5 +1,5 @@
 export interface Person {
-  id?: string;
+  _id?: string;
   nome: string;
   cpf: string;
   data_nascimento: string | Date;

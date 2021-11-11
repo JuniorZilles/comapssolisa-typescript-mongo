@@ -22,10 +22,11 @@ module.exports = {
           '@errors': './src/api/errors',
           '@validations': './src/api/validations',
           '@middlewares': './src/api/middlewares',
-          '@interfaces': './src/api/interfaces'
+          '@interfaces': './src/api/interfaces',
+          '@serialize': './src/api/serialize'
         }
       }
     ]
   ],
   ignore: ['**/*.spec.ts']
-}
+};

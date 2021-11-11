@@ -1,6 +1,6 @@
 import { Rental } from '@interfaces/Rental';
-import { List } from './List';
+import { Pagination, PaginationCounts } from './Pagination';
 
-export default interface Rentals extends List {
+export default interface Rentals extends Pagination, PaginationCounts {
   locadoras: Rental[];
 }

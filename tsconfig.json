@@ -35,6 +35,9 @@
       ],
       "@interfaces/*": [
         "./src/api/interfaces/*"
+      ],
+      "@serialize/*": [
+        "./src/api/serialize/*"
       ]
     },
     "typeRoots": [

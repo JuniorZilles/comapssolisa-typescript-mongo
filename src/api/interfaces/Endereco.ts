@@ -1,7 +1,7 @@
 import { CepPayload } from './CepPayload';
 
 export interface Endereco extends CepPayload {
-  id?: string;
+  _id?: string;
   number: string;
   isFilial: boolean;
 }

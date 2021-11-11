@@ -1,6 +1,6 @@
 import Car from '@interfaces/Car';
-import { List } from './List';
+import { Pagination, PaginationCounts } from './Pagination';
 
-export default interface Vehicles extends List {
+export default interface Vehicles extends Pagination, PaginationCounts {
   veiculos: Car[];
 }

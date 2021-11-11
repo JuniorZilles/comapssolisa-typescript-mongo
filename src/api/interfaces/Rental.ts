@@ -1,7 +1,7 @@
 import { Endereco } from './Endereco';
 
 export interface Rental {
-  id?: string;
+  _id?: string;
   nome: string;
   cnpj: string;
   atividades: string;

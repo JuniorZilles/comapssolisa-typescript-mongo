@@ -1,3 +1,4 @@
+import { paginateRental, serializeRental } from '@serialize/RentalSerialize';
 import RentalService from '@services/RentalService';
 import { NextFunction, Response, Request } from 'express';
 
@@ -5,7 +6,7 @@ class RentalController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const rental = await RentalService.create(req.body);
-      return res.status(201).json(rental);
+      return res.status(201).json(serializeRental(rental));
     } catch (e) {
       return next(e);
     }
@@ -14,7 +15,7 @@ class RentalController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const rental = await RentalService.update(req.params.id, req.body);
-      return res.status(200).json(rental);
+      return res.status(200).json(serializeRental(rental));
     } catch (e) {
       return next(e);
     }
@@ -36,7 +37,7 @@ class RentalController {
     try {
       const rental = await RentalService.getById(req.params.id);
       if (rental) {
-        return res.status(200).json(rental);
+        return res.status(200).json(serializeRental(rental));
       }
       return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
@@ -47,7 +48,7 @@ class RentalController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const rentals = await RentalService.getAll(req.query);
-      return res.status(200).json(rentals);
+      return res.status(200).json(paginateRental(rentals));
     } catch (e) {
       return next(e);
     }

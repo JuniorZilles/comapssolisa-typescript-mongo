@@ -1,6 +1,6 @@
 import PersonSearch from '@interfaces/PersonSearch';
-import { List } from './List';
+import { Pagination, PaginationCounts } from './Pagination';
 
-export default interface People extends List {
+export default interface People extends Pagination, PaginationCounts {
   pessoas: PersonSearch[];
 }

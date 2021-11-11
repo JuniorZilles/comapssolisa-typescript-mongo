@@ -1,3 +1,4 @@
+import { paginateCar, serializeCar } from '@serialize/CarSerialize';
 import CarService from '@services/CarService';
 import { Request, Response, NextFunction } from 'express';
 
@@ -5,7 +6,7 @@ class CarController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const car = await CarService.create(req.body);
-      return res.status(201).json(car);
+      return res.status(201).json(serializeCar(car));
     } catch (e) {
       return next(e);
     }
@@ -14,7 +15,7 @@ class CarController {
   async get(req: Request, res: Response, next: NextFunction) {
     try {
       const cars = await CarService.list(req.query);
-      return res.status(200).json(cars);
+      return res.status(200).json(paginateCar(cars));
     } catch (e) {
       return next(e);
     }
@@ -24,7 +25,7 @@ class CarController {
     try {
       const { id } = req.params;
       const car = await CarService.getById(id);
-      return res.status(200).json(car);
+      return res.status(200).json(serializeCar(car));
     } catch (e) {
       return next(e);
     }
@@ -33,9 +34,9 @@ class CarController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const updated = await CarService.update(id, req.body);
-      if (updated) {
-        return res.status(200).json(updated);
+      const car = await CarService.update(id, req.body);
+      if (car) {
+        return res.status(200).json(serializeCar(car));
       }
       return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
     } catch (e) {
@@ -59,8 +60,8 @@ class CarController {
   async patchAcessorios(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idAccessory } = req.params;
-      const updated = await CarService.updateAccessory(id, idAccessory, req.body);
-      return res.status(200).json(updated);
+      const car = await CarService.updateAccessory(id, idAccessory, req.body);
+      return res.status(200).json(serializeCar(car));
     } catch (e) {
       return next(e);
     }
