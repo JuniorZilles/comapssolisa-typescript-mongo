@@ -3,6 +3,8 @@
 Development of the first stage of the API Compassolisa
 
 <p align="center">
+
+   [![Deploy](https://github.com/JuniorZilles/projeto_final/actions/workflows/main.yml/badge.svg)](https://github.com/JuniorZilles/projeto_final/actions/workflows/main.yml)
    <img src="http://img.shields.io/static/v1?label=License&message=MIT&color=red&style=for-the-badge"/>
    <img src="http://img.shields.io/static/v1?label=Node&message=14.18.1&color=green&style=for-the-badge&logo=node.js"/>
    <img src="http://img.shields.io/static/v1?label=MongoDB&message=5.0.3&color=green&style=for-the-badge&logo=mongodb"/>
