@@ -15,7 +15,6 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
       cpf: Joi.string().trim().regex(cpfRegex).message('Invalid CPF'),
       data_nascimento: JoiDate.date().format('DD/MM/YYYY'),
       email: Joi.string().trim().email(),
-      senha: Joi.string().trim().min(6),
       habilitado: Joi.string().trim().valid('sim', 'não'),
       limit: Joi.number(),
       offset: Joi.number()
