@@ -41,40 +41,42 @@ Development of the first stage of the API Compassolisa
   - jsonwebtoken v.8.5.1
   - moment v.2.29.1
   - mongoose v.6.0.11
+  - mongoose-paginate-v2 v.1.4.2
   - swagger-ui-express v.4.1.6
 - Development dependencies:
-   - @babel/cli 7.15.7
-   - @babel/core 7.15.8
-   - @babel/preset-env 7.15.8
-   - @babel/preset-typescript 7.15.0
-   - @types/bcryptjs 2.4.2",
-   - @types/express 4.17.13
-   - @types/factory-girl 5.0.8
-   - @types/faker 5.5.9
-   - @types/jest 27.0.2
-   - @types/jsonwebtoken 8.5.5
-   - @types/supertest 2.0.11
-   - @types/swagger-ui-express 4.1.3
-   - @typescript-eslint/eslint-plugin 4.29.3
-   - @typescript-eslint/parser 4.29.3
-   - babel-jest 27.3.1
-   - babel-plugin-module-resolver 4.1.0
-   - eslint 7.32.0
-   - eslint-config-airbnb-typescript 14.0.1
-   - eslint-config-prettier 8.3.0
-   - eslint-plugin-import 2.22.1
-   - eslint-plugin-node 11.1.0
-   - eslint-plugin-prettier 4.0.0
-   - eslint-plugin-promise 4.2.1
-   - factory-girl 5.0.4
-   - faker 5.5.3
-   - jest 27.3.1
-   - prettier 2.4.1
-   - supertest 6.1.6
-   - ts-jest 27.0.7
-   - ts-node-dev 1.1.8
-   - tsconfig-paths 3.11.0
-   - typescript 4.4.0
+   - @babel/cli v.7.15.7
+   - @babel/core v.7.15.8
+   - @babel/preset-env v.7.15.8
+   - @babel/preset-typescript v.7.15.0
+   - @types/bcryptjs v.2.4.2
+   - @types/express v.4.17.13
+   - @types/factory-girl v.5.0.8
+   - @types/faker v.5.5.9
+   - @types/jest v.27.0.2
+   - @types/jsonwebtoken v.8.5.5
+   - @types/supertest v.2.0.11
+   - @types/swagger-ui-express v.4.1.3
+   - @types/mongoose-paginate-v2 v.1.4.0
+   - @typescript-eslint/eslint-plugin v.4.29.3
+   - @typescript-eslint/parser v.4.29.3
+   - babel-jest v.27.3.1
+   - babel-plugin-module-resolver v.4.1.0
+   - eslint v.7.32.0
+   - eslint-config-airbnb-typescript v.14.0.1
+   - eslint-config-prettier v.8.3.0
+   - eslint-plugin-import v.2.22.1
+   - eslint-plugin-node v.11.1.0
+   - eslint-plugin-prettier v.4.0.0
+   - eslint-plugin-promise v.4.2.1
+   - factory-girl v.5.0.4
+   - faker v.5.5.3
+   - jest v.27.3.1
+   - prettier v.2.4.1
+   - supertest v.6.1.6
+   - ts-jest v.27.0.7
+   - ts-node-dev v.1.1.8
+   - tsconfig-paths v.3.11.0
+   - typescript v.4.4.4
 ## Example for .ENV and .ENV.TEST
 
 Database name should be different for each
