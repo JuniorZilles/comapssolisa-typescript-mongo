@@ -404,10 +404,10 @@ describe('src :: api :: services :: car', () => {
     try {
       await CarService.updateAccessory('6171508962f47a7a91938d30', car.acessorios[0]._id as string, tempData);
     } catch (e) {
-      expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('descricao');
-      expect((<InvalidValue>e).name).toBe(
-        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not updated`
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
+      expect((<NotFound>e).name).toBe(
+        `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not found`
       );
     }
   });
@@ -430,10 +430,10 @@ describe('src :: api :: services :: car', () => {
     try {
       await CarService.updateAccessory(car._id as string, '6171508962f47a7a91938d30', tempData);
     } catch (e) {
-      expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('descricao');
-      expect((<InvalidValue>e).name).toBe(
-        `Value id: ${car._id} - idAccessory: 6171508962f47a7a91938d30 - descricao: ${car.acessorios[0].descricao} not updated`
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
+      expect((<NotFound>e).name).toBe(
+        `Value id: ${car._id} - idAccessory: 6171508962f47a7a91938d30 - descricao: ${car.acessorios[0].descricao} not found`
       );
     }
   });
@@ -444,10 +444,10 @@ describe('src :: api :: services :: car', () => {
     try {
       await CarService.updateAccessory(car._id as string, car.acessorios[0]._id as string, tempData);
     } catch (e) {
-      expect(e).toBeInstanceOf(InvalidValue);
-      expect((<InvalidValue>e).description).toBe('descricao');
-      expect((<InvalidValue>e).name).toBe(
-        `Value id: ${car._id} - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not updated`
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
+      expect((<NotFound>e).name).toBe(
+        `Value id: ${car._id} - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not found`
       );
     }
   });
