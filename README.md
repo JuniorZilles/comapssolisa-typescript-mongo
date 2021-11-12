@@ -90,12 +90,9 @@ Development of the first stage of the API Compassolisa
 Database name should be different for each
 
 ```
-MONGO_HOST=127.0.0.1:27017
-MONGO_USER=root
-MONGO_PASSWORD=MongoDB2021
-MONGO_COLLECTION=teste_compassolisa
+MONGO_HOST=mongodb://mongodb://root:MongoDB2021@mongo-svc:27017/compassolisa
 PORT=3000
-NODE_ENV=test
+NODE_ENV=dev
 SECRET=bab2ada84cd5dd8f0185e6d673e3800f
 ```
 
@@ -173,4 +170,3 @@ if you are runnig locally it should be found on `localhost:3000`
 The [MIT License]() (MIT)
 
 Copyright :copyright: 2021 - Projeto Final
-

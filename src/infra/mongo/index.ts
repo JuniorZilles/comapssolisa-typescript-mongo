@@ -4,11 +4,7 @@ import config from '../../config/config';
 
 class MongoDatabase {
   async connect() {
-    await mongoose.connect(`mongodb://${config.database.host}/${config.database.collection}`, {
-      user: config.database.username,
-      pass: config.database.password,
-      authSource: 'admin'
-    });
+    await mongoose.connect(config.database.host as string);
   }
 
   async disconect() {
