@@ -29,4 +29,4 @@ COPY --from=builder /app/dist ./dist
 
 USER node
 
-CMD ["npm", "run", 'start']
+CMD ["npm", 'start']
