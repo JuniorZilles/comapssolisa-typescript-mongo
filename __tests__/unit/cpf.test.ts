@@ -2,7 +2,7 @@ import validateCPF from '@services/CpfService';
 
 describe('src :: api :: services :: cpf', () => {
   test('should return true for a valid cpf', async () => {
-    const isValid = validateCPF('967.056.960-52');
+    const isValid = validateCPF('530.533.730-50');
     expect(isValid).toBe(true);
   });
 
