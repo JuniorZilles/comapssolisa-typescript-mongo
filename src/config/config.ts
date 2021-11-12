@@ -6,7 +6,8 @@ dotenv.config({
 
 export default {
   database: {
-    host: process.env.MONGO_HOST
+    host: process.env.MONGO_HOST,
+    name: process.env.MONGO_DB_NAME
   },
   secret: process.env.SECRET || 'bab2ada84cd5dd8f0185e6d673e3800f'
 };

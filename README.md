@@ -90,7 +90,8 @@ Development of the first stage of the API Compassolisa
 Database name should be different for each
 
 ```
-MONGO_HOST=mongodb://mongodb://root:MongoDB2021@mongo-svc:27017/compassolisa
+MONGO_HOST=mongodb://mongodb://root:MongoDB2021@mongo-svc:27017/
+MONGO_DB_NAME=compassolisa
 PORT=3000
 NODE_ENV=dev
 SECRET=bab2ada84cd5dd8f0185e6d673e3800f
