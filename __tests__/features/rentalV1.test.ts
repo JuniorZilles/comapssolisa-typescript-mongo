@@ -3,6 +3,7 @@ import request from 'supertest';
 import RentalModel from '@models/RentalModel';
 import { Rental } from '@interfaces/Rental';
 import factory from '../utils/RentalFactory';
+import checkDefaultErrorFormat from '../utils/CheckErrorFormat';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';
 
@@ -88,7 +89,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('nome');
     expect(body[0].name).toBe('"nome" is required');
   });
@@ -110,7 +112,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('nome');
     expect(body[0].name).toBe('"nome" is not allowed to be empty');
   });
@@ -126,7 +129,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('endereco');
     expect(body[0].name).toBe('"endereco" must contain at least 1 items');
   });
@@ -153,7 +157,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('isFilial has more than one headquarters');
   });
@@ -183,7 +188,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-01 already in use');
   });
@@ -210,7 +216,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cnpj');
     expect(body[0].name).toBe('"cnpj" has a invalid format');
   });
@@ -237,7 +244,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-78 is invalid');
   });
@@ -264,7 +272,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('endereco.0.cep');
     expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });
@@ -310,7 +319,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -320,7 +330,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -343,7 +354,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -353,7 +365,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -414,7 +427,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('nome');
     expect(body[0].name).toBe('"nome" is required');
   });
@@ -439,7 +453,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('nome');
     expect(body[0].name).toBe('"nome" is not allowed to be empty');
   });
@@ -458,7 +473,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('endereco');
     expect(body[0].name).toBe('"endereco" must contain at least 1 items');
   });
@@ -488,7 +504,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('isFilial has more than one headquarters');
   });
@@ -521,7 +538,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-01 already in use');
   });
@@ -551,7 +569,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cnpj');
     expect(body[0].name).toBe('"cnpj" has a invalid format');
   });
@@ -581,7 +600,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe('CNPJ 08.450.508/0001-78 is invalid');
   });
@@ -611,7 +631,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('endereco.0.cep');
     expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });
@@ -622,7 +643,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -650,7 +672,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -768,7 +791,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cnpj');
     expect(body[0].name).toBe('"cnpj" has a invalid format');
   });
@@ -778,7 +802,8 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cep');
     expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });

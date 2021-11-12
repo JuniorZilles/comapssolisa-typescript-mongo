@@ -4,6 +4,7 @@ import moment from 'moment';
 import PersonModel from '@models/PersonModel';
 import { Person } from '@interfaces/Person';
 import factory from '../utils/PeopleFactory';
+import checkDefaultErrorFormat from '../utils/CheckErrorFormat';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';
 
@@ -58,7 +59,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('habilitado');
     expect(body[0].name).toBe('"habilitado" is required');
   });
@@ -76,7 +78,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('senha');
     expect(body[0].name).toBe('"senha" is not allowed to be empty');
   });
@@ -94,7 +97,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe("The field 'data_nascimento' is out of the standard format");
   });
@@ -112,7 +116,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cpf');
     expect(body[0].name).toBe('Invalid CPF');
   });
@@ -130,7 +135,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
   });
@@ -148,7 +154,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('senha');
     expect(body[0].name).toBe('"senha" length must be at least 6 characters long');
   });
@@ -166,7 +173,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('email');
     expect(body[0].name).toBe('"email" must be a valid email');
   });
@@ -184,7 +192,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('habilitado');
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
@@ -205,7 +214,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe(`CPF ${peopleData.cpf} already in use`);
   });
@@ -223,7 +233,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('nome');
     expect(body[0].name).toBe('"nome" is not allowed to be empty');
   });
@@ -320,7 +331,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -330,7 +342,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -353,7 +366,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('id');
     expect(body[0].name).toBe('"id" length must be 24 characters long');
   });
@@ -363,7 +377,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(404);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Not Found');
     expect(body[0].name).toBe('Value 6171508962f47a7a91938d30 not found');
   });
@@ -411,7 +426,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('habilitado');
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
@@ -429,7 +445,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe("The field 'data_nascimento' is out of the standard format");
   });
@@ -447,7 +464,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cpf');
     expect(body[0].name).toBe('Invalid CPF');
   });
@@ -466,7 +484,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Bad Request');
     expect(body[0].name).toBe(`CPF ${tempData.cpf} is invalid`);
   });
@@ -484,7 +503,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('senha');
     expect(body[0].name).toBe('"senha" length must be at least 6 characters long');
   });
@@ -502,7 +522,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('email');
     expect(body[0].name).toBe('"email" must be a valid email');
   });
@@ -521,7 +542,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('habilitado');
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
@@ -543,7 +565,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe(`CPF ${tempData.cpf} already in use`);
   });
@@ -562,7 +585,8 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(400);
-    expect(body.length).toBeGreaterThanOrEqual(1);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(2);
     expect(body[0].description).toBe('nome');
     expect(body[0].name).toBe('"nome" is not allowed to be empty');
   });

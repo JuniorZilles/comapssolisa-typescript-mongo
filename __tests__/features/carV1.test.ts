@@ -6,6 +6,7 @@ import { generateToken } from '@services/TokenService';
 import Car from '@interfaces/Car';
 import Accessory from '@interfaces/Accessory';
 import factory from '../utils/CarFactory';
+import checkDefaultErrorFormat from '../utils/CheckErrorFormat';
 import MongoDatabase from '../../src/infra/mongo/index';
 import app from '../../src/app';
 
@@ -36,17 +37,6 @@ describe('src :: api :: controllers :: car', () => {
   afterEach(async () => {
     await CarModel.deleteMany();
   });
-
-  const checkDefaultErrorFormat = (body) => {
-    expect(body).toEqual(
-      expect.arrayContaining([
-        {
-          name: expect.any(String),
-          description: expect.any(String)
-        }
-      ])
-    );
-  };
 
   const checkDefaultCarFormat = (body) => {
     expect(body).toEqual({
