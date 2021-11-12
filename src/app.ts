@@ -1,5 +1,6 @@
 import express from 'express';
 import errors from '@middlewares/errors';
+import headers from '@middlewares/headers';
 import router from './routes';
 import MongoDatabase from './infra/mongo/index';
 
@@ -21,6 +22,7 @@ class App {
   middlewares() {
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: false }));
+    this.server.use(headers);
   }
 
   routes() {
