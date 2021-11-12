@@ -3,7 +3,6 @@ import InvalidField from '@errors/InvalidField';
 import CarModel from '@models/CarModel';
 import NotFound from '@errors/NotFound';
 import Car from '@interfaces/Car';
-import InvalidValue from '@errors/InvalidValue';
 import factory from '../utils/CarFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 
