@@ -29,4 +29,4 @@ COPY --from=builder /app/dist ./dist
 
 USER node
 
-CMD ["yarn", 'start']
+CMD ["npm", "run", 'start']
