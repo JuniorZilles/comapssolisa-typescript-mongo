@@ -22,6 +22,7 @@ services:
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: root
       ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2021
+      ME_CONFIG_MONGODB_SERVER: mongo-svc
       ME_CONFIG_MONGODB_URL: "mongodb://root:MongoDB2021@mongo-svc:27017/"
     links:
       - mongo
@@ -35,10 +36,8 @@ services:
     ports:
         - "3000:3000"
     environment:
-      MONGO_HOST: mongo-svc:27017
-      MONGO_USER: root
-      MONGO_PASSWORD: MongoDB2021
-      MONGO_COLLECTION: compassolisa
+      MONGO_HOST: "mongodb://root:MongoDB2021@mongo-svc:27017/"
+      MONGO_DB_NAME: compassolisa
       NODE_ENV: prod
       PORT: 3000
     entrypoint:
