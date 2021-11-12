@@ -134,21 +134,6 @@ describe('src :: api :: services :: people', () => {
     });
   });
 
-  test('should get not get all people by password', async () => {
-    const temp = await factory.create<Person>('People');
-    const result = await PeopleService.list({ senha: temp.senha });
-
-    expect(result).toHaveProperty('limit');
-    expect(result.limit).toEqual(100);
-    expect(result).toHaveProperty('offset');
-    expect(result.offset).toEqual(1);
-    expect(result).toHaveProperty('offsets');
-    expect(result.offsets).toEqual(1);
-    expect(result).toHaveProperty('total');
-    expect(result.total).toEqual(1);
-    expect(result.docs.length).toEqual(1);
-  });
-
   /**
    * GET BY ID
    */
