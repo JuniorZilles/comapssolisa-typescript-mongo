@@ -1376,10 +1376,6 @@
             "type": "string",
             "format": "email"
           },
-          "senha": {
-            "type": "string",
-            "format": "password"
-          },
           "habilitado": {
             "type": "string",
             "enum": [
