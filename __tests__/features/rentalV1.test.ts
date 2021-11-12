@@ -27,6 +27,58 @@ const rentalData = {
   ]
 };
 
+const checkDefaultRentalFormat = (body) => {
+  expect(body).toEqual({
+    _id: expect.any(String),
+    atividades: expect.any(String),
+    cnpj: expect.any(String),
+    endereco: expect.arrayContaining([
+      {
+        _id: expect.any(String),
+        bairro: expect.any(String),
+        cep: expect.any(String),
+        complemento: expect.any(String),
+        isFilial: expect.any(Boolean),
+        localidade: expect.any(String),
+        logradouro: expect.any(String),
+        number: expect.any(String),
+        uf: expect.any(String)
+      }
+    ]),
+    nome: expect.any(String)
+  });
+};
+
+const checkDefaultRentalsFormat = (body) => {
+  expect(body).toEqual({
+    limit: expect.any(Number),
+    locadoras: expect.arrayContaining([
+      {
+        _id: expect.any(String),
+        atividades: expect.any(String),
+        cnpj: expect.any(String),
+        endereco: expect.arrayContaining([
+          {
+            _id: expect.any(String),
+            bairro: expect.any(String),
+            cep: expect.any(String),
+            complemento: expect.any(String),
+            isFilial: expect.any(Boolean),
+            localidade: expect.any(String),
+            logradouro: expect.any(String),
+            number: expect.any(String),
+            uf: expect.any(String)
+          }
+        ]),
+        nome: expect.any(String)
+      }
+    ]),
+    offset: expect.any(Number),
+    offsets: expect.any(Number),
+    total: expect.any(Number)
+  });
+};
+
 describe('src :: api :: controllers :: rental', () => {
   beforeAll(async () => {
     await RentalModel.deleteMany();
@@ -49,24 +101,12 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(201);
 
-    expect(body).toHaveProperty('_id');
-    expect(body).not.toHaveProperty('__v');
-    expect(body).toHaveProperty('nome');
-    expect(body).toHaveProperty('cnpj');
-    expect(body).toHaveProperty('atividades');
-    expect(body).toHaveProperty('endereco');
+    checkDefaultRentalFormat(body);
     expect(body.endereco.length).toEqual(rentalData.endereco.length);
     expect(body.nome).toBe(rentalData.nome);
     expect(body.cnpj).toBe(rentalData.cnpj);
     expect(body.atividades).toBe(rentalData.atividades);
     body.endereco.forEach((endereco, index) => {
-      expect(endereco).toHaveProperty('cep');
-      expect(endereco).toHaveProperty('number');
-      expect(endereco).toHaveProperty('isFilial');
-      expect(endereco).toHaveProperty('logradouro');
-      expect(endereco).toHaveProperty('bairro');
-      expect(endereco).toHaveProperty('localidade');
-      expect(endereco).toHaveProperty('uf');
       expect(endereco.cep).toBe(rentalData.endereco[index].cep);
       expect(endereco.number).toBe(rentalData.endereco[index].number);
       expect(endereco.isFilial).toBe(rentalData.endereco[index].isFilial);
@@ -290,24 +330,12 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('_id');
-    expect(body).not.toHaveProperty('__v');
-    expect(body).toHaveProperty('nome');
-    expect(body).toHaveProperty('cnpj');
-    expect(body).toHaveProperty('atividades');
-    expect(body).toHaveProperty('endereco');
+    checkDefaultRentalFormat(body);
     expect(body.endereco.length).toEqual(tempData.endereco.length);
     expect(body.nome).toBe(tempData.nome);
     expect(body.cnpj).toBe(tempData.cnpj);
     expect(body.atividades).toBe(tempData.atividades);
     body.endereco.forEach((endereco, index) => {
-      expect(endereco).toHaveProperty('cep');
-      expect(endereco).toHaveProperty('number');
-      expect(endereco).toHaveProperty('isFilial');
-      expect(endereco).toHaveProperty('logradouro');
-      expect(endereco).toHaveProperty('bairro');
-      expect(endereco).toHaveProperty('localidade');
-      expect(endereco).toHaveProperty('uf');
       expect(endereco.cep).toBe(tempData.endereco[index].cep);
       expect(endereco.number).toBe(tempData.endereco[index].number);
       expect(endereco.isFilial).toBe(tempData.endereco[index].isFilial);
@@ -384,24 +412,12 @@ describe('src :: api :: controllers :: rental', () => {
 
     expect(response.status).toBe(200);
 
-    expect(body).toHaveProperty('_id');
-    expect(body).not.toHaveProperty('__v');
-    expect(body).toHaveProperty('nome');
-    expect(body).toHaveProperty('cnpj');
-    expect(body).toHaveProperty('atividades');
-    expect(body).toHaveProperty('endereco');
+    checkDefaultRentalFormat(body);
     expect(body.endereco.length).toEqual(rentalData.endereco.length);
     expect(body.nome).toBe(rentalData.nome);
     expect(body.cnpj).toBe(rentalData.cnpj);
     expect(body.atividades).toBe(rentalData.atividades);
     body.endereco.forEach((endereco, index) => {
-      expect(endereco).toHaveProperty('cep');
-      expect(endereco).toHaveProperty('number');
-      expect(endereco).toHaveProperty('isFilial');
-      expect(endereco).toHaveProperty('logradouro');
-      expect(endereco).toHaveProperty('bairro');
-      expect(endereco).toHaveProperty('localidade');
-      expect(endereco).toHaveProperty('uf');
       expect(endereco.cep).toBe(rentalData.endereco[index].cep);
       expect(endereco.number).toBe(rentalData.endereco[index].number);
       expect(endereco.isFilial).toBe(rentalData.endereco[index].isFilial);
@@ -689,11 +705,7 @@ describe('src :: api :: controllers :: rental', () => {
     const rentalP0 = responseP0.body;
 
     expect(responseP0.status).toBe(200);
-    expect(rentalP0).toHaveProperty('total');
-    expect(rentalP0).toHaveProperty('limit');
-    expect(rentalP0).toHaveProperty('offset');
-    expect(rentalP0).toHaveProperty('offsets');
-    expect(rentalP0).toHaveProperty('locadoras');
+    checkDefaultRentalsFormat(rentalP0);
     expect(rentalP0.locadoras.length).toEqual(5);
     expect(rentalP0.offset).toEqual(1);
     expect(rentalP0.limit).toEqual(5);
@@ -702,11 +714,8 @@ describe('src :: api :: controllers :: rental', () => {
 
     const responseP1 = await request(app).get(`${PREFIX}?offset=1&limit=5`);
     const rentalP1 = responseP1.body;
-    expect(rentalP1).toHaveProperty('total');
-    expect(rentalP1).toHaveProperty('limit');
-    expect(rentalP1).toHaveProperty('offset');
-    expect(rentalP1).toHaveProperty('offsets');
-    expect(rentalP1).toHaveProperty('locadoras');
+    expect(responseP1.status).toBe(200);
+    checkDefaultRentalsFormat(rentalP1);
     expect(rentalP1.locadoras.length).toEqual(5);
     expect(rentalP1.offset).toEqual(1);
     expect(rentalP1.limit).toEqual(5);
@@ -724,11 +733,7 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('locadoras');
-    expect(body).toHaveProperty('total');
-    expect(body).toHaveProperty('limit');
-    expect(body).toHaveProperty('offset');
-    expect(body).toHaveProperty('offsets');
+    checkDefaultRentalsFormat(body);
     expect(body.locadoras.length).toEqual(1);
     expect(body.locadoras[0].__v).toBeUndefined();
     expect(body.locadoras[0]._id).toBe(locadora._id?.toString());
@@ -759,11 +764,7 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('locadoras');
-    expect(body).toHaveProperty('total');
-    expect(body).toHaveProperty('limit');
-    expect(body).toHaveProperty('offset');
-    expect(body).toHaveProperty('offsets');
+    checkDefaultRentalsFormat(body);
     expect(body.locadoras.length).toEqual(1);
     expect(body.locadoras[0].__v).toBeUndefined();
     expect(body.locadoras[0]._id).toBe(locadora._id?.toString());
@@ -778,11 +779,13 @@ describe('src :: api :: controllers :: rental', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('locadoras');
-    expect(body).toHaveProperty('total');
-    expect(body).toHaveProperty('limit');
-    expect(body).toHaveProperty('offset');
-    expect(body).toHaveProperty('offsets');
+    expect(body).toEqual({
+      locadoras: expect.any(Array),
+      total: expect.any(Number),
+      limit: expect.any(Number),
+      offset: expect.any(Number),
+      offsets: expect.any(Number)
+    });
     expect(body.locadoras.length).toEqual(0);
   });
 

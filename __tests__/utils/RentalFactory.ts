@@ -32,6 +32,7 @@ factory.define('Rental', Rental, {
       ),
       number: factory.sequence(() => `${faker.random.alpha()}`),
       logradouro: factory.sequence(() => `${faker.address.streetName()}`),
+      complemento: factory.sequence(() => `${faker.address.zipCode()}`),
       uf: factory.sequence(() => `${faker.address.stateAbbr()}`),
       bairro: factory.sequence(() => `${faker.address.secondaryAddress()}`),
       localidade: factory.sequence(() => `${faker.address.cityName()}`),
@@ -48,6 +49,7 @@ factory.define('Rental', Rental, {
       logradouro: factory.sequence(() => `${faker.address.streetName()}`),
       uf: factory.sequence(() => `${faker.address.stateAbbr()}`),
       bairro: factory.sequence(() => `${faker.address.secondaryAddress()}`),
+      complemento: factory.sequence(() => `${faker.address.zipCode()}`),
       localidade: factory.sequence(() => `${faker.address.cityName()}`),
       number: factory.sequence(() => `${faker.random.alpha()}`),
       isFilial: factory.sequence(() => `${!Math.round(Math.random())}`)

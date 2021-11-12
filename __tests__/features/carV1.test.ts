@@ -1,10 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import request from 'supertest';
 import CarModel from '@models/CarModel';
-
 import { generateToken } from '@services/TokenService';
 import Car from '@interfaces/Car';
-import Accessory from '@interfaces/Accessory';
 import factory from '../utils/CarFactory';
 import checkDefaultErrorFormat from '../utils/CheckErrorFormat';
 import MongoDatabase from '../../src/infra/mongo/index';
@@ -41,17 +39,16 @@ describe('src :: api :: controllers :: car', () => {
   const checkDefaultCarFormat = (body) => {
     expect(body).toEqual({
       _id: expect.any(String),
-      acessorios: expect.any(Array),
+      acessorios: expect.arrayContaining([
+        {
+          _id: expect.any(String),
+          descricao: expect.any(String)
+        }
+      ]),
       ano: expect.any(Number),
       modelo: expect.any(String),
       cor: expect.any(String),
       quantidadePassageiros: expect.any(Number)
-    });
-    body.acessorios.forEach((accessory: Accessory) => {
-      expect(accessory).toEqual({
-        _id: expect.any(String),
-        descricao: expect.any(String)
-      });
     });
   };
 

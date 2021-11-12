@@ -18,6 +18,36 @@ const personData = {
   habilitado: 'sim'
 };
 
+const checkDefaultPersonFormat = (body) => {
+  expect(body).toEqual({
+    _id: expect.any(String),
+    cpf: expect.any(String),
+    nome: expect.any(String),
+    data_nascimento: expect.any(String),
+    email: expect.any(String),
+    habilitado: expect.any(String)
+  });
+};
+
+const checkDefaultPeopleFormat = (body) => {
+  expect(body).toEqual({
+    pessoas: expect.arrayContaining([
+      {
+        _id: expect.any(String),
+        cpf: expect.any(String),
+        nome: expect.any(String),
+        data_nascimento: expect.any(String),
+        email: expect.any(String),
+        habilitado: expect.any(String)
+      }
+    ]),
+    total: expect.any(Number),
+    limit: expect.any(Number),
+    offset: expect.any(Number),
+    offsets: expect.any(Number)
+  });
+};
+
 describe('src :: api :: controllers :: people', () => {
   beforeAll(async () => {
     await PersonModel.deleteMany();
@@ -37,9 +67,8 @@ describe('src :: api :: controllers :: people', () => {
 
     const { body } = response;
     expect(response.status).toBe(201);
-    expect(body._id).toBeDefined();
+    checkDefaultPersonFormat(body);
     expect(body.nome).toBe(personData.nome);
-    expect(body.senha).toBeUndefined();
     expect(body.__v).toBeUndefined();
     expect(body.cpf).toBe(personData.cpf);
     expect(body.data_nascimento).toEqual(personData.data_nascimento);
@@ -250,14 +279,10 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('pessoas');
-    expect(body).toHaveProperty('total');
+    checkDefaultPeopleFormat(body);
     expect(body.total).toEqual(5);
-    expect(body).toHaveProperty('limit');
     expect(body.limit).toEqual(5);
-    expect(body).toHaveProperty('offset');
     expect(body.offset).toEqual(1);
-    expect(body).toHaveProperty('offsets');
     expect(body.offsets).toEqual(1);
     expect(body.pessoas.length).toEqual(peopleData.length);
   });
@@ -275,14 +300,10 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('pessoas');
-    expect(body).toHaveProperty('total');
+    checkDefaultPeopleFormat(body);
     expect(body.total).toEqual(10);
-    expect(body).toHaveProperty('limit');
     expect(body.limit).toEqual(5);
-    expect(body).toHaveProperty('offset');
     expect(body.offset).toEqual(1);
-    expect(body).toHaveProperty('offsets');
     expect(body.offsets).toEqual(2);
     expect(body.pessoas.length).toEqual(5);
   });
@@ -292,14 +313,16 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
-    expect(body).toHaveProperty('pessoas');
-    expect(body).toHaveProperty('total');
+    expect(body).toEqual({
+      pessoas: expect.any(Array),
+      total: expect.any(Number),
+      limit: expect.any(Number),
+      offset: expect.any(Number),
+      offsets: expect.any(Number)
+    });
     expect(body.total).toEqual(0);
-    expect(body).toHaveProperty('limit');
     expect(body.limit).toEqual(5);
-    expect(body).toHaveProperty('offset');
     expect(body.offset).toEqual(1);
-    expect(body).toHaveProperty('offsets');
     expect(body.offsets).toEqual(1);
     expect(body.pessoas.length).toEqual(0);
   });
@@ -318,6 +341,7 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = response;
 
     expect(response.status).toBe(200);
+    checkDefaultPersonFormat(body);
     expect(body.nome).toBe(peopleData.nome);
     expect(body.cpf).toBe(peopleData.cpf);
     const date = new Date(peopleData.data_nascimento);
@@ -404,7 +428,7 @@ describe('src :: api :: controllers :: people', () => {
     const { body } = responseput;
 
     expect(responseput.status).toBe(200);
-
+    checkDefaultPersonFormat(body);
     expect(body._id).toBe(peopleData._id?.toString());
     expect(body.nome).toBe(tempData.nome);
     expect(body.cpf).toBe(tempData.cpf);
