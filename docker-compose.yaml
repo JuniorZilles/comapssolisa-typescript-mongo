@@ -22,7 +22,6 @@ services:
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: root
       ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2021
-      ME_CONFIG_MONGODB_SERVER: mongo-svc
       ME_CONFIG_MONGODB_URL: "mongodb://root:MongoDB2021@mongo-svc:27017/"
     links:
       - mongo
