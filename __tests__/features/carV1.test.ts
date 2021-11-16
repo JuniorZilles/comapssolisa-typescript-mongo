@@ -316,6 +316,28 @@ describe('src :: api :: controllers :: car', () => {
     expect(body.veiculos).toHaveLength(0);
   });
 
+  test('should return 400 with errors and not get a car if year least than 1950', async () => {
+    const response = await request(app).get(`${PREFIX}?ano=1930`).set(token);
+
+    const { body } = response;
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('ano');
+    expect(body[0].name).toBe('"ano" must be greater than or equal to 1950');
+  });
+
+  test('should return 400 with errors and not get a car if modelo is empty', async () => {
+    const response = await request(app).get(`${PREFIX}?modelo=`).set(token);
+
+    const { body } = response;
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('modelo');
+    expect(body[0].name).toBe('"modelo" is not allowed to be empty');
+  });
+
   /**
    * GET BY ID
    */
