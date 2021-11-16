@@ -259,7 +259,7 @@ describe('src :: api :: controllers :: rental', () => {
     checkDefaultErrorFormat(body);
     expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cnpj');
-    expect(body[0].name).toBe('"cnpj" has a invalid format');
+    expect(body[0].name).toBe('"cnpj" has a invalid format, it should be XX.XXX.XXX/XXXX-XX');
   });
 
   test('should return 400 with errors if CNPJ is invalid calculated value on create rental', async () => {
@@ -588,7 +588,7 @@ describe('src :: api :: controllers :: rental', () => {
     checkDefaultErrorFormat(body);
     expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cnpj');
-    expect(body[0].name).toBe('"cnpj" has a invalid format');
+    expect(body[0].name).toBe('"cnpj" has a invalid format, it should be XX.XXX.XXX/XXXX-XX');
   });
 
   test('should return 400 with errors if CNPJ is invalid calculated value on updating a rental company', async () => {
@@ -723,7 +723,7 @@ describe('src :: api :: controllers :: rental', () => {
     expect(rentalP1.offsets).toEqual(5);
   });
 
-  test('should get all rental company that by nome', async () => {
+  test('should get all rental company by nome', async () => {
     const locadora = await factory.create<Rental>('Rental', {
       nome: 'Trevor Rental'
     });
@@ -741,6 +741,105 @@ describe('src :: api :: controllers :: rental', () => {
     expect(body.locadoras[0].cnpj).toBe(locadora.cnpj);
     expect(body.locadoras[0].nome).toBe(locadora.nome);
     expect(body.locadoras[0].endereco.length).toEqual(locadora.endereco.length);
+  });
+
+  test('should return 400 and not get a rental company by cnpj', async () => {
+    const response = await request(app).get(`${PREFIX}?cnpj=123456`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('cnpj');
+    expect(body[0].name).toBe('"cnpj" has a invalid format, it should be XX.XXX.XXX/XXXX-XX');
+  });
+
+  test('should return 400 and not get a rental company by nome if empty', async () => {
+    const response = await request(app).get(`${PREFIX}?nome=`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('nome');
+    expect(body[0].name).toBe('"nome" is not allowed to be empty');
+  });
+
+  test('should return 400 and not get a rental company by atividades if empty', async () => {
+    const response = await request(app).get(`${PREFIX}?atividades=`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('atividades');
+    expect(body[0].name).toBe('"atividades" is not allowed to be empty');
+  });
+
+  test('should return 400 and not get a rental company by number if empty', async () => {
+    const response = await request(app).get(`${PREFIX}?number=`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('number');
+    expect(body[0].name).toBe('"number" is not allowed to be empty');
+  });
+
+  test('should return 400 and not get a rental company by complemento if empty', async () => {
+    const response = await request(app).get(`${PREFIX}?complemento=`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('complemento');
+    expect(body[0].name).toBe('"complemento" is not allowed to be empty');
+  });
+
+  test('should return 400 and not get a rental company by logradouro if empty', async () => {
+    const response = await request(app).get(`${PREFIX}?logradouro=`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('logradouro');
+    expect(body[0].name).toBe('"logradouro" is not allowed to be empty');
+  });
+
+  test('should return 400 and not get a rental company by bairro if empty', async () => {
+    const response = await request(app).get(`${PREFIX}?bairro=`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('bairro');
+    expect(body[0].name).toBe('"bairro" is not allowed to be empty');
+  });
+
+  test('should return 400 and not get a rental company by uf if has length more than 2', async () => {
+    const response = await request(app).get(`${PREFIX}?uf=abc`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('uf');
+    expect(body[0].name).toBe('"uf" length must be 2 characters long');
+  });
+
+  test('should return 400 and not get a rental company by cep if is invalid format', async () => {
+    const response = await request(app).get(`${PREFIX}?cep=123-789`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('cep');
+    expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
   });
 
   test('should get all rental company that by bairro', async () => {
@@ -797,17 +896,6 @@ describe('src :: api :: controllers :: rental', () => {
     checkDefaultErrorFormat(body);
     expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cnpj');
-    expect(body[0].name).toBe('"cnpj" has a invalid format');
-  });
-
-  test('should not get any rental company when inputed CEP is invalid', async () => {
-    const response = await request(app).get(`${PREFIX}?offset=0&limit=10&cep=15678911`);
-    const { body } = response;
-
-    expect(response.status).toBe(400);
-    checkDefaultErrorFormat(body);
-    expect(body).toHaveLength(1);
-    expect(body[0].description).toBe('cep');
-    expect(body[0].name).toBe('"cep" with incorrect format, it should be XXXXX-XXX');
+    expect(body[0].name).toBe('"cnpj" has a invalid format, it should be XX.XXX.XXX/XXXX-XX');
   });
 });
