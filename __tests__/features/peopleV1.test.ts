@@ -148,7 +148,7 @@ describe('src :: api :: controllers :: people', () => {
     checkDefaultErrorFormat(body);
     expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cpf');
-    expect(body[0].name).toBe('Invalid CPF');
+    expect(body[0].name).toBe('"cpf" has a invalid format, it should be XXX.XXX.XXX-XX');
   });
 
   test('should return 400 with errors if cpf calculation is invalid', async () => {
@@ -390,6 +390,28 @@ describe('src :: api :: controllers :: people', () => {
     });
   });
 
+  test('should return 400 and not get a person by cpf if is invalid format', async () => {
+    const response = await request(app).get(`${PREFIX}?cpf=123-789`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('cpf');
+    expect(body[0].name).toBe('"cpf" has a invalid format, it should be XXX.XXX.XXX-XX');
+  });
+
+  test('should return 400 and not get a person by data_nascimento if is invalid format', async () => {
+    const response = await request(app).get(`${PREFIX}?data_nascimento=123-789`);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('data_nascimento');
+    expect(body[0].name).toBe('"data_nascimento" must be in DD/MM/YYYY format');
+  });
+
   test('should get a person by email', async () => {
     const tempPerson = await factory.create<Person>('People');
     const date = new Date(tempPerson.data_nascimento);
@@ -598,7 +620,7 @@ describe('src :: api :: controllers :: people', () => {
     checkDefaultErrorFormat(body);
     expect(body).toHaveLength(1);
     expect(body[0].description).toBe('cpf');
-    expect(body[0].name).toBe('Invalid CPF');
+    expect(body[0].name).toBe('"cpf" has a invalid format, it should be XXX.XXX.XXX-XX');
   });
 
   test('should return 400 with errors if cpf calculation is invalid on update', async () => {
