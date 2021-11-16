@@ -253,6 +253,53 @@ describe('src :: api :: controllers :: car', () => {
     });
   });
 
+  test('should get all cars by ano', async () => {
+    const carTemp = await factory.createMany<Car>('Car', 5, {
+      ano: 2004
+    });
+    const response = await request(app).get(`${PREFIX}?ano=${carTemp[0].ano}`).set(token);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultVehiclesFormat(body);
+    expect(body.veiculos.length).toEqual(5);
+    body.veiculos.forEach((element: Car) => {
+      expect(element.ano).toBe(2004);
+    });
+  });
+
+  test('should get all cars by quantidadePassageiros', async () => {
+    const carTemp = await factory.createMany<Car>('Car', 5, {
+      quantidadePassageiros: 5
+    });
+    const response = await request(app)
+      .get(`${PREFIX}?quantidadePassageiros=${carTemp[0].quantidadePassageiros}`)
+      .set(token);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultVehiclesFormat(body);
+    expect(body.veiculos.length).toEqual(5);
+    body.veiculos.forEach((element: Car) => {
+      expect(element.quantidadePassageiros).toBe(5);
+    });
+  });
+
+  test('should get all cars by cor', async () => {
+    const carTemp = await factory.createMany<Car>('Car', 5, {
+      cor: 'verde'
+    });
+    const response = await request(app).get(`${PREFIX}?cor=${carTemp[0].cor}`).set(token);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultVehiclesFormat(body);
+    expect(body.veiculos.length).toEqual(5);
+    body.veiculos.forEach((element: Car) => {
+      expect(element.cor).toBe('verde');
+    });
+  });
+
   test('should not get any cars when doesnt have any register for the query', async () => {
     await factory.createMany<Car>('Car', 5);
     const response = await request(app).get(`${PREFIX}?modelo=Chevy`).set(token);
@@ -578,5 +625,51 @@ describe('src :: api :: controllers :: car', () => {
     expect(body).toHaveLength(2);
     expect(body[0].description).toBe('idAccessory');
     expect(body[0].name).toBe('"idAccessory" length must be 24 characters long');
+  });
+
+  /**
+   * CHECK ACCESS
+   */
+  test('should return 401 for misssing autorization header', async () => {
+    const response = await request(app).get(`${PREFIX}`);
+    const { body } = response;
+
+    expect(response.status).toBe(401);
+    checkDefaultErrorFormat(body);
+    expect(body[0].description).toBe('Bearer');
+    expect(body[0].name).toBe('Token not provided');
+  });
+
+  test('should return 401 for invalid format', async () => {
+    const tokenTemp = { authorization: `113f5s1dsa5f12s1f21sdf` };
+    const response = await request(app).get(`${PREFIX}`).set(tokenTemp);
+    const { body } = response;
+
+    expect(response.status).toBe(401);
+    checkDefaultErrorFormat(body);
+    expect(body[0].description).toBe('Bearer');
+    expect(body[0].name).toBe('Token error');
+  });
+
+  test('should return 401 for invalid Bearer', async () => {
+    const tokenTemp = { authorization: `Barra 113f5s1dsa5f12s1f21sdf` };
+    const response = await request(app).get(`${PREFIX}`).set(tokenTemp);
+    const { body } = response;
+
+    expect(response.status).toBe(401);
+    checkDefaultErrorFormat(body);
+    expect(body[0].description).toBe('Bearer');
+    expect(body[0].name).toBe('Token malformatted');
+  });
+
+  test('should return 401 for invalid Token', async () => {
+    const tokenTemp = { authorization: `Bearer 113f5s1dsa5f12s1f21sdf` };
+    const response = await request(app).get(`${PREFIX}`).set(tokenTemp);
+    const { body } = response;
+
+    expect(response.status).toBe(401);
+    checkDefaultErrorFormat(body);
+    expect(body[0].description).toBe('Bearer');
+    expect(body[0].name).toBe('Token invalid');
   });
 });
