@@ -12,7 +12,7 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
   try {
     const schema = Joi.object({
       nome: Joi.string().trim(),
-      cpf: Joi.string().trim().regex(cpfRegex).message('Invalid CPF'),
+      cpf: Joi.string().trim().regex(cpfRegex).message('"cpf" has a invalid format, it should be XXX.XXX.XXX-XX'),
       data_nascimento: JoiDate.date().format('DD/MM/YYYY'),
       email: Joi.string().trim().email(),
       habilitado: Joi.string().trim().valid('sim', 'não'),

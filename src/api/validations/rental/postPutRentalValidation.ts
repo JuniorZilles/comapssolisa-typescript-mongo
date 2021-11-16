@@ -9,7 +9,11 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
   try {
     const schema = Joi.object({
       nome: Joi.string().trim().required(),
-      cnpj: Joi.string().trim().regex(cnpjRegex).message('"cnpj" has a invalid format').required(),
+      cnpj: Joi.string()
+        .trim()
+        .regex(cnpjRegex)
+        .message('"cnpj" has a invalid format, it should be XX.XXX.XXX/XXXX-XX')
+        .required(),
       atividades: Joi.string().trim().required(),
       endereco: Joi.array()
         .min(1)
