@@ -227,7 +227,7 @@ describe('src :: api :: controllers :: people', () => {
     expect(body[0].name).toBe('"habilitado" must be one of [sim, não]');
   });
 
-  test('should return 400 with errors if cpf or email already exists', async () => {
+  test('should return 400 with errors if cpf already exists', async () => {
     const peopleData = await factory.create<Person>('People', {
       cpf: '847.331.290-25'
     });
@@ -247,6 +247,26 @@ describe('src :: api :: controllers :: people', () => {
     expect(body).toHaveLength(1);
     expect(body[0].description).toBe('Conflict');
     expect(body[0].name).toBe(`CPF ${peopleData.cpf} already in use`);
+  });
+
+  test('should return 400 with errors if email already exists', async () => {
+    const peopleData = await factory.create<Person>('People');
+    const tempCreate = {
+      nome: 'joaozinho ciclano',
+      cpf: '847.331.290-25',
+      data_nascimento: '03/03/2000',
+      email: peopleData.email,
+      senha: '123456',
+      habilitado: 'sim'
+    };
+    const response = await request(app).post(PREFIX).send(tempCreate);
+    const { body } = response;
+
+    expect(response.status).toBe(400);
+    checkDefaultErrorFormat(body);
+    expect(body).toHaveLength(1);
+    expect(body[0].description).toBe('Conflict');
+    expect(body[0].name).toBe(`Email ${peopleData.email} already in use`);
   });
 
   test('should return 400 with errors if nome has withe spaces', async () => {
