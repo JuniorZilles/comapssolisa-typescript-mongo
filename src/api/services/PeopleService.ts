@@ -45,8 +45,8 @@ class PeopleService {
     return birthday.toDate();
   }
 
-  private transfromToDateString(date: string): string {
-    return moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+  private transfromToDate(date: string): string {
+    return moment(date, 'DD/MM/YYYY').toISOString();
   }
 
   async getById(id: string): Promise<Person> {
@@ -62,7 +62,7 @@ class PeopleService {
 
   async list(query: PersonSearch): Promise<Paginate<Person>> {
     if (query.data_nascimento) {
-      query.data_nascimento = this.transfromToDateString(query.data_nascimento as string);
+      query.data_nascimento = this.transfromToDate(query.data_nascimento as string);
     }
     const result = await PeopleRepository.findAll(query);
     return result;
