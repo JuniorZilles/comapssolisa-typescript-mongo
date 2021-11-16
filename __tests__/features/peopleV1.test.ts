@@ -308,6 +308,113 @@ describe('src :: api :: controllers :: people', () => {
     expect(body.pessoas.length).toEqual(5);
   });
 
+  test('should get a person by nome', async () => {
+    const tempPerson = await factory.create<Person>('People', {
+      nome: 'joaozinho'
+    });
+    await factory.createMany<Person>('People', 2);
+
+    const response = await request(app).get(`${PREFIX}?nome=${tempPerson.nome}`);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultPeopleFormat(body);
+    expect(body.total).toEqual(1);
+    expect(body.limit).toEqual(100);
+    expect(body.offset).toEqual(1);
+    expect(body.offsets).toEqual(1);
+    expect(body.pessoas.length).toEqual(1);
+    const date = new Date(tempPerson.data_nascimento);
+    expect(body.pessoas[0]).toEqual({
+      _id: tempPerson._id?.toString(),
+      cpf: tempPerson.cpf,
+      data_nascimento: moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
+      email: tempPerson.email,
+      habilitado: tempPerson.habilitado,
+      nome: tempPerson.nome
+    });
+  });
+
+  test('should get a person by cpf', async () => {
+    const tempPerson = await factory.create<Person>('People', {
+      cpf: '758.889.300-16'
+    });
+    await factory.createMany<Person>('People', 2);
+
+    const response = await request(app).get(`${PREFIX}?cpf=${tempPerson.cpf}`);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultPeopleFormat(body);
+    expect(body.total).toEqual(1);
+    expect(body.limit).toEqual(100);
+    expect(body.offset).toEqual(1);
+    expect(body.offsets).toEqual(1);
+    expect(body.pessoas.length).toEqual(1);
+    const date = new Date(tempPerson.data_nascimento);
+    expect(body.pessoas[0]).toEqual({
+      _id: tempPerson._id?.toString(),
+      cpf: tempPerson.cpf,
+      data_nascimento: moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
+      email: tempPerson.email,
+      habilitado: tempPerson.habilitado,
+      nome: tempPerson.nome
+    });
+  });
+
+  test('should get a person by data_nascimento', async () => {
+    const tempPerson = await factory.create<Person>('People', {
+      data_nascimento: '2000-10-12 00:00:00'
+    });
+    const date = new Date(tempPerson.data_nascimento);
+    const formatedDate = moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY');
+    await factory.createMany<Person>('People', 2);
+
+    const response = await request(app).get(`${PREFIX}?data_nascimento=${formatedDate}`);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultPeopleFormat(body);
+    expect(body.total).toEqual(1);
+    expect(body.limit).toEqual(100);
+    expect(body.offset).toEqual(1);
+    expect(body.offsets).toEqual(1);
+    expect(body.pessoas.length).toEqual(1);
+    expect(body.pessoas[0]).toEqual({
+      _id: tempPerson._id?.toString(),
+      cpf: tempPerson.cpf,
+      data_nascimento: formatedDate,
+      email: tempPerson.email,
+      habilitado: tempPerson.habilitado,
+      nome: tempPerson.nome
+    });
+  });
+
+  test('should get a person by email', async () => {
+    const tempPerson = await factory.create<Person>('People');
+    const date = new Date(tempPerson.data_nascimento);
+    await factory.createMany<Person>('People', 2);
+
+    const response = await request(app).get(`${PREFIX}?email=${tempPerson.email}`);
+    const { body } = response;
+
+    expect(response.status).toBe(200);
+    checkDefaultPeopleFormat(body);
+    expect(body.total).toEqual(1);
+    expect(body.limit).toEqual(100);
+    expect(body.offset).toEqual(1);
+    expect(body.offsets).toEqual(1);
+    expect(body.pessoas).toHaveLength(1);
+    expect(body.pessoas[0]).toEqual({
+      _id: tempPerson._id?.toString(),
+      cpf: tempPerson.cpf,
+      data_nascimento: moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
+      email: tempPerson.email,
+      habilitado: tempPerson.habilitado,
+      nome: tempPerson.nome
+    });
+  });
+
   test('should not get any people', async () => {
     const response = await request(app).get(`${PREFIX}?offset=1&limit=5&habilitado=sim`);
     const { body } = response;
