@@ -1,4 +1,5 @@
 import InvalidValue from '@errors/InvalidValue';
+import NotFound from '@errors/NotFound';
 import RentalReserveService from '@services/rental/reserve/RentalReserveService';
 
 describe('src :: api :: services :: rental :: reserve :: update', () => {
@@ -43,6 +44,16 @@ describe('src :: api :: services :: rental :: reserve :: update', () => {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('Bad Request');
       expect((<InvalidValue>e).message).toBe(' is invalid');
+    }
+  });
+
+  test('GIVEN existing reserve WHEN alled to remove with a nonexistent ID THEN throws a not found error', async () => {
+    try {
+      await RentalReserveService.delete();
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFound);
+      expect((<NotFound>e).description).toBe('Not Found');
+      expect((<NotFound>e).name).toBe('Value 6171508962f47a7a91938d30 not found');
     }
   });
 });

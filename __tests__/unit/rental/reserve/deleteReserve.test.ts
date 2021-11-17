@@ -6,7 +6,7 @@ describe('src :: api :: services :: rental :: reserve :: delete', () => {
     await RentalReserveService.delete();
   });
 
-  test('GIVEN existing reserve WHEN alled to remove with a nonexistent ID THEN throws a not found error', async () => {
+  test('GIVEN existing reserve WHEN called to remove with a nonexistent ID THEN throws a not found error', async () => {
     try {
       await RentalReserveService.delete();
     } catch (e) {
