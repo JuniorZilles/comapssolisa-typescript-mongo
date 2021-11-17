@@ -1,7 +1,7 @@
 import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
 import Car from '@interfaces/Car';
-import CarService from '@services/CarService';
+import CarService from '@services/car';
 import factory from '../../utils/factorys/CarFactory';
 
 describe('src :: api :: services :: car :: update', () => {
@@ -18,16 +18,6 @@ describe('src :: api :: services :: car :: update', () => {
       expect(result.quantidadePassageiros).toBe(car.quantidadePassageiros);
     } else {
       expect(car._id).toBeDefined();
-    }
-  });
-
-  test("should not remove a car by it's ID and throw a InvalidField error", async () => {
-    try {
-      await CarService.delete('12');
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 

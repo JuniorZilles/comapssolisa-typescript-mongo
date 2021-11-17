@@ -1,7 +1,6 @@
-import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
 import Car from '@interfaces/Car';
-import CarService from '@services/CarService';
+import CarService from '@services/car';
 import factory from '../../utils/factorys/CarFactory';
 
 describe('src :: api :: services :: car :: update :: accessory', () => {
@@ -22,18 +21,6 @@ describe('src :: api :: services :: car :: update :: accessory', () => {
     expect(carResult.acessorios[1].descricao).not.toBe(tempData.descricao);
   });
 
-  test('should return 400 if the car id its invalid', async () => {
-    const car = await factory.create<Car>('Car');
-    const tempData = { descricao: car.acessorios[0].descricao };
-    try {
-      await CarService.updateAccessory('156', car.acessorios[0]._id as string, tempData);
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
-    }
-  });
-
   test('should throw InvalidValue if the car id its not found', async () => {
     const car = await factory.create<Car>('Car');
     const tempData = { descricao: car.acessorios[0].descricao };
@@ -45,18 +32,6 @@ describe('src :: api :: services :: car :: update :: accessory', () => {
       expect((<NotFound>e).name).toBe(
         `Value id: 6171508962f47a7a91938d30 - idAccessory: ${car.acessorios[0]._id} - descricao: ${car.acessorios[0].descricao} not found`
       );
-    }
-  });
-
-  test('should throw InvalidField if the accessory id its invalid', async () => {
-    const car = await factory.create<Car>('Car');
-    const tempData = { descricao: car.acessorios[0].descricao };
-    try {
-      await CarService.updateAccessory(car._id as string, '125', tempData);
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'idAccessory' is out of the standard format");
     }
   });
 

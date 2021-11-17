@@ -1,6 +1,6 @@
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
-import RentalService from '@services/RentalService';
+import RentalService from '@services/rental';
 import factory from '../../utils/factorys/RentalFactory';
 
 describe('src :: api :: services :: rental :: getAll', () => {

@@ -28,24 +28,6 @@ describe('src :: api :: services :: people :: update', () => {
     }
   });
 
-  test('should not update a person by ID and throw a InvalidField error', async () => {
-    try {
-      const tempData = {
-        nome: 'joaozinho ciclano',
-        cpf: '131.147.860-49',
-        data_nascimento: '03/03/2000',
-        email: 'joazinho@email.com',
-        senha: '123456',
-        habilitado: 'não'
-      };
-      await PeopleService.update('12', tempData);
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
-    }
-  });
-
   test('should not update a person if exists another with the same email or cpf', async () => {
     const tempData = {
       nome: 'joaozinho ciclano',

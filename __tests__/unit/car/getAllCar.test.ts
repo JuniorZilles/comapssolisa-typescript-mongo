@@ -1,5 +1,5 @@
 import Car from '@interfaces/Car';
-import CarService from '@services/CarService';
+import CarService from '@services/car';
 import factory from '../../utils/factorys/CarFactory';
 
 describe('src :: api :: services :: car :: getAll', () => {

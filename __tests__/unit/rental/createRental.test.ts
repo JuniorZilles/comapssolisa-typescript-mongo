@@ -2,7 +2,7 @@ import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
-import RentalService from '@services/RentalService';
+import RentalService from '@services/rental';
 import { RENTALDATA } from '../../utils/Constants';
 import factory from '../../utils/factorys/RentalFactory';
 

@@ -1,7 +1,7 @@
 import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
 import { Rental } from '@interfaces/Rental';
-import RentalService from '@services/RentalService';
+import RentalService from '@services/rental';
 import factory from '../../utils/factorys/RentalFactory';
 
 describe('src :: api :: services :: rental :: delete', () => {
@@ -13,16 +13,6 @@ describe('src :: api :: services :: rental :: delete', () => {
       expect(rental.cnpj).toBe(generated.cnpj);
       expect(rental.nome).toBe(generated.nome);
       expect(rental.atividades).toBe(generated.atividades);
-    }
-  });
-
-  test('should not delete a rental by a invalid id and throw invalid field', async () => {
-    try {
-      await RentalService.delete('12');
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 

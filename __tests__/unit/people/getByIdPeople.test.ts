@@ -18,16 +18,6 @@ describe('src :: api :: services :: people :: getById', () => {
     }
   });
 
-  test('should not get a person by ID and throw a InvalidField error', async () => {
-    try {
-      await PeopleService.getById('12');
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
-    }
-  });
-
   test('should not get a person by ID and throw a NotFound error', async () => {
     try {
       await PeopleService.getById('6171508962f47a7a91938d30');

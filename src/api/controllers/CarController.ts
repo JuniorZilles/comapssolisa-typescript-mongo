@@ -1,5 +1,5 @@
 import { paginateCar, serializeCar } from '@serialize/CarSerialize';
-import CarService from '@services/CarService';
+import CarService from '@services/car';
 import { Request, Response, NextFunction } from 'express';
 
 class CarController {

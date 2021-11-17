@@ -1,5 +1,5 @@
 import { paginateRental, serializeRental } from '@serialize/RentalSerialize';
-import RentalService from '@services/RentalService';
+import RentalService from '@services/rental';
 import { NextFunction, Response, Request } from 'express';
 
 class RentalController {

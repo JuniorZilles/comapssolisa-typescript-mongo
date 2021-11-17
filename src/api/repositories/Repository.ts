@@ -1,6 +1,5 @@
 import { Paginate } from '@interfaces/Paginate';
 import { Pagination } from '@interfaces/Pagination';
-import isValid from '@models/utils';
 import mongoose from 'mongoose';
 
 class Repository<Query extends Pagination, Content> {
@@ -13,11 +12,9 @@ class Repository<Query extends Pagination, Content> {
 
   async findAll(payload: Query): Promise<Paginate<Content>> {
     const { offset, limit, ...query } = payload;
-    const limitNumber = limit ? parseInt(limit as string, 10) : 100;
-    const offsetNumber = offset ? parseInt(offset as string, 10) : 0;
     const result = await this.model.paginate(query as Query, {
-      page: offsetNumber,
-      limit: limitNumber,
+      page: offset ? parseInt(offset as string, 10) : 0,
+      limit: limit ? parseInt(limit as string, 10) : 100,
       customLabels: {
         totalDocs: 'total',
         page: 'offset',
@@ -35,10 +32,6 @@ class Repository<Query extends Pagination, Content> {
 
   async findById(id: string): Promise<Content> {
     return (await this.model.findById(id)) as Content;
-  }
-
-  validId(id: string): boolean {
-    return isValid(id);
   }
 
   async update(id: string, payload: Content): Promise<Content> {

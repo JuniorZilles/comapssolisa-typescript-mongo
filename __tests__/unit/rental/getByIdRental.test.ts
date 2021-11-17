@@ -1,8 +1,7 @@
-import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
-import RentalService from '@services/RentalService';
+import RentalService from '@services/rental';
 import factory from '../../utils/factorys/RentalFactory';
 
 describe('src :: api :: services :: rental :: getById', () => {
@@ -33,16 +32,6 @@ describe('src :: api :: services :: rental :: getById', () => {
         expect(endereco).toHaveProperty('localidade');
         expect(endereco).toHaveProperty('uf');
       });
-    }
-  });
-
-  test('should not get a rental by a invalid id and throw invalid field', async () => {
-    try {
-      await RentalService.getById('12');
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 

@@ -1,9 +1,8 @@
-import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
-import RentalService from '@services/RentalService';
+import RentalService from '@services/rental';
 import { RENTALDATA } from '../../utils/Constants';
 import factory from '../../utils/factorys/RentalFactory';
 
@@ -141,33 +140,6 @@ describe('src :: api :: services :: rental :: update', () => {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
       expect((<NotFound>e).name).toBe('Value CEP 93950-999 not found');
-    }
-  });
-
-  test('should not update a rental by a invalid id and throw invalid field', async () => {
-    try {
-      const rentalTemp = {
-        nome: 'Localiza Rent a Car',
-        cnpj: '16.670.085/0001-55',
-        atividades: 'Aluguel de Carros E Gestão de Frotas',
-        endereco: [
-          {
-            cep: '96200-200',
-            number: '1234',
-            isFilial: false
-          },
-          {
-            cep: '93950-000',
-            number: '61',
-            isFilial: true
-          }
-        ]
-      };
-      await RentalService.update('12', rentalTemp);
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'id' is out of the standard format");
     }
   });
 
