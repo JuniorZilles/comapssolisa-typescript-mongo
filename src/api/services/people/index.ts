@@ -7,33 +7,15 @@ import InvalidField from '@errors/InvalidField';
 import { Paginate } from '@interfaces/Paginate';
 import NotFound from '@errors/NotFound';
 import PersonSearch from '@interfaces/PersonSearch';
-import InvalidValue from '@errors/InvalidValue';
-import validateCPF from './CpfService';
+import { validateOnCreatePerson, validateOnUpdatePerson } from './validation';
 
 moment.locale('pt-BR');
 class PeopleService {
   async create(payload: Person): Promise<Person> {
     payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento as string);
-    const { cpf, email } = payload;
-    this.checkCpf(cpf);
-    await this.checkIfExistsEmailOrCpf(email, cpf);
+    await validateOnCreatePerson(payload);
     const person = await PeopleRepository.create(payload);
     return person;
-  }
-
-  private async checkIfExistsEmailOrCpf(email: string, cpf: string, id: string | undefined = undefined): Promise<void> {
-    const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
-    if (result) {
-      if (result.id !== id) {
-        this.checkIfIsValid(result, cpf, email);
-      }
-    }
-  }
-
-  private checkCpf(cpf: string): void {
-    if (!validateCPF(cpf)) {
-      throw new InvalidValue('Bad Request', `CPF ${cpf} is invalid`, true);
-    }
   }
 
   private isOlderAndTransfromToDateString(date: string): Date {
@@ -74,23 +56,13 @@ class PeopleService {
     return result;
   }
 
-  private checkIfIsValid(result: Person, cpf: string, email: string): void {
-    if (result.cpf === cpf) {
-      throw new InvalidValue('Conflict', `CPF ${cpf} already in use`, true);
-    } else if (result.email === email) {
-      throw new InvalidValue('Conflict', `Email ${email} already in use`, true);
-    }
-  }
-
   async update(id: string, payload: Person): Promise<Person> {
     await this.getById(id);
     payload.data_nascimento = this.isOlderAndTransfromToDateString(payload.data_nascimento as string);
     if (payload.senha) {
       payload.senha = await bcrypt.hash(payload.senha, 10);
     }
-    const { cpf, email } = payload;
-    this.checkCpf(cpf);
-    await this.checkIfExistsEmailOrCpf(email, cpf, id);
+    await validateOnUpdatePerson(payload, id);
     const person = await PeopleRepository.update(id, payload);
     return person;
   }

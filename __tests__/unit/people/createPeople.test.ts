@@ -1,6 +1,6 @@
 import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
-import PeopleService from '@services/PeopleService';
+import PeopleService from '@services/people';
 import { PERSONDATA } from '../../utils/Constants';
 
 describe('src :: api :: services :: people :: create', () => {

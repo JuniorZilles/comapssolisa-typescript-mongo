@@ -1,5 +1,5 @@
 import { paginatePerson, serializePerson } from '@serialize/PersonSerialize';
-import PeopleService from '@services/PeopleService';
+import PeopleService from '@services/people';
 import { Request, Response, NextFunction } from 'express';
 
 class PeopleController {
