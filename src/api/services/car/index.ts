@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import NotFound from '@errors/NotFound';
-import Car from '@interfaces/Car';
-import Accessory from '@interfaces/Accessory';
-import { CarSearch } from '@interfaces/CarSearch';
+import Car from '@interfaces/car/Car';
+import Accessory from '@interfaces/car/Accessory';
+import { CarSearch } from '@interfaces/car/CarSearch';
 import CarRepository from '@repositories/CarRepository';
 import { Paginate } from '@interfaces/Paginate';
 

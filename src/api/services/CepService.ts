@@ -1,5 +1,5 @@
 import NotFound from '@errors/NotFound';
-import { Endereco } from '@interfaces/Endereco';
+import { Endereco } from '@interfaces/rental/Endereco';
 import axios from 'axios';
 import config from '../../config/config';
 

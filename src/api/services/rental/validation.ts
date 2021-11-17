@@ -1,6 +1,6 @@
 import InvalidValue from '@errors/InvalidValue';
-import { Endereco } from '@interfaces/Endereco';
-import { Rental } from '@interfaces/Rental';
+import { Endereco } from '@interfaces/rental/Endereco';
+import { Rental } from '@interfaces/rental/Rental';
 import RentalRepository from '@repositories/RentalRepository';
 import validateCNPJ from '@utils/CnpjValidation';
 

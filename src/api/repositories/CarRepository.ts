@@ -1,7 +1,7 @@
 import CarModel from '@models/CarModel';
-import { CarSearch } from '@interfaces/CarSearch';
-import Car from '@interfaces/Car';
-import Accessory from '@interfaces/Accessory';
+import { CarSearch } from '@interfaces/car/CarSearch';
+import Car from '@interfaces/car/Car';
+import Accessory from '@interfaces/car/Accessory';
 import Repository from './Repository';
 
 class CarRepository extends Repository<CarSearch, Car> {

@@ -1,5 +1,5 @@
-import { Rental } from '@interfaces/Rental';
-import { RentalSearch } from '@interfaces/RentalSearch';
+import { Rental } from '@interfaces/rental/Rental';
+import { RentalSearch } from '@interfaces/rental/RentalSearch';
 import RentalModel from '@models/RentalModel';
 import Repository from './Repository';
 

@@ -1,5 +1,5 @@
 import NotFound from '@errors/NotFound';
-import Car from '@interfaces/Car';
+import Car from '@interfaces/car/Car';
 import CarService from '@services/car';
 import factory from '../../utils/factorys/CarFactory';
 

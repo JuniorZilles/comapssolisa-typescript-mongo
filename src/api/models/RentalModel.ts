@@ -1,4 +1,4 @@
-import { Rental } from '@interfaces/Rental';
+import { Rental } from '@interfaces/rental/Rental';
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 

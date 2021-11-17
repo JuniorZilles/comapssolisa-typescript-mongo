@@ -1,5 +1,5 @@
 import request from 'supertest';
-import Car from '@interfaces/Car';
+import Car from '@interfaces/car/Car';
 import app from '../../../src/app';
 import factory from '../../utils/factorys/CarFactory';
 import checkDefaultErrorFormat from '../../utils/formats/ErrorFormat';

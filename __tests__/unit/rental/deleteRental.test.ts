@@ -1,6 +1,5 @@
-import InvalidField from '@errors/InvalidField';
 import NotFound from '@errors/NotFound';
-import { Rental } from '@interfaces/Rental';
+import { Rental } from '@interfaces/rental/Rental';
 import RentalService from '@services/rental';
 import factory from '../../utils/factorys/RentalFactory';
 

@@ -1,6 +1,6 @@
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import PersonModel from '@models/PersonModel';
-import PersonSearch from '@interfaces/PersonSearch';
+import PersonSearch from '@interfaces/people/PersonSearch';
 import { FindUserPayload } from '@interfaces/FindUserPayload';
 import Repository from './Repository';
 

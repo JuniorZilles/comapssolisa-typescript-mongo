@@ -1,7 +1,7 @@
-import { Endereco } from '@interfaces/Endereco';
+import { Endereco } from '@interfaces/rental/Endereco';
 import { Paginate } from '@interfaces/Paginate';
-import { Rental } from '@interfaces/Rental';
-import Rentals from '@interfaces/Rentals';
+import { Rental } from '@interfaces/rental/Rental';
+import Rentals from '@interfaces/rental/Rentals';
 
 export const serializeAddress = ({
   _id,

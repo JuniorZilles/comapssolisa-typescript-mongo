@@ -1,4 +1,4 @@
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import PeopleService from '@services/people';
 import factory from '../../utils/factorys/PeopleFactory';
 

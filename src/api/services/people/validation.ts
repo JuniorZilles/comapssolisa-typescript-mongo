@@ -1,6 +1,6 @@
 import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import PeopleRepository from '@repositories/PeopleRepository';
 import validateCPF from '@utils/CpfValidation';
 import moment from 'moment';

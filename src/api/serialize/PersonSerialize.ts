@@ -1,6 +1,6 @@
 import { Paginate } from '@interfaces/Paginate';
-import People from '@interfaces/People';
-import { Person } from '@interfaces/Person';
+import People from '@interfaces/people/People';
+import { Person } from '@interfaces/people/Person';
 import moment from 'moment';
 
 export const serializePerson = ({

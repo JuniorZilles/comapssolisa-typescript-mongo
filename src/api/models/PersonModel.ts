@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const PersonSchema = new mongoose.Schema({

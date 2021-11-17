@@ -1,5 +1,5 @@
-import { Endereco } from '@interfaces/Endereco';
-import { Rental } from '@interfaces/Rental';
+import { Endereco } from '@interfaces/rental/Endereco';
+import { Rental } from '@interfaces/rental/Rental';
 import RentalService from '@services/rental';
 import factory from '../../utils/factorys/RentalFactory';
 

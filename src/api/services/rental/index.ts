@@ -1,9 +1,9 @@
 /* eslint-disable no-restricted-syntax */
 import NotFound from '@errors/NotFound';
-import { Endereco } from '@interfaces/Endereco';
+import { Endereco } from '@interfaces/rental/Endereco';
 import { Paginate } from '@interfaces/Paginate';
-import { Rental } from '@interfaces/Rental';
-import { RentalSearch } from '@interfaces/RentalSearch';
+import { Rental } from '@interfaces/rental/Rental';
+import { RentalSearch } from '@interfaces/rental/RentalSearch';
 import RentalRepository from '@repositories/RentalRepository';
 import getCEP from '../CepService';
 import { validateOnUpdateRental, validateOnCreateRental } from './validation';

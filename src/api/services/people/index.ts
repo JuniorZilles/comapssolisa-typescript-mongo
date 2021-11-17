@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
 import bcrypt from 'bcryptjs';
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import PeopleRepository from '@repositories/PeopleRepository';
 import { Paginate } from '@interfaces/Paginate';
 import NotFound from '@errors/NotFound';
-import PersonSearch from '@interfaces/PersonSearch';
+import PersonSearch from '@interfaces/people/PersonSearch';
 import transformToDate from '@utils/transform';
 import { validateOnCreatePerson, validateOnUpdatePerson, isOlderAndTransfromToDateString } from './validation';
 

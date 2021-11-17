@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import AuthenticateService from '@services/AuthenticateService';
 import { verifyToken } from '@services/TokenService';
 import { JwtPayload } from 'jsonwebtoken';
@@ -26,7 +25,7 @@ describe('src :: api :: services :: authenticate', () => {
   test('should throw invalid value error when trying to authenticate', async () => {
     const temp = await factory.create<Person>('People');
     try {
-      const result = await AuthenticateService.authenticate(temp.email, '123456');
+      await AuthenticateService.authenticate(temp.email, '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidValue);
       expect((<InvalidValue>e).description).toBe('senha');
@@ -36,7 +35,7 @@ describe('src :: api :: services :: authenticate', () => {
 
   test('should throw invalid value error when trying to authenticate', async () => {
     try {
-      const result = await AuthenticateService.authenticate('Joazinho@mail.com', '123456');
+      await AuthenticateService.authenticate('Joazinho@mail.com', '123456');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');

@@ -1,7 +1,7 @@
-import Accessory from '@interfaces/Accessory';
-import Car from '@interfaces/Car';
+import Accessory from '@interfaces/car/Accessory';
+import Car from '@interfaces/car/Car';
 import { Paginate } from '@interfaces/Paginate';
-import Vehicles from '@interfaces/Vehicle';
+import Vehicles from '@interfaces/car/Vehicle';
 
 export const serializeAccessory = ({ _id, descricao }: Accessory): Accessory => {
   return {

@@ -1,4 +1,4 @@
-import Car from '@interfaces/Car';
+import Car from '@interfaces/car/Car';
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 

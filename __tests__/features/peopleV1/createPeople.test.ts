@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { Person } from '@interfaces/Person';
+import { Person } from '@interfaces/people/Person';
 import app from '../../../src/app';
 import factory from '../../utils/factorys/PeopleFactory';
 import checkDefaultErrorFormat from '../../utils/formats/ErrorFormat';

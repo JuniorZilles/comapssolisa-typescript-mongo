@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { Rental } from '@interfaces/Rental';
+import { Rental } from '@interfaces/rental/Rental';
 import app from '../../../src/app';
 import factory from '../../utils/factorys/RentalFactory';
 import checkDefaultErrorFormat from '../../utils/formats/ErrorFormat';
