@@ -95,6 +95,7 @@ MONGO_DB_NAME=compassolisa
 PORT=3000
 NODE_ENV=dev
 SECRET=bab2ada84cd5dd8f0185e6d673e3800f
+CEPAPIURL=https://viacep.com.br/ws/{cep}/json/
 ```
 
 ## Requirements
