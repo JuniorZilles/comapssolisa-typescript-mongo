@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 import { NextFunction, Request, Response } from 'express';
 
 import Extension from '@joi/date';
