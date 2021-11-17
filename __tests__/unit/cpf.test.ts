@@ -1,4 +1,4 @@
-import validateCPF from '@services/CpfService';
+import validateCPF from '@utils/CpfValidation';
 
 describe('src :: api :: services :: cpf', () => {
   test('should return true for a valid cpf', async () => {
