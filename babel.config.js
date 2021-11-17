@@ -23,7 +23,8 @@ module.exports = {
           '@validations': './src/api/validations',
           '@middlewares': './src/api/middlewares',
           '@interfaces': './src/api/interfaces',
-          '@serialize': './src/api/serialize'
+          '@serialize': './src/api/serialize',
+          '@utils': './src/api/utils'
         }
       }
     ]

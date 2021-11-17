@@ -8,7 +8,7 @@ import { Rental } from '@interfaces/Rental';
 import { RentalSearch } from '@interfaces/RentalSearch';
 import RentalRepository from '@repositories/RentalRepository';
 import getCEP from './CepService';
-import validateCNPJ from './CnpjService';
+import validateCNPJ from '../utils/CnpjValidation';
 
 class RentalService {
   async create(payload: Rental): Promise<Rental> {

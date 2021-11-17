@@ -1,4 +1,4 @@
-import validateCNPJ from '@services/CnpjService';
+import validateCNPJ from 'src/api/utils/CnpjValidation';
 
 describe('src :: api :: services :: cnpj', () => {
   test('should return true for a valid cnpj', async () => {

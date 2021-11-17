@@ -38,6 +38,9 @@
       ],
       "@serialize/*": [
         "./src/api/serialize/*"
+      ],
+      "@utils/*": [
+        "./src/api/utils/*"
       ]
     },
     "typeRoots": [
