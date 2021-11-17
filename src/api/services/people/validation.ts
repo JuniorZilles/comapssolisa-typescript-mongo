@@ -1,9 +1,11 @@
+import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import { Person } from '@interfaces/Person';
 import PeopleRepository from '@repositories/PeopleRepository';
 import validateCPF from '@utils/CpfValidation';
+import moment from 'moment';
 
-const checkCpf = ({ cpf }): void => {
+const checkCpf = ({ cpf }: { cpf: string }): void => {
   if (!validateCPF(cpf)) {
     throw new InvalidValue('Bad Request', `CPF ${cpf} is invalid`, true);
   }
@@ -29,7 +31,14 @@ const checkIfExistsEmailOrCpf = async (
     }
   }
 };
-
+export const isOlderAndTransfromToDateString = (data_nascimento: string): Date => {
+  const birthday = moment(data_nascimento, 'DD/MM/YYYY');
+  const age = moment().diff(birthday, 'years', false);
+  if (age < 18) {
+    throw new InvalidField('data_nascimento');
+  }
+  return birthday.toDate();
+};
 export const validateOnCreatePerson = async (person: Person): Promise<void> => {
   checkCpf(person);
   await checkIfExistsEmailOrCpf(person.email, person.cpf);
