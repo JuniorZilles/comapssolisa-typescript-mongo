@@ -45,3 +45,25 @@ export const RENTALDATA = {
     }
   ]
 };
+
+export const RENTALRESERVEDATA = {
+  id_user: '',
+  data_inicio: '20/11/2021',
+  data_fim: '30/11/2021',
+  id_carro: '',
+  id_locadora: ''
+};
+
+export const RENTALCARDATA = {
+  id_carro: '',
+  status: 'disponivel',
+  id_locacao: '',
+  valor_diaria: '100,00',
+  id_locadora: '',
+  placa: 'ABC1234'
+};
+
+export const RENTALFLEETDATA = {
+  id_listagem: '',
+  id_locadora: ''
+};
