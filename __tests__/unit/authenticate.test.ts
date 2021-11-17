@@ -2,26 +2,12 @@
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Person } from '@interfaces/Person';
-import PersonModel from '@models/PersonModel';
 import AuthenticateService from '@services/AuthenticateService';
 import { verifyToken } from '@services/TokenService';
 import { JwtPayload } from 'jsonwebtoken';
-import MongoDatabase from '../../src/infra/mongo/index';
-import factory from '../utils/PeopleFactory';
-
-MongoDatabase.connect();
+import factory from '../utils/factorys/PeopleFactory';
 
 describe('src :: api :: services :: authenticate', () => {
-  beforeAll(async () => {
-    await PersonModel.deleteMany();
-  });
-  afterAll(async () => {
-    await MongoDatabase.disconect();
-  });
-  afterEach(async () => {
-    await PersonModel.deleteMany();
-  });
-
   test('should authenticate', async () => {
     const temp = await factory.create<Person>('People', { senha: '123456' });
 

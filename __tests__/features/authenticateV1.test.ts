@@ -1,23 +1,11 @@
 import request from 'supertest';
-import PersonModel from '@models/PersonModel';
 import { Person } from '@interfaces/Person';
-import factory from '../utils/PeopleFactory';
-import MongoDatabase from '../../src/infra/mongo/index';
+import factory from '../utils/factorys/PeopleFactory';
 import app from '../../src/app';
 
 const PREFIX = '/api/v1/authenticate';
 
 describe('src :: api :: controllers :: authenticate', () => {
-  beforeAll(async () => {
-    await PersonModel.deleteMany();
-  });
-  afterAll(async () => {
-    await MongoDatabase.disconect();
-  });
-  afterEach(async () => {
-    await PersonModel.deleteMany();
-  });
-
   test('Should authenticate and return token, email, habilitado', async () => {
     const personData = await factory.create<Person>('People', {
       senha: '123456'

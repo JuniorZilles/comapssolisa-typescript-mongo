@@ -3,12 +3,8 @@ import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Endereco } from '@interfaces/Endereco';
 import { Rental } from '@interfaces/Rental';
-import RentalModel from '@models/RentalModel';
 import RentalService from '@services/RentalService';
-import MongoDatabase from '../../src/infra/mongo/index';
-import factory from '../utils/RentalFactory';
-
-MongoDatabase.connect();
+import factory from '../utils/factorys/RentalFactory';
 
 const rentalData = {
   nome: 'Localiza Rent a Car',
@@ -30,16 +26,6 @@ const rentalData = {
 };
 
 describe('src :: api :: services :: rental', () => {
-  beforeAll(async () => {
-    await RentalModel.deleteMany();
-  });
-  afterAll(async () => {
-    await MongoDatabase.disconect();
-  });
-  afterEach(async () => {
-    await RentalModel.deleteMany();
-  });
-
   /**
    * INSERT CREATE
    */

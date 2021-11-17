@@ -4,7 +4,8 @@ import config from '../../config/config';
 
 class MongoDatabase {
   async connect() {
-    await mongoose.connect(config.database.host as string, { dbName: config.database.name as string });
+    const db = mongoose.connect(config.database.host as string, { dbName: config.database.name as string });
+    return db;
   }
 
   async disconect() {

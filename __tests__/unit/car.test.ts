@@ -1,9 +1,8 @@
 import CarService from '@services/CarService';
 import InvalidField from '@errors/InvalidField';
-import CarModel from '@models/CarModel';
 import NotFound from '@errors/NotFound';
 import Car from '@interfaces/Car';
-import factory from '../utils/CarFactory';
+import factory from '../utils/factorys/CarFactory';
 import MongoDatabase from '../../src/infra/mongo/index';
 
 MongoDatabase.connect();
@@ -16,16 +15,6 @@ const carData = {
 };
 
 describe('src :: api :: services :: car', () => {
-  beforeAll(async () => {
-    await CarModel.deleteMany();
-  });
-  afterAll(async () => {
-    await MongoDatabase.disconect();
-  });
-  afterEach(async () => {
-    await CarModel.deleteMany();
-  });
-
   /**
    * POST CREATE
    */

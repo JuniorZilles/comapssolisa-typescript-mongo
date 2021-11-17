@@ -1,13 +1,9 @@
 import InvalidField from '@errors/InvalidField';
-import PersonModel from '@models/PersonModel';
 import PeopleService from '@services/PeopleService';
 import { Person } from '@interfaces/Person';
 import NotFound from '@errors/NotFound';
 import InvalidValue from '@errors/InvalidValue';
-import MongoDatabase from '../../src/infra/mongo/index';
-import factory from '../utils/PeopleFactory';
-
-MongoDatabase.connect();
+import factory from '../utils/factorys/PeopleFactory';
 
 const personData = {
   nome: 'joaozinho ciclano',
@@ -19,16 +15,6 @@ const personData = {
 };
 
 describe('src :: api :: services :: people', () => {
-  beforeAll(async () => {
-    await PersonModel.deleteMany();
-  });
-  afterAll(async () => {
-    await MongoDatabase.disconect();
-  });
-  afterEach(async () => {
-    await PersonModel.deleteMany();
-  });
-
   /**
    * INSERT CREATE
    */
