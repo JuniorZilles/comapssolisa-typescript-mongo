@@ -9,13 +9,13 @@ export const checkIfExistsMoreThanOneFilial = (addresses: Endereco[]): void => {
     return address.isFilial === false;
   });
   if (indexes.length > 1) {
-    throw new InvalidValue('Bad Request', `isFilial has more than one headquarters`, true);
+    throw new InvalidValue('Bad Request', `isFilial has more than one headquarters`);
   }
 };
 
 const checkIfIsValid = (result: Rental, cnpj: string): void => {
   if (result.cnpj === cnpj) {
-    throw new InvalidValue('Conflict', `CNPJ ${cnpj} already in use`, true);
+    throw new InvalidValue('Conflict', `CNPJ ${cnpj} already in use`);
   }
 };
 
@@ -30,7 +30,7 @@ export const checkIfExistsCNPJ = async (cnpj: string, id: string | undefined = u
 
 const checkIfValidCNPJ = ({ cnpj }: { cnpj: string }): void => {
   if (!validateCNPJ(cnpj)) {
-    throw new InvalidValue('Bad Request', `CNPJ ${cnpj} is invalid`, true);
+    throw new InvalidValue('Bad Request', `CNPJ ${cnpj} is invalid`);
   }
 };
 

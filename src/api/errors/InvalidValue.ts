@@ -3,14 +3,10 @@ export default class InvalidValue extends Error {
 
   public description: string;
 
-  constructor(field: string, value: string, useDefault = false) {
-    let message = `The value '${value}' is invalid`;
-    if (useDefault) {
-      message = value;
-    }
-    super(message);
+  constructor(field: string, value: string) {
+    super(value);
     this.description = field;
-    this.name = message;
+    this.name = value;
     this.status = 400;
   }
 }

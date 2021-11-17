@@ -13,7 +13,7 @@ class AuthenticateService {
     }
     const isSame = await bcrypt.compare(senha, user.senha);
     if (!isSame) {
-      throw new InvalidValue('senha', 'The value ****** for senha is invalid', true);
+      throw new InvalidValue('senha', 'The value ****** for senha is invalid');
     }
 
     const token = generateToken({
