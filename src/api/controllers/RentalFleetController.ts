@@ -1,12 +1,12 @@
 import { paginateRentalCar, serializeRentalCar } from '@serialize/RentalFleetSerialize';
-import RentalCarService from '@services/rental/fleet';
+import RentalFleetService from '@services/rental/fleet';
 import { Request, Response, NextFunction } from 'express';
 
 class RentalFleetController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const result = await RentalCarService.create(id, req.body);
+      const result = await RentalFleetService.create(id, req.body);
       return res.status(201).json(serializeRentalCar(result));
     } catch (e) {
       return next(e);
@@ -16,7 +16,7 @@ class RentalFleetController {
   async get(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const result = await RentalCarService.getAll(id, req.query);
+      const result = await RentalFleetService.getAll(id, req.query);
       return res.status(200).json(paginateRentalCar(result));
     } catch (e) {
       return next(e);
@@ -26,7 +26,7 @@ class RentalFleetController {
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idFleet } = req.params;
-      const result = await RentalCarService.getById(id, idFleet);
+      const result = await RentalFleetService.getById(id, idFleet);
       return res.status(200).json(serializeRentalCar(result));
     } catch (e) {
       return next(e);
@@ -36,7 +36,7 @@ class RentalFleetController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idFleet } = req.params;
-      const result = await RentalCarService.update(id, idFleet, req.body);
+      const result = await RentalFleetService.update(id, idFleet, req.body);
       if (result) {
         return res.status(200).json(serializeRentalCar(result));
       }
@@ -49,7 +49,7 @@ class RentalFleetController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idFleet } = req.params;
-      const removed = await RentalCarService.delete(id, idFleet);
+      const removed = await RentalFleetService.delete(id, idFleet);
       if (removed) {
         return res.status(204).end();
       }

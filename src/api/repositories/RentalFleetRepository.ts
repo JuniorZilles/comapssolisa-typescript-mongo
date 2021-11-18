@@ -3,10 +3,15 @@ import { RentalFleetSearch } from '@interfaces/rental/fleet/RentalFleetSearch';
 import rentalCarModel from '@models/RentalFleetModel';
 import Repository from './Repository';
 
-class RentalCarRepository extends Repository<RentalFleetSearch, RentalFleet> {
+class RentalFleetRepository extends Repository<RentalFleetSearch, RentalFleet> {
   constructor() {
     super(rentalCarModel);
   }
+
+  async validatePlate(plate: string): Promise<RentalFleet> {
+    const result = await rentalCarModel.findOne({ placa: plate });
+    return result as RentalFleet;
+  }
 }
 
-export default new RentalCarRepository();
+export default new RentalFleetRepository();
