@@ -5,7 +5,8 @@ export const checkDefaultRentalFleetFormat = (body): void => {
     id_carro: expect.any(String),
     id_locadora: expect.any(String),
     placa: expect.any(String),
-    status: expect.any(String)
+    status: expect.any(String),
+    valor_diaria: expect.any(Number)
   });
 };
 
@@ -17,7 +18,8 @@ export const checkDefaultRentalsFleetFormat = (body): void => {
         id_carro: expect.any(String),
         id_locadora: expect.any(String),
         placa: expect.any(String),
-        status: expect.any(String)
+        status: expect.any(String),
+        valor_diaria: expect.any(Number)
       }
     ]),
     limit: expect.any(Number),

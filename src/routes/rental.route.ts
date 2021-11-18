@@ -7,7 +7,7 @@ import rentalFleet from './rental.fleet.route';
 import rentalReserve from './rental.reserve.route';
 
 export default (prefix = '/rental'): Router => {
-  const router = Router();
+  const router = Router({ mergeParams: true });
   router.post(`${prefix}/`, PostPutRentalValidation, RentalController.create);
   router.get(`${prefix}/`, GetRentalValidation, RentalController.getAll);
   router.get(`${prefix}/:id`, IdValidation, RentalController.getById);
