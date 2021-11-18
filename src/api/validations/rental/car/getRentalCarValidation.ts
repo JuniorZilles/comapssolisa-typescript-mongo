@@ -9,7 +9,6 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
     const schema = Joi.object({
       id_carro: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_carro'),
       status: Joi.string().trim().valid('disponível', 'indisponível'),
-      id_locacao: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_locacao'),
       valor_diaria: Joi.number(),
       id_locadora: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_locadora'),
       placa: Joi.string().trim(),
