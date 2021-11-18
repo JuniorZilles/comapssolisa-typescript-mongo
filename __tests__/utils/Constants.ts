@@ -45,7 +45,7 @@ export const RENTALDATA = {
     }
   ]
 };
-
+export const RENTALRESERVEPREFIX = '/api/v1/rental/{id}/reserve/{idReserve}';
 export const RENTALRESERVEDATA = {
   id_user: '',
   data_inicio: '20/11/2021',
@@ -53,7 +53,7 @@ export const RENTALRESERVEDATA = {
   id_carro: '',
   id_locadora: ''
 };
-
+export const RENTALCARPREFIX = '/api/v1/rental/{id}/car/{idCar}';
 export const RENTALCARDATA = {
   id_carro: '',
   status: 'disponivel',
@@ -62,7 +62,7 @@ export const RENTALCARDATA = {
   id_locadora: '',
   placa: 'ABC1234'
 };
-
+export const RENTALFLEETPREFIX = '/api/v1/rental/{id}/fleet/{idFleet}';
 export const RENTALFLEETDATA = {
   id_listagem: '',
   id_locadora: ''

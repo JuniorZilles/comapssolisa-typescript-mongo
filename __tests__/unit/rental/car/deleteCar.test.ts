@@ -8,7 +8,7 @@ describe('src :: api :: services :: rental :: car :: delete', () => {
 
   test('GIVEN existing rental car WHEN called to remove with a nonexistent ID THEN throws a not found error', async () => {
     try {
-      await RentalCarService.delete();
+      await RentalCarService.delete('6171508962f47a7a91938d30');
     } catch (e) {
       expect(e).toBeInstanceOf(NotFound);
       expect((<NotFound>e).description).toBe('Not Found');
