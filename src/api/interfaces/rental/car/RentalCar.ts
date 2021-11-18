@@ -3,7 +3,7 @@ export interface RentalCar {
   id_carro: string;
   status: string;
   id_locacao: string;
-  valor_diaria: number;
+  valor_diaria: number | string;
   id_locadora: string;
   placa: string;
 }
