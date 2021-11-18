@@ -11,7 +11,7 @@ const checkCpf = ({ cpf }: { cpf: string }): void => {
   }
 };
 
-const checkIfIsValid = (result: Person, cpf: string, email: string): void => {
+const checkIfIsValidCpf = (result: Person, cpf: string, email: string): void => {
   if (result.cpf === cpf) {
     throw new InvalidValue('Conflict', `CPF ${cpf} already in use`);
   } else if (result.email === email) {
@@ -27,7 +27,7 @@ const checkIfExistsEmailOrCpf = async (
   const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
   if (result) {
     if (result.id !== id) {
-      checkIfIsValid(result, cpf, email);
+      checkIfIsValidCpf(result, cpf, email);
     }
   }
 };
