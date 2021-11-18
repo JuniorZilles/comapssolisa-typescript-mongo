@@ -6,7 +6,6 @@ export const serializeRentalCar = ({
   _id,
   id_carro,
   status,
-  id_locacao,
   valor_diaria,
   id_locadora,
   placa
@@ -15,7 +14,6 @@ export const serializeRentalCar = ({
     _id,
     id_carro,
     status,
-    id_locacao,
     valor_diaria,
     id_locadora,
     placa
