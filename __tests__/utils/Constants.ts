@@ -62,8 +62,3 @@ export const RENTALCARDATA = {
   id_locadora: '',
   placa: 'ABC1234'
 };
-export const RENTALFLEETPREFIX = '/api/v1/rental/{id}/fleet/{idFleet}';
-export const RENTALFLEETDATA = {
-  id_listagem: '',
-  id_locadora: ''
-};
