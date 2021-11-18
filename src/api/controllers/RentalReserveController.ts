@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 class RentalReserveController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await RentalReserveService.create(req.body);
+      const { id } = req.params;
+      const result = await RentalReserveService.create(id, req.body);
       return res.status(201).json(serializeRentalReserve(result));
     } catch (e) {
       return next(e);
@@ -14,7 +15,8 @@ class RentalReserveController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await RentalReserveService.getAll(req.query);
+      const { id } = req.params;
+      const result = await RentalReserveService.getAll(id, req.query);
       return res.status(200).json(paginateRentalReserve(result));
     } catch (e) {
       return next(e);
@@ -23,8 +25,8 @@ class RentalReserveController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const result = await RentalReserveService.getById(id);
+      const { id, idReserve } = req.params;
+      const result = await RentalReserveService.getById(id, idReserve);
       return res.status(200).json(serializeRentalReserve(result));
     } catch (e) {
       return next(e);
@@ -33,8 +35,8 @@ class RentalReserveController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const result = await RentalReserveService.update(req.body, id);
+      const { id, idReserve } = req.params;
+      const result = await RentalReserveService.update(id, idReserve, req.body);
       if (result) {
         return res.status(200).json(serializeRentalReserve(result));
       }
@@ -46,8 +48,8 @@ class RentalReserveController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const removed = await RentalReserveService.delete(id);
+      const { id, idReserve } = req.params;
+      const removed = await RentalReserveService.delete(id, idReserve);
       if (removed) {
         return res.status(204).end();
       }

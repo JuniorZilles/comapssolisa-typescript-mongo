@@ -4,24 +4,24 @@ import { RentalFleetSearch } from '@interfaces/rental/fleet/RentalFleetSearch';
 import RentalFleetRepository from '@repositories/RentalFleetRepository';
 
 class RentalCarService {
-  async create(payload: RentalFleet) {
+  async create(id: string, payload: RentalFleet) {
+    payload.id_locadora = id;
     const result = await RentalFleetRepository.create(payload);
     return result;
   }
 
-  async update(payload: RentalFleet, id: string) {
-    await this.getById(id);
+  async update(id: string, idFleet: string, payload: RentalFleet) {
+    payload.id_locadora = id;
     const result = await RentalFleetRepository.update(id, payload);
     return result;
   }
 
-  async delete(id: string) {
-    await this.getById(id);
+  async delete(id: string, idFleet: string) {
     const result = await RentalFleetRepository.delete(id);
     return result;
   }
 
-  async getById(id: string) {
+  async getById(id: string, idFleet: string) {
     const result = await RentalFleetRepository.findById(id);
     if (!result) {
       throw new NotFound(id);
@@ -29,7 +29,7 @@ class RentalCarService {
     return result;
   }
 
-  async getAll(payload: RentalFleetSearch) {
+  async getAll(id: string, payload: RentalFleetSearch) {
     const result = await RentalFleetRepository.findAll(payload);
     return result;
   }

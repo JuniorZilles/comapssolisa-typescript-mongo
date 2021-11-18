@@ -4,7 +4,7 @@ import { RentalReserveSearch } from '@interfaces/rental/reserve/RentalReserveSea
 import RentalReserveRepository from '@repositories/RentalReserveRepository';
 
 class RentalReserveService {
-  async create(payload: RentalReserve) {
+  async create(id: string, payload: RentalReserve) {
     // check habilitacao
     // calculate price
     // check if car is available
@@ -13,23 +13,21 @@ class RentalReserveService {
     return result;
   }
 
-  async update(payload: RentalReserve, id: string) {
+  async update(id: string, idReserve: string, payload: RentalReserve) {
     // check habilitacao
     // calculate price
     // check if car is available
     // check dates
-    await this.getById(id);
     const result = await RentalReserveRepository.update(id, payload);
     return result;
   }
 
-  async delete(id: string) {
-    await this.getById(id);
+  async delete(id: string, idReserve: string) {
     const result = await RentalReserveRepository.delete(id);
     return result;
   }
 
-  async getById(id: string) {
+  async getById(id: string, idReserve: string) {
     const result = await RentalReserveRepository.findById(id);
     if (!result) {
       throw new NotFound(id);
@@ -37,7 +35,7 @@ class RentalReserveService {
     return result;
   }
 
-  async getAll(payload: RentalReserveSearch) {
+  async getAll(id: string, payload: RentalReserveSearch) {
     const result = await RentalReserveRepository.findAll(payload);
     return result;
   }

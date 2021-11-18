@@ -6,7 +6,7 @@ const RentalCarSchema = new mongoose.Schema({
   id_carro: { type: Schema.Types.ObjectId, ref: 'Car', required: true },
   id_locadora: { type: Schema.Types.ObjectId, ref: 'Rental', required: true },
   status: { type: String, required: true },
-  placa: { type: String, required: true },
+  placa: { type: String, required: true, unique: true },
   valor_diaria: { type: Number, required: true },
   dataCriacao: {
     type: Date,

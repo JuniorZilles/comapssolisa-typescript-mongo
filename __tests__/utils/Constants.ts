@@ -46,18 +46,5 @@ export const RENTALDATA = {
   ]
 };
 export const RENTALRESERVEPREFIX = '/api/v1/rental/{id}/reserve';
-export const RENTALRESERVEDATA = {
-  id_user: '',
-  data_inicio: '20/11/2021',
-  data_fim: '30/11/2021',
-  id_carro: '',
-  id_locadora: ''
-};
+
 export const RENTALFLEETPREFIX = '/api/v1/rental/{id}/fleet';
-export const RENTALFLEETDATA = {
-  id_carro: '',
-  status: 'disponivel',
-  valor_diaria: '100,00',
-  id_locadora: '',
-  placa: 'ABC1234'
-};

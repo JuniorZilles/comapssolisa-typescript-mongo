@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 class RentalFleetController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await RentalCarService.create(req.body);
+      const { id } = req.params;
+      const result = await RentalCarService.create(id, req.body);
       return res.status(201).json(serializeRentalCar(result));
     } catch (e) {
       return next(e);
@@ -14,7 +15,8 @@ class RentalFleetController {
 
   async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await RentalCarService.getAll(req.query);
+      const { id } = req.params;
+      const result = await RentalCarService.getAll(id, req.query);
       return res.status(200).json(paginateRentalCar(result));
     } catch (e) {
       return next(e);
@@ -23,8 +25,8 @@ class RentalFleetController {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const result = await RentalCarService.getById(id);
+      const { id, idFleet } = req.params;
+      const result = await RentalCarService.getById(id, idFleet);
       return res.status(200).json(serializeRentalCar(result));
     } catch (e) {
       return next(e);
@@ -33,8 +35,8 @@ class RentalFleetController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const result = await RentalCarService.update(req.body, id);
+      const { id, idFleet } = req.params;
+      const result = await RentalCarService.update(id, idFleet, req.body);
       if (result) {
         return res.status(200).json(serializeRentalCar(result));
       }
@@ -46,8 +48,8 @@ class RentalFleetController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const removed = await RentalCarService.delete(id);
+      const { id, idFleet } = req.params;
+      const removed = await RentalCarService.delete(id, idFleet);
       if (removed) {
         return res.status(204).end();
       }
