@@ -53,8 +53,8 @@ export const RENTALRESERVEDATA = {
   id_carro: '',
   id_locadora: ''
 };
-export const RENTALCARPREFIX = '/api/v1/rental/{id}/car/{idCar}';
-export const RENTALCARDATA = {
+export const RENTALFLEETPREFIX = '/api/v1/rental/{id}/fleet/{idFleet}';
+export const RENTALFLEETDATA = {
   id_carro: '',
   status: 'disponivel',
   id_locacao: '',

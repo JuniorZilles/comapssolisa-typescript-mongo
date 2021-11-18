@@ -1,4 +1,4 @@
-import RentalCarService from '@services/rental/car/RentalCarService';
+import RentalCarService from '@services/rental/fleet/RentalFleetService';
 
 describe('src :: api :: services :: rental :: car :: getAll', () => {
   test('GIVEN existing rental car WHEN searched with a field THEN results all the reserves that match', async () => {

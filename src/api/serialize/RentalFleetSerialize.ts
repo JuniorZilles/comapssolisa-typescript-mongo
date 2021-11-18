@@ -1,5 +1,5 @@
-import { RentalCar } from '@interfaces/rental/car/RentalCar';
-import RentalCars from '@interfaces/rental/car/RentalCars';
+import { RentalFleet } from '@interfaces/rental/fleet/RentalFleet';
+import RentalFleets from '@interfaces/rental/fleet/RentalFleets';
 import { Paginate } from '@interfaces/Paginate';
 
 export const serializeRentalCar = ({
@@ -9,7 +9,7 @@ export const serializeRentalCar = ({
   valor_diaria,
   id_locadora,
   placa
-}: RentalCar): RentalCar => {
+}: RentalFleet): RentalFleet => {
   return {
     _id,
     id_carro,
@@ -20,7 +20,7 @@ export const serializeRentalCar = ({
   };
 };
 
-export const paginateRentalCar = ({ docs, offsets, total, offset, limit }: Paginate<RentalCar>): RentalCars => {
+export const paginateRentalCar = ({ docs, offsets, total, offset, limit }: Paginate<RentalFleet>): RentalFleets => {
   return {
     frota: docs.map(serializeRentalCar),
     offsets,

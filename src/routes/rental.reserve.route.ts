@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import IdValidation from '@validations/rental/reserve/idReserveValidation';
-import PostPutRentalReserveValidation from '@validations/rental/reserve/postputRentalReserveValidation';
-import GetRentalReserveValidation from '@validations/rental/reserve/getRentalReserveValidation';
+import PostPutRentalReserveValidation from '@validations/rental/reserve/postputReserveValidation';
+import GetRentalReserveValidation from '@validations/rental/reserve/getReserveValidation';
 import RentalReserveController from '@controllers/RentalReserveController';
 
 export default (router: Router, prefix = '/fleet'): Router => {

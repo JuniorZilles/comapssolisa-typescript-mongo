@@ -1,8 +1,8 @@
-import { paginateRentalCar, serializeRentalCar } from '@serialize/RentalCarSerialize';
-import RentalCarService from '@services/rental/car/RentalCarService';
+import { paginateRentalCar, serializeRentalCar } from '@serialize/RentalFleetSerialize';
+import RentalCarService from '@services/rental/fleet/RentalFleetService';
 import { Request, Response, NextFunction } from 'express';
 
-class RentalCarController {
+class RentalFleetController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await RentalCarService.create(req.body);
@@ -58,4 +58,4 @@ class RentalCarController {
   }
 }
 
-export default new RentalCarController();
+export default new RentalFleetController();

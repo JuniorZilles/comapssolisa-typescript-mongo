@@ -1,10 +1,10 @@
 import request from 'supertest';
-import { RentalCar } from '@interfaces/rental/car/RentalCar';
+import { RentalFleet } from '@interfaces/rental/fleet/RentalFleet';
 import app from '../../../../src/app';
-import factory from '../../../utils/factorys/RentalCarFactory';
+import factory from '../../../utils/factorys/RentalFleetFactory';
 import checkDefaultErrorFormat from '../../../utils/formats/ErrorFormat';
 import { RENTALCARPREFIX, RENTALCARDATA } from '../../../utils/Constants';
-import { checkDefaultRentalCarFormat } from '../../../utils/formats/RentalCarFormat';
+import { checkDefaultRentalFleetFormat } from '../../../utils/formats/RentalFleetFormat';
 
 describe('src :: api :: controllers :: rental :: car :: create', () => {
   test('GIVEN a new rental car WHEN every validation is meth THEN it should return status code 200', async () => {});

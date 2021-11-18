@@ -3,7 +3,7 @@ import { Router } from 'express';
 import PostPutRentalValidation from '@validations/rental/postPutRentalValidation';
 import GetRentalValidation from '@validations/rental/getRentalValidation';
 import IdValidation from '@validations/idValidation';
-import rentalCar from './rental.car.route';
+import rentalCar from './rental.fleet.route';
 import rentalReserve from './rental.reserve.route';
 
 export default (prefix = '/rental'): Router => {

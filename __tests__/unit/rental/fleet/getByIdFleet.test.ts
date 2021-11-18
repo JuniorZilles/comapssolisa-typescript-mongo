@@ -1,5 +1,5 @@
 import NotFound from '@errors/NotFound';
-import RentalCarService from '@services/rental/car/RentalCarService';
+import RentalCarService from '@services/rental/fleet/RentalFleetService';
 
 describe('src :: api :: services :: rental :: car :: getById', () => {
   test('GIVEN existing rental car WHEN searched with a existing ID THEN results the matching item', async () => {

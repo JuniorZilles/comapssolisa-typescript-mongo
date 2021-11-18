@@ -1,4 +1,4 @@
-import { RentalCar } from '@interfaces/rental/car/RentalCar';
+import { RentalFleet } from '@interfaces/rental/fleet/RentalFleet';
 import mongoose, { Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
@@ -23,4 +23,4 @@ RentalCarSchema.pre('findOneAndUpdate', async function onSave(next) {
   this.set('dataAtualizacao', new Date());
   next();
 });
-export default mongoose.model<RentalCar>('RentalCar', RentalCarSchema);
+export default mongoose.model<RentalFleet>('RentalFleet', RentalCarSchema);

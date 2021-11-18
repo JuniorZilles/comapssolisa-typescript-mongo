@@ -1,4 +1,4 @@
-export interface RentalCar {
+export interface RentalFleet {
   _id?: string;
   id_carro: string;
   status: string;
