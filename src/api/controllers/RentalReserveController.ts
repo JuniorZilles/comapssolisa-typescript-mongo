@@ -1,4 +1,4 @@
-import RentalReserveService from '@services/rental/reserve/RentalReserveService';
+import RentalReserveService from '@services/rental/reserve';
 import { paginateRentalReserve, serializeRentalReserve } from '@serialize/RentalReserveSerialize';
 import { Request, Response, NextFunction } from 'express';
 

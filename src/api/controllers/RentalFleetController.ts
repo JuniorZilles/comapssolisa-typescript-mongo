@@ -1,5 +1,5 @@
 import { paginateRentalCar, serializeRentalCar } from '@serialize/RentalFleetSerialize';
-import RentalCarService from '@services/rental/fleet/RentalFleetService';
+import RentalCarService from '@services/rental/fleet';
 import { Request, Response, NextFunction } from 'express';
 
 class RentalFleetController {
