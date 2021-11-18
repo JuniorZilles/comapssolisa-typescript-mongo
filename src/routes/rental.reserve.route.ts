@@ -4,7 +4,7 @@ import PostPutRentalReserveValidation from '@validations/rental/reserve/postputR
 import GetRentalReserveValidation from '@validations/rental/reserve/getReserveValidation';
 import RentalReserveController from '@controllers/RentalReserveController';
 
-export default (router: Router, prefix = '/fleet'): Router => {
+export default (router: Router, prefix = '/reserve'): Router => {
   router.post(`${prefix}/`, PostPutRentalReserveValidation, RentalReserveController.create);
   router.get(`${prefix}/`, GetRentalReserveValidation, RentalReserveController.get);
   router.get(`${prefix}/:idReserve`, IdValidation, RentalReserveController.getById);
