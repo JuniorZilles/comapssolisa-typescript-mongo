@@ -21,8 +21,6 @@ describe('src :: api :: controllers :: car :: getById', () => {
       expect(body.__v).toBeUndefined();
       expect(body.ano).toBe(carUsed.ano);
       expect(body.cor).toBe(carUsed.cor);
-    } else {
-      expect(carUsed._id).toBeDefined();
     }
   });
 
