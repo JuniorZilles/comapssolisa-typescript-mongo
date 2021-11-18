@@ -10,7 +10,6 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
       id_carro: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_carro').required(),
       status: Joi.string().trim().valid('disponível', 'indisponível').required(),
       valor_diaria: Joi.number().required(),
-      id_locadora: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_locadora').required(),
       placa: Joi.string().trim().required()
     });
 

@@ -12,7 +12,6 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
     const schema = Joi.object({
       id_user: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_user'),
       id_carro: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_carro'),
-      id_locadora: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_locadora'),
       valor_final: Joi.number(),
       data_inicio: JoiDate.date().format('DD/MM/YYYY'),
       data_fim: JoiDate.date().format('DD/MM/YYYY')
