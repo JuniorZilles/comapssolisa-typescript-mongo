@@ -17,6 +17,16 @@ class RentalFleetRepository extends Repository<RentalFleetSearch, RentalFleet> {
     const result = await rentalCarModel.findOneAndUpdate({ _id: idFleet, id_locadora: id }, payload, { new: true });
     return result as RentalFleet;
   }
+
+  public async deleteFleet(id: string, idFleet: string): Promise<RentalFleet> {
+    const result = await rentalCarModel.findOneAndDelete({ _id: idFleet, id_locadora: id });
+    return result as RentalFleet;
+  }
+
+  public async getByIdFleet(id: string, idFleet: string): Promise<RentalFleet> {
+    const result = await rentalCarModel.findOne({ _id: idFleet, id_locadora: id });
+    return result as RentalFleet;
+  }
 }
 
 export default new RentalFleetRepository();

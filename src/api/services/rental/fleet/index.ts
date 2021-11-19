@@ -16,25 +16,25 @@ class RentalFleetService {
     payload.id_locadora = id;
     await validateOnUpdateRentalFleet(idFleet, payload);
     const result = await RentalFleetRepository.updateFleet(id, idFleet, payload);
-    if (!result) {
-      throw new NotFound(`id: ${id} - idFleet: ${idFleet}`);
-    }
+    this.checkIfIsDefined(result, id, idFleet);
     return result;
   }
 
-  async delete(id: string, idFleet: string) {
-    const result = await RentalFleetRepository.delete(id);
+  private checkIfIsDefined(result: RentalFleet, id: string, idFleet: string): void {
     if (!result) {
       throw new NotFound(`id: ${id} - idFleet: ${idFleet}`);
     }
+  }
+
+  async delete(id: string, idFleet: string) {
+    const result = await RentalFleetRepository.deleteFleet(id, idFleet);
+    this.checkIfIsDefined(result, id, idFleet);
     return result;
   }
 
   async getById(id: string, idFleet: string) {
     const result = await RentalFleetRepository.findById(id);
-    if (!result) {
-      throw new NotFound(`id: ${id} - idFleet: ${idFleet}`);
-    }
+    this.checkIfIsDefined(result, id, idFleet);
     return result;
   }
 
