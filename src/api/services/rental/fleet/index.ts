@@ -15,7 +15,7 @@ class RentalFleetService {
   async update(id: string, idFleet: string, payload: RentalFleet) {
     payload.id_locadora = id;
     await validateOnUpdateRentalFleet(idFleet, payload);
-    const result = await RentalFleetRepository.update(id, payload);
+    const result = await RentalFleetRepository.updateFleet(id, idFleet, payload);
     if (!result) {
       throw new NotFound(`id: ${id} - idFleet: ${idFleet}`);
     }

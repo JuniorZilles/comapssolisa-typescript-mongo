@@ -12,13 +12,10 @@ describe('src :: api :: services :: rental :: car :: create', () => {
       beforeEach(async () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
         generatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria, placa };
-        createdRentalFleet = await RentalFleetService.create(
-          id_locadora?.toString() as string,
-          generatedRentalFleet as RentalFleet
-        );
+        createdRentalFleet = await RentalFleetService.create(id_locadora?.toString() as string, generatedRentalFleet);
       });
 
-      test('THEN it should return have a id and match the content with the entry', async () => {
+      test('THEN it should have a id and match the content with the entry', async () => {
         expect(createdRentalFleet._id).toBeDefined();
         expect(createdRentalFleet.id_carro.toString()).toEqual(generatedRentalFleet.id_carro);
         expect(createdRentalFleet.placa).toBe(generatedRentalFleet.placa);
