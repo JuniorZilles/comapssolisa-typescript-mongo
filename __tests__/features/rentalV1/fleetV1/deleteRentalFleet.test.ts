@@ -59,7 +59,7 @@ describe('src :: api :: controllers :: rental :: fleet :: delete', () => {
       });
     });
 
-    describe('WHEN a rental id is invalid', () => {
+    describe('WHEN trying to delete with a rental company ID that is invalid', () => {
       let response: request.Response;
       beforeEach(async () => {
         response = await request(app).delete(`${RENTALFLEETPREFIX.replace('{id}', '23')}/6171508962f47a7a91938d30`);
@@ -83,7 +83,7 @@ describe('src :: api :: controllers :: rental :: fleet :: delete', () => {
       });
     });
 
-    describe('WHEN a fleet id is invalid', () => {
+    describe('WHEN trying to delete with a fleet ID that is invalid', () => {
       let response: request.Response;
       beforeEach(async () => {
         response = await request(app).delete(`${RENTALFLEETPREFIX.replace('{id}', '6171508962f47a7a91938d30')}/1523`);
@@ -107,7 +107,7 @@ describe('src :: api :: controllers :: rental :: fleet :: delete', () => {
       });
     });
 
-    describe('WHEN a fleet id is not existent', () => {
+    describe('WHEN trying to delete with a fleet ID that is not existent', () => {
       let response: request.Response;
       let cretedIdLocadora: string;
       beforeEach(async () => {
@@ -134,7 +134,7 @@ describe('src :: api :: controllers :: rental :: fleet :: delete', () => {
       });
     });
 
-    describe('WHEN a rental company id is not existent', () => {
+    describe('WHEN trying to delete with a rental company ID that is not existent', () => {
       let response: request.Response;
       let cretedIdFleet: string;
       beforeEach(async () => {

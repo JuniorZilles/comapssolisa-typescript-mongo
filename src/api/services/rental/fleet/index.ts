@@ -33,7 +33,7 @@ class RentalFleetService {
   }
 
   async getById(id: string, idFleet: string) {
-    const result = await RentalFleetRepository.findById(id);
+    const result = await RentalFleetRepository.getByIdFleet(id, idFleet);
     this.checkIfIsDefined(result, id, idFleet);
     return result;
   }
