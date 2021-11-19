@@ -35,10 +35,7 @@ class PeopleController {
     try {
       const { id } = req.params;
       const person = await PeopleService.update(id, req.body);
-      if (person) {
-        return res.status(200).json(serializePerson(person));
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(200).json(serializePerson(person));
     } catch (e) {
       return next(e);
     }
@@ -47,11 +44,8 @@ class PeopleController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const removed = await PeopleService.delete(id);
-      if (removed) {
-        return res.status(204).end();
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      await PeopleService.delete(id);
+      return res.status(204).end();
     } catch (e) {
       return next(e);
     }

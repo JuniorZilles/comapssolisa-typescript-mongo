@@ -23,11 +23,8 @@ class RentalController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const removed = await RentalService.delete(req.params.id);
-      if (removed) {
-        return res.status(204).end();
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      await RentalService.delete(req.params.id);
+      return res.status(204).end();
     } catch (e) {
       return next(e);
     }
@@ -36,10 +33,7 @@ class RentalController {
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const rental = await RentalService.getById(req.params.id);
-      if (rental) {
-        return res.status(200).json(serializeRental(rental));
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(200).json(serializeRental(rental));
     } catch (e) {
       return next(e);
     }

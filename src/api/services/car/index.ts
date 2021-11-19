@@ -13,11 +13,9 @@ class CarService {
   }
 
   async getById(id: string): Promise<Car> {
-    const car = await CarRepository.findById(id);
-    if (!car) {
-      throw new NotFound(id);
-    }
-    return car;
+    const result = await CarRepository.findById(id);
+    this.checkIfIsDefined(result, id);
+    return result;
   }
 
   async list(query: CarSearch): Promise<Paginate<Car>> {
@@ -29,15 +27,21 @@ class CarService {
   }
 
   async delete(id: string): Promise<Car> {
-    await this.getById(id);
     const result = await CarRepository.delete(id);
+    this.checkIfIsDefined(result, id);
     return result;
   }
 
   async update(id: string, payload: Car): Promise<Car> {
-    await this.getById(id);
     const result = await CarRepository.update(id, payload);
+    this.checkIfIsDefined(result, id);
     return result;
+  }
+
+  private checkIfIsDefined(result: Car, id: string): void {
+    if (!result) {
+      throw new NotFound(id);
+    }
   }
 
   async updateAccessory(id: string, idAccessory: string, payload: Accessory): Promise<Car> {
