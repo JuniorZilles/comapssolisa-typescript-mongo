@@ -1,4 +1,3 @@
-import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import PeopleService from '@services/people';
 import { PERSONDATA } from '../../utils/Constants';
@@ -26,9 +25,9 @@ describe('src :: api :: services :: people :: create', () => {
     try {
       await PeopleService.create(temp);
     } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'data_nascimento' is out of the standard format");
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
+      expect((<InvalidValue>e).name).toBe("The field 'data_nascimento' is out of the standard format");
     }
   });
 
