@@ -1,23 +1,41 @@
 import NotFound from '@errors/NotFound';
 import { RentalReserve } from '@interfaces/rental/reserve/RentalReserve';
 import { RentalReserveSearch } from '@interfaces/rental/reserve/RentalReserveSearch';
+import RentalFleetRepository from '@repositories/RentalFleetRepository';
 import RentalReserveRepository from '@repositories/RentalReserveRepository';
+import moment from 'moment';
+import { validateOnCreateRentalReserve, validateOnUpdateRentalReserve } from './validation';
 
 class RentalReserveService {
   async create(id: string, payload: RentalReserve) {
-    // check habilitacao
-    // calculate price
-    // check if car is available
-    // check dates
+    payload.id_locadora = id;
+    payload.data_inicio = this.transformDate(payload.data_inicio as string);
+    payload.data_fim = this.transformDate(payload.data_fim as string);
+    await validateOnCreateRentalReserve(payload);
+    payload.valor_final = await this.calculatePrice(id, payload);
     const result = await RentalReserveRepository.create(payload);
     return result;
   }
 
+  private transformDate(date: string): Date {
+    return moment(date, 'DD/MM/YYYY').toDate();
+  }
+
+  private async calculatePrice(id: string, payload: RentalReserve): Promise<number> {
+    const car = await RentalFleetRepository.getByIdFleet(id, payload.id_carro);
+    return (car.valor_diaria as number) * this.getReserveDays(payload.data_inicio as Date, payload.data_fim as Date);
+  }
+
+  private getReserveDays(ini: Date, fim: Date): number {
+    return moment(ini).diff(fim, 'days', false);
+  }
+
   async update(id: string, idReserve: string, payload: RentalReserve) {
-    // check habilitacao
-    // calculate price
-    // check if car is available
-    // check dates
+    payload.id_locadora = id;
+    payload.data_inicio = this.transformDate(payload.data_inicio as string);
+    payload.data_fim = this.transformDate(payload.data_fim as string);
+    await validateOnUpdateRentalReserve(idReserve, payload);
+    payload.valor_final = await this.calculatePrice(id, payload);
     const result = await RentalReserveRepository.update(id, payload);
     return result;
   }
