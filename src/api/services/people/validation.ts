@@ -24,10 +24,8 @@ const checkIfExistsEmailOrCpf = async (
   id: string | undefined = undefined
 ): Promise<void> => {
   const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
-  if (result) {
-    if (result.id !== id) {
-      checkIfIsValidCpf(result, cpf, email);
-    }
+  if (result && result.id !== id) {
+    checkIfIsValidCpf(result, cpf, email);
   }
 };
 export const isOlderAndTransfromToDateString = (data_nascimento: string): Date => {

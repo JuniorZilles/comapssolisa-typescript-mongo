@@ -14,6 +14,6 @@ export default (prefix = '/rental'): Router => {
   router.put(`${prefix}/:id`, IdValidation, PostPutRentalValidation, RentalController.update);
   router.delete(`${prefix}/:id`, IdValidation, RentalController.delete);
   router.use(`${prefix}/:id`, IdValidation, rentalFleet(router));
-  // router.use(`${prefix}/:id`, IdValidation, rentalReserve(router));
+  router.use(`${prefix}/:id`, IdValidation, rentalReserve(router));
   return router;
 };
