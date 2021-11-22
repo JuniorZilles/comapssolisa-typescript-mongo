@@ -5,7 +5,8 @@ import PeopleRepository from '@repositories/PeopleRepository';
 import { Paginate } from '@interfaces/Paginate';
 import NotFound from '@errors/NotFound';
 import PersonSearch from '@interfaces/people/PersonSearch';
-import transformToDate from '@utils/transform';
+
+import { toISOString } from '@utils/transform';
 import { validateOnCreatePerson, validateOnUpdatePerson, isOlderAndTransfromToDateString } from './validation';
 
 class PeopleService {
@@ -30,7 +31,7 @@ class PeopleService {
 
   async list(query: PersonSearch): Promise<Paginate<Person>> {
     if (query.data_nascimento) {
-      query.data_nascimento = transformToDate(query.data_nascimento as string);
+      query.data_nascimento = toISOString(query.data_nascimento as string);
     }
     const result = await PeopleRepository.findAll(query);
     return result;

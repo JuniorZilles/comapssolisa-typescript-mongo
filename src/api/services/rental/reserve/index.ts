@@ -4,6 +4,7 @@ import { RentalReserveSearch } from '@interfaces/rental/reserve/RentalReserveSea
 import { UserInfo } from '@interfaces/UserInfo';
 import RentalFleetRepository from '@repositories/RentalFleetRepository';
 import RentalReserveRepository from '@repositories/RentalReserveRepository';
+import { toDate } from '@utils/transform';
 import moment from 'moment';
 import { validateOnCreateRentalReserve, validateOnUpdateRentalReserve } from './validation';
 
@@ -11,16 +12,12 @@ class RentalReserveService {
   async create(id: string, payload: RentalReserve, userInfo: UserInfo) {
     payload.id_locadora = id;
     payload.id_user = userInfo.id;
-    payload.data_inicio = this.transformDate(payload.data_inicio as string);
-    payload.data_fim = this.transformDate(payload.data_fim as string);
+    payload.data_inicio = toDate(payload.data_inicio as string);
+    payload.data_fim = toDate(payload.data_fim as string);
     await validateOnCreateRentalReserve(payload, userInfo);
     payload.valor_final = await this.calculatePrice(id, payload);
     const result = await RentalReserveRepository.create(payload);
     return result;
-  }
-
-  private transformDate(date: string): Date {
-    return moment(date, 'DD/MM/YYYY').toDate();
   }
 
   private async calculatePrice(id: string, payload: RentalReserve): Promise<number> {
@@ -35,8 +32,8 @@ class RentalReserveService {
   async update(id: string, idReserve: string, payload: RentalReserve, userInfo: UserInfo) {
     payload.id_locadora = id;
     payload.id_user = userInfo.id;
-    payload.data_inicio = this.transformDate(payload.data_inicio as string);
-    payload.data_fim = this.transformDate(payload.data_fim as string);
+    payload.data_inicio = toDate(payload.data_inicio as string);
+    payload.data_fim = toDate(payload.data_fim as string);
     await validateOnUpdateRentalReserve(idReserve, payload, userInfo);
     payload.valor_final = await this.calculatePrice(id, payload);
     const result = await RentalReserveRepository.update(id, payload);

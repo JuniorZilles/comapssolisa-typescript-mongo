@@ -1,5 +1,9 @@
 import moment from 'moment';
 
-export default (date: string): string => {
+export const toISOString = (date: string): string => {
   return moment(date, 'DD/MM/YYYY').toISOString();
+};
+
+export const toDate = (date: string): Date => {
+  return moment(date, 'DD/MM/YYYY').toDate();
 };
