@@ -4,7 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const RentalReserveSchema = new mongoose.Schema({
   id_user: { type: Schema.Types.ObjectId, ref: 'Person', required: true },
-  id_carro: { type: Schema.Types.ObjectId, ref: 'RentalCar', required: true },
+  id_carro: { type: Schema.Types.ObjectId, ref: 'RentalFleet', required: true },
   id_locadora: { type: Schema.Types.ObjectId, ref: 'Rental', required: true },
   data_fim: {
     type: Date,

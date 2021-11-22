@@ -60,7 +60,7 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
       });
     });
 
-    describe('WHEN  called to remove with a nonexistent fleet ID', () => {
+    describe('WHEN  called to update with a nonexistent fleet ID', () => {
       let id: string;
       let updatedRentalFleet: RentalFleet;
       beforeEach(async () => {
@@ -79,7 +79,7 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
       });
     });
 
-    describe('WHEN  called to remove with a nonexistent rental ID', () => {
+    describe('WHEN  called to update with a nonexistent rental ID', () => {
       let idFleet: string;
       let updatedRentalFleet: RentalFleet;
       beforeEach(async () => {
@@ -95,6 +95,25 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
           expect(e).toBeInstanceOf(NotFound);
           expect((<NotFound>e).description).toBe('Not Found');
           expect((<NotFound>e).name).toBe(`Value id: 6171508962f47a7a91938d30 - idFleet: ${idFleet} not found`);
+        }
+      });
+    });
+
+    describe('WHEN using invalid id_carro', () => {
+      let id: string;
+      let updatedRentalFleet: RentalFleet;
+      beforeEach(async () => {
+        const { id_locadora, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        id = id_locadora?.toString() as string;
+        updatedRentalFleet = { id_carro: '6171508962f47a7a91938d30', status, valor_diaria, placa };
+      });
+      test('THEN should throw a not found error', async () => {
+        try {
+          await RentalFleetService.update(id, '6171508962f47a7a91938d30', updatedRentalFleet);
+        } catch (e) {
+          expect(e).toBeInstanceOf(NotFound);
+          expect((<NotFound>e).description).toBe('Not Found');
+          expect((<NotFound>e).message).toBe('Value id_carro: 6171508962f47a7a91938d30 not found');
         }
       });
     });
