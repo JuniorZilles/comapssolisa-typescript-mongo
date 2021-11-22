@@ -31,6 +31,7 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
         expect(updatedRentalFleet.valor_diaria).toBe(generatedRentalFleet.valor_diaria);
       });
     });
+
     describe('WHEN placa already used by another car', () => {
       let generatedRentalFleet: RentalFleet;
       let updatedRentalFleet: RentalFleet;
@@ -58,6 +59,7 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
         }
       });
     });
+
     describe('WHEN  called to remove with a nonexistent fleet ID', () => {
       let id: string;
       let updatedRentalFleet: RentalFleet;

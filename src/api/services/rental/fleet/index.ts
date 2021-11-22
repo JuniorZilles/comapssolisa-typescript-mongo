@@ -39,6 +39,7 @@ class RentalFleetService {
   }
 
   async getAll(id: string, payload: RentalFleetSearch) {
+    payload.id_locadora = id;
     const result = await RentalFleetRepository.findAll(payload);
     return result;
   }

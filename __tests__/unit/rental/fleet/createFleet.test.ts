@@ -23,6 +23,7 @@ describe('src :: api :: services :: rental :: car :: create', () => {
         expect(createdRentalFleet.valor_diaria).toBe(generatedRentalFleet.valor_diaria);
       });
     });
+
     describe('WHEN placa already used by another car', () => {
       let generated: RentalFleet;
       beforeEach(async () => {
