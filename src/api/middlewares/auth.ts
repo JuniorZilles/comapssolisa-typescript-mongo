@@ -25,9 +25,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     const result = verifyToken(token);
     const content = result as TokenPayload;
 
-    req.userId = content.content.id;
-    req.habilitado = content.content.habilitado;
-    req.email = content.content.email;
+    req.userInfo = content.content;
     return next();
   } catch (error) {
     return res.status(401).json([{ description: 'Bearer', name: 'Token invalid' }]);

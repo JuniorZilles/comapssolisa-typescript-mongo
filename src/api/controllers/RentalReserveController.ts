@@ -6,7 +6,7 @@ class RentalReserveController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const result = await RentalReserveService.create(id, req.body);
+      const result = await RentalReserveService.create(id, req.body, req.userInfo);
       return res.status(201).json(serializeRentalReserve(result));
     } catch (e) {
       return next(e);
@@ -36,7 +36,7 @@ class RentalReserveController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idReserve } = req.params;
-      const result = await RentalReserveService.update(id, idReserve, req.body);
+      const result = await RentalReserveService.update(id, idReserve, req.body, req.userInfo);
       if (result) {
         return res.status(200).json(serializeRentalReserve(result));
       }

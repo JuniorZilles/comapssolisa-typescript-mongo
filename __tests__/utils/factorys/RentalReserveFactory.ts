@@ -4,6 +4,7 @@ import RentalReserveModel from '@models/RentalReserveModel';
 import { RentalFleet } from '@interfaces/rental/fleet/RentalFleet';
 import { Rental } from '@interfaces/rental/Rental';
 import { Person } from '@interfaces/people/Person';
+import moment from 'moment';
 import rentalFactory from './RentalFactory';
 import personFactory from './PeopleFactory';
 import fleetFactory from './RentalFleetFactory';
@@ -22,7 +23,11 @@ factory.define('RentalReserve', RentalReserveModel, {
     const generatedRental = await rentalFactory.create<Rental>('Rental');
     return generatedRental._id?.toString() as string;
   }),
-  data_inicio: factory.sequence(() => faker.datatype.datetime()),
-  data_fim: factory.sequence(() => faker.datatype.datetime())
+  data_inicio: factory.sequence(() => moment().format('YYYY-MM-DD HH:mm:ss')),
+  data_fim: factory.sequence(() =>
+    moment()
+      .add(faker.datatype.number({ max: 50 }), 'days')
+      .format('YYYY-MM-DD HH:mm:ss')
+  )
 });
 export default factory;
