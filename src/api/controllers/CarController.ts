@@ -35,10 +35,7 @@ class CarController {
     try {
       const { id } = req.params;
       const car = await CarService.update(id, req.body);
-      if (car) {
-        return res.status(200).json(serializeCar(car));
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(200).json(serializeCar(car));
     } catch (e) {
       return next(e);
     }
@@ -47,11 +44,8 @@ class CarController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const removed = await CarService.delete(id);
-      if (removed) {
-        return res.status(204).end();
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      await CarService.delete(id);
+      return res.status(204).end();
     } catch (e) {
       return next(e);
     }

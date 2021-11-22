@@ -15,8 +15,6 @@ describe('src :: api :: services :: car :: update', () => {
       expect(result.cor).toBe(car.cor);
       expect(result.modelo).toBe(car.modelo);
       expect(result.quantidadePassageiros).toBe(car.quantidadePassageiros);
-    } else {
-      expect(car._id).toBeDefined();
     }
   });
 

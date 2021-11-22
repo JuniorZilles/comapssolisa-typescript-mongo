@@ -13,8 +13,6 @@ describe('src :: api :: services :: car :: getById', () => {
       expect(result.modelo).toBe(car.modelo);
       expect(result.ano).toBe(car.ano);
       expect(result.cor).toBe(car.cor);
-    } else {
-      expect(car._id).toBeDefined();
     }
   });
 

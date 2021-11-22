@@ -30,25 +30,29 @@ class RentalService {
   }
 
   async update(id: string, payload: Rental): Promise<Rental> {
-    await this.getById(id);
     await validateOnUpdateRental(payload, id);
     payload.endereco = await this.getCepLocations(payload.endereco);
-    const rental = await RentalRepository.update(id, payload);
-    return rental;
-  }
-
-  async delete(id: string): Promise<Rental> {
-    await this.getById(id);
-    const result = await RentalRepository.delete(id);
+    const result = await RentalRepository.update(id, payload);
+    this.checkIfIsDefined(result, id);
     return result;
   }
 
-  async getById(id: string): Promise<Rental> {
-    const rental = await RentalRepository.findById(id);
-    if (!rental) {
+  async delete(id: string): Promise<Rental> {
+    const result = await RentalRepository.delete(id);
+    this.checkIfIsDefined(result, id);
+    return result;
+  }
+
+  private checkIfIsDefined(result: Rental, id: string): void {
+    if (!result) {
       throw new NotFound(id);
     }
-    return rental;
+  }
+
+  async getById(id: string): Promise<Rental> {
+    const result = await RentalRepository.findById(id);
+    this.checkIfIsDefined(result, id);
+    return result;
   }
 
   private transformToQuery(query: RentalSearch): RentalSearch {

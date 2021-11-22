@@ -1,4 +1,3 @@
-import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import { Person } from '@interfaces/people/Person';
 import PeopleRepository from '@repositories/PeopleRepository';
@@ -11,7 +10,7 @@ const checkCpf = ({ cpf }: { cpf: string }): void => {
   }
 };
 
-const checkIfIsValid = (result: Person, cpf: string, email: string): void => {
+const checkIfIsValidCpf = (result: Person, cpf: string, email: string): void => {
   if (result.cpf === cpf) {
     throw new InvalidValue('Conflict', `CPF ${cpf} already in use`);
   } else if (result.email === email) {
@@ -27,7 +26,7 @@ const checkIfExistsEmailOrCpf = async (
   const result = await PeopleRepository.getUserEmailOrCpf(email, cpf, id);
   if (result) {
     if (result.id !== id) {
-      checkIfIsValid(result, cpf, email);
+      checkIfIsValidCpf(result, cpf, email);
     }
   }
 };
@@ -35,7 +34,7 @@ export const isOlderAndTransfromToDateString = (data_nascimento: string): Date =
   const birthday = moment(data_nascimento, 'DD/MM/YYYY');
   const age = moment().diff(birthday, 'years', false);
   if (age < 18) {
-    throw new InvalidField('data_nascimento');
+    throw new InvalidValue('Bad Request', 'data_nascimento', false);
   }
   return birthday.toDate();
 };

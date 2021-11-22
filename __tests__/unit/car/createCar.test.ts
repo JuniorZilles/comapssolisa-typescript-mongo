@@ -1,4 +1,4 @@
-import InvalidField from '@errors/InvalidField';
+import InvalidValue from '@errors/InvalidValue';
 import CarService from '@services/car';
 import { CARDATA } from '../../utils/Constants';
 
@@ -22,9 +22,9 @@ describe('src :: api :: services :: car :: create', () => {
       };
       await CarService.create(temp);
     } catch (e) {
-      expect(e).toBeInstanceOf(InvalidField);
-      expect((<InvalidField>e).description).toBe('Bad Request');
-      expect((<InvalidField>e).name).toBe("The field 'acessorios' is out of the standard format");
+      expect(e).toBeInstanceOf(InvalidValue);
+      expect((<InvalidValue>e).description).toBe('Bad Request');
+      expect((<InvalidValue>e).name).toBe("The field 'acessorios' is out of the standard format");
     }
   });
 });

@@ -1,4 +1,3 @@
-import InvalidField from '@errors/InvalidField';
 import InvalidValue from '@errors/InvalidValue';
 import NotFound from '@errors/NotFound';
 import { Person } from '@interfaces/people/Person';
@@ -110,9 +109,9 @@ describe('src :: api :: services :: people :: update', () => {
       try {
         await PeopleService.update(personGenerated._id, tempData);
       } catch (e) {
-        expect(e).toBeInstanceOf(InvalidField);
-        expect((<InvalidField>e).description).toBe('Bad Request');
-        expect((<InvalidField>e).name).toBe("The field 'data_nascimento' is out of the standard format");
+        expect(e).toBeInstanceOf(InvalidValue);
+        expect((<InvalidValue>e).description).toBe('Bad Request');
+        expect((<InvalidValue>e).name).toBe("The field 'data_nascimento' is out of the standard format");
       }
     }
   });

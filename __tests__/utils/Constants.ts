@@ -45,3 +45,6 @@ export const RENTALDATA = {
     }
   ]
 };
+export const RENTALRESERVEPREFIX = '/api/v1/rental/{id}/reserve';
+
+export const RENTALFLEETPREFIX = '/api/v1/rental/{id}/fleet';

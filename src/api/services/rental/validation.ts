@@ -13,7 +13,7 @@ export const checkIfExistsMoreThanOneFilial = (addresses: Endereco[]): void => {
   }
 };
 
-const checkIfIsValid = (result: Rental, cnpj: string): void => {
+const checkIfIsValidCNPJ = (result: Rental, cnpj: string): void => {
   if (result.cnpj === cnpj) {
     throw new InvalidValue('Conflict', `CNPJ ${cnpj} already in use`);
   }
@@ -23,7 +23,7 @@ export const checkIfExistsCNPJ = async (cnpj: string, id: string | undefined = u
   const result = await RentalRepository.getRentalByCNPJ(cnpj, id);
   if (result) {
     if (result.id !== id) {
-      checkIfIsValid(result, cnpj);
+      checkIfIsValidCNPJ(result, cnpj);
     }
   }
 };
