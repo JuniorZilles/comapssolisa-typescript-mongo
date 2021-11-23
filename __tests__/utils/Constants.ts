@@ -8,13 +8,23 @@ export const CARDATA = {
   acessorios: [{ descricao: 'Ar-condicionado' }],
   quantidadePassageiros: 5
 };
-const key = generateToken({
+
+export const USERDATAHABILTADO = {
   email: 'joazinho@email.com',
   habilitado: 'sim',
   id: '6171508962f47a7a91938d30'
-});
+};
 
-export const TOKEN = { authorization: `Bearer ${key}` };
+export const USERDATANOTHABILTADO = {
+  email: 'joazinho@email.com',
+  habilitado: 'não',
+  id: '6171508962f47a7a91938d30'
+};
+const keyHabilitaded = generateToken(USERDATAHABILTADO);
+const keyNotHabilidaded = generateToken(USERDATANOTHABILTADO);
+
+export const TOKEN = { authorization: `Bearer ${keyHabilitaded}` };
+export const TOKENHOTHABILTADO = { authorization: `Bearer ${keyNotHabilidaded}` };
 
 export const PERSONPREFIX = '/api/v1/people';
 export const PERSONDATA = {

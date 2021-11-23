@@ -9,7 +9,7 @@ import factory from '../../../utils/factorys/RentalReserveFactory';
 import fleetFactory from '../../../utils/factorys/RentalFleetFactory';
 
 describe('src :: api :: services :: rental :: reserve :: create', () => {
-  describe('GIVEN a call to create a new rental car', () => {
+  describe('GIVEN a POST to create a reservation', () => {
     describe('WHEN every validation is meth', () => {
       let generatedRentalReserve: RentalReserve;
       let createdRentalReserve: RentalReserve;
@@ -191,7 +191,7 @@ describe('src :: api :: services :: rental :: reserve :: create', () => {
       });
     });
 
-    describe('WHEN using invalid id_carro', () => {
+    describe('WHEN using nonexistant id_carro', () => {
       let generated: RentalReserve;
       beforeEach(async () => {
         generated = await factory.build<RentalReserve>('RentalReserve');
@@ -221,7 +221,7 @@ describe('src :: api :: services :: rental :: reserve :: create', () => {
       });
     });
 
-    describe('WHEN using invalid id_locadora', () => {
+    describe('WHEN using nonexistant id_locadora', () => {
       let generated: RentalReserve;
       beforeEach(async () => {
         generated = await factory.build<RentalReserve>('RentalReserve');

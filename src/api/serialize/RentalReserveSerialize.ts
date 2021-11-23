@@ -1,6 +1,7 @@
 import { RentalReserve } from '@interfaces/rental/reserve/RentalReserve';
 import { Paginate } from '@interfaces/Paginate';
 import RentalReserves from '@interfaces/rental/reserve/RentalReserves';
+import moment from 'moment';
 
 export const serializeRentalReserve = ({
   _id,
@@ -14,8 +15,8 @@ export const serializeRentalReserve = ({
   return {
     _id,
     id_user,
-    data_inicio,
-    data_fim,
+    data_inicio: moment(data_inicio, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
+    data_fim: moment(data_fim, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
     id_carro,
     id_locadora,
     valor_final
