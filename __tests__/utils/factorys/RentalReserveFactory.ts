@@ -14,15 +14,15 @@ factory.define('RentalReserve', RentalReserveModel, {
     const user = await personFactory.create<Person>('People');
     return user._id?.toString() as string;
   }),
-  id_carro: factory.sequence(async () => {
-    const generatedCar = await fleetFactory.create<RentalFleet>('Car');
-    return generatedCar._id?.toString() as string;
-  }),
-  valor_final: factory.sequence(() => faker.datatype.float({ max: 300, min: 50 })),
   id_locadora: factory.sequence(async () => {
     const generatedRental = await rentalFactory.create<Rental>('Rental');
     return generatedRental._id?.toString() as string;
   }),
+  id_carro: factory.sequence(async () => {
+    const generatedCar = await fleetFactory.create<RentalFleet>('RentalFleet');
+    return generatedCar._id?.toString() as string;
+  }),
+  valor_final: factory.sequence(() => faker.datatype.float({ max: 300, min: 50 })),
   data_inicio: factory.sequence(() => moment().format('YYYY-MM-DD HH:mm:ss')),
   data_fim: factory.sequence(() =>
     moment()
