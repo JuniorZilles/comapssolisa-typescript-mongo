@@ -9,8 +9,8 @@ import checkDefaultErrorFormat from '../../../utils/formats/ErrorFormat';
 import { RENTALRESERVEPREFIX, TOKEN } from '../../../utils/Constants';
 
 describe('src :: api :: controllers :: rental :: reserve :: delete', () => {
-  describe('GIVEN a DELETE for removing a rental car', () => {
-    describe('WHEN there is a car with the especified id and idFleet', () => {
+  describe('GIVEN a DELETE for removing a reservation', () => {
+    describe('WHEN there is a reserve with the especified id and idReserve', () => {
       let response: request.Response;
       beforeEach(async () => {
         const fleetInfo = await fleetFactory.create<RentalFleet>('RentalFleet');
