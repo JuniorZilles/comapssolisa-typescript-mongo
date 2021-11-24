@@ -23,10 +23,10 @@ factory.define('RentalReserve', RentalReserveModel, {
     return generatedCar._id?.toString() as string;
   }),
   valor_final: factory.sequence(() => faker.datatype.float({ max: 300, min: 50 })),
-  data_inicio: factory.sequence(() => moment().format('YYYY-MM-DD HH:mm:ss')),
+  data_inicio: factory.sequence(() => moment().add(3, 'days').format('YYYY-MM-DD HH:mm:ss')),
   data_fim: factory.sequence(() =>
     moment()
-      .add(faker.datatype.number({ max: 50 }), 'days')
+      .add(faker.datatype.number({ max: 50, min: 4 }), 'days')
       .format('YYYY-MM-DD HH:mm:ss')
   )
 });

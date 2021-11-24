@@ -17,7 +17,7 @@ import {
 import { checkDefaultRentalReserveFormat } from '../../../utils/formats/RentalReserveFormat';
 
 describe('src :: api :: controllers :: rental :: reserve :: create', () => {
-  describe('GIVEN a call to create a new rental car', () => {
+  describe('GIVEN POST to create a reserve', () => {
     describe('WHEN every validation is meth', () => {
       let response: request.Response;
       let rentalReserve: RentalReserve;

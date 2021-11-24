@@ -36,24 +36,31 @@ class RentalReserveService {
     payload.data_fim = toDate(payload.data_fim as string);
     await validateOnUpdateRentalReserve(idReserve, payload, userInfo);
     payload.valor_final = await this.calculatePrice(id, payload);
-    const result = await RentalReserveRepository.update(id, payload);
+    const result = await RentalReserveRepository.updateReserve(id, idReserve, payload);
+    this.checkIfIsDefined(result, id, idReserve);
     return result;
   }
 
+  private checkIfIsDefined(result: RentalReserve, id: string, idReserve: string): void {
+    if (!result) {
+      throw new NotFound(`id: ${id} - idReserve: ${idReserve}`);
+    }
+  }
+
   async delete(id: string, idReserve: string) {
-    const result = await RentalReserveRepository.delete(id);
+    const result = await RentalReserveRepository.deleteReserve(id, idReserve);
+    this.checkIfIsDefined(result, id, idReserve);
     return result;
   }
 
   async getById(id: string, idReserve: string) {
-    const result = await RentalReserveRepository.findById(id);
-    if (!result) {
-      throw new NotFound(id);
-    }
+    const result = await RentalReserveRepository.findReserveById(id, idReserve);
+    this.checkIfIsDefined(result, id, idReserve);
     return result;
   }
 
   async getAll(id: string, payload: RentalReserveSearch) {
+    payload.id_locadora = id;
     const result = await RentalReserveRepository.findAll(payload);
     return result;
   }

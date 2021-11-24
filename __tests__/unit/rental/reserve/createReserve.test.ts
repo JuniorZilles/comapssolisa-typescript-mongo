@@ -9,7 +9,7 @@ import factory from '../../../utils/factorys/RentalReserveFactory';
 import fleetFactory from '../../../utils/factorys/RentalFleetFactory';
 
 describe('src :: api :: services :: rental :: reserve :: create', () => {
-  describe('GIVEN a POST to create a reservation', () => {
+  describe('GIVEN a call to create a reservation', () => {
     describe('WHEN every validation is meth', () => {
       let generatedRentalReserve: RentalReserve;
       let createdRentalReserve: RentalReserve;

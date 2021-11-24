@@ -37,10 +37,7 @@ class RentalReserveController {
     try {
       const { id, idReserve } = req.params;
       const result = await RentalReserveService.update(id, idReserve, req.body, req.userInfo);
-      if (result) {
-        return res.status(200).json(serializeRentalReserve(result));
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      return res.status(200).json(serializeRentalReserve(result));
     } catch (e) {
       return next(e);
     }
@@ -49,11 +46,8 @@ class RentalReserveController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idReserve } = req.params;
-      const removed = await RentalReserveService.delete(id, idReserve);
-      if (removed) {
-        return res.status(204).end();
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      await RentalReserveService.delete(id, idReserve);
+      return res.status(204).end();
     } catch (e) {
       return next(e);
     }

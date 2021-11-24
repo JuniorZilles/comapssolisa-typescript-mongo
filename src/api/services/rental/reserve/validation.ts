@@ -28,6 +28,18 @@ const checkDays = ({ data_inicio, data_fim }: RentalReserve): void => {
   if (!before) {
     throw new InvalidValue('data_inicio', 'The field data_inicio should be before data_fim');
   }
+  const beforeToday = moment().isSameOrBefore(data_inicio, 'days');
+  if (!beforeToday) {
+    throw new InvalidValue('data_inicio', 'The field data_inicio should be before today');
+  }
+};
+
+const checkIfNotDueForTomorrow = async ({ id_locadora }: RentalReserve, idReserve?: string) => {
+  const result = await RentalReserveRepository.findReserveById(id_locadora as string, idReserve as string);
+  const difference = moment(result.data_inicio).diff(moment(), 'days', false);
+  if (difference < 2) {
+    throw new InvalidValue('Bad Request', `Reserve is due to next day, is not allowed to update`);
+  }
 };
 
 const checkIfAlreadyReserved = async (
@@ -54,21 +66,22 @@ const checkIfHabilitado = ({ habilitado, email }: UserInfo) => {
   }
 };
 
-export const validateOnCreateRentalReserve = async (fleet: RentalReserve, userInfo: UserInfo): Promise<void> => {
-  checkDays(fleet);
+export const validateOnCreateRentalReserve = async (reserve: RentalReserve, userInfo: UserInfo): Promise<void> => {
+  checkDays(reserve);
   checkIfHabilitado(userInfo);
-  await checkIfValidRental(fleet);
-  await checkIfValidCar(fleet);
-  await checkIfAlreadyReserved(fleet);
+  await checkIfValidRental(reserve);
+  await checkIfValidCar(reserve);
+  await checkIfAlreadyReserved(reserve);
 };
 export const validateOnUpdateRentalReserve = async (
   idReserve: string,
-  fleet: RentalReserve,
+  reserve: RentalReserve,
   userInfo: UserInfo
 ): Promise<void> => {
-  checkDays(fleet);
+  checkDays(reserve);
   checkIfHabilitado(userInfo);
-  await checkIfValidRental(fleet);
-  await checkIfValidCar(fleet);
-  await checkIfAlreadyReserved(fleet, idReserve);
+  await checkIfValidRental(reserve);
+  await checkIfNotDueForTomorrow(reserve, idReserve);
+  await checkIfValidCar(reserve);
+  await checkIfAlreadyReserved(reserve, idReserve);
 };
