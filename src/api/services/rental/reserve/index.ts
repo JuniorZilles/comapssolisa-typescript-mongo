@@ -4,7 +4,7 @@ import { RentalReserveSearch } from '@interfaces/rental/reserve/RentalReserveSea
 import { UserInfo } from '@interfaces/UserInfo';
 import RentalFleetRepository from '@repositories/RentalFleetRepository';
 import RentalReserveRepository from '@repositories/RentalReserveRepository';
-import { toDate } from '@utils/transform';
+import { toDate, toISOString } from '@utils/transform';
 import moment from 'moment';
 import { validateOnCreateRentalReserve, validateOnUpdateRentalReserve } from './validation';
 
@@ -61,6 +61,12 @@ class RentalReserveService {
 
   async getAll(id: string, payload: RentalReserveSearch) {
     payload.id_locadora = id;
+    if (payload.data_fim) {
+      payload.data_fim = toISOString(payload.data_fim as string);
+    }
+    if (payload.data_inicio) {
+      payload.data_inicio = toISOString(payload.data_inicio as string);
+    }
     const result = await RentalReserveRepository.findAll(payload);
     return result;
   }
