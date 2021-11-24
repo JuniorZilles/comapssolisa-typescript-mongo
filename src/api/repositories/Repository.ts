@@ -26,7 +26,7 @@ class Repository<Query extends Pagination, Content> {
   }
 
   async delete(id: string): Promise<Content> {
-    const result = (await this.model.findByIdAndDelete(id).exec()) as Content;
+    const result = (await this.model.findByIdAndDelete(id)) as Content;
     return result;
   }
 
@@ -35,11 +35,9 @@ class Repository<Query extends Pagination, Content> {
   }
 
   async update(id: string, payload: Content): Promise<Content> {
-    return (await this.model
-      .findByIdAndUpdate(id, payload, {
-        returnOriginal: false
-      })
-      .exec()) as Content;
+    return (await this.model.findByIdAndUpdate(id, payload, {
+      returnOriginal: false
+    })) as Content;
   }
 }
 

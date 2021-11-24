@@ -105,5 +105,33 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
         expect(body[0].description).toBe('Conflict');
       });
     });
+
+    describe('WHEN a rental id is invalid', () => {
+      let response: request.Response;
+      beforeEach(async () => {
+        const result = await factory.create<RentalFleet>('RentalFleet');
+        const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        response = await request(app)
+          .put(`${RENTALFLEETPREFIX.replace('{id}', '23')}/${result._id?.toString()}`)
+          .send({ id_carro, status, valor_diaria, placa });
+      });
+
+      test('THEN it should return status 400 for validation error', async () => {
+        expect(response.status).toBe(400);
+      });
+
+      test('THEN it should return a body with the especified error format', async () => {
+        checkDefaultErrorFormat(response.body);
+      });
+
+      test('THEN it should return a body with invalid id error', async () => {
+        const { body } = response;
+        expect(body).toHaveLength(2);
+        expect(body[0].name).toBe('"id" length must be 24 characters long');
+        expect(body[0].description).toBe('id');
+        expect(body[1].name).toBe('Invalid Id');
+        expect(body[1].description).toBe('id');
+      });
+    });
   });
 });

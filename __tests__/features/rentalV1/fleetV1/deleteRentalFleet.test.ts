@@ -7,7 +7,7 @@ import checkDefaultErrorFormat from '../../../utils/formats/ErrorFormat';
 import { RENTALFLEETPREFIX } from '../../../utils/Constants';
 
 describe('src :: api :: controllers :: rental :: fleet :: delete', () => {
-  describe('GIVEN a call to delete a rental car', () => {
+  describe('GIVEN a DELETE for removing a rental car', () => {
     describe('WHEN there is a car with the especified id and idFleet', () => {
       let response: request.Response;
       beforeEach(async () => {

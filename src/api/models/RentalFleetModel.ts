@@ -23,4 +23,5 @@ RentalFleetSchema.pre('findOneAndUpdate', async function onSave(next) {
   this.set('dataAtualizacao', new Date());
   next();
 });
+
 export default mongoose.model<RentalFleet>('RentalFleet', RentalFleetSchema);

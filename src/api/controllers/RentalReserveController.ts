@@ -6,7 +6,7 @@ class RentalReserveController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const result = await RentalReserveService.create(id, req.body);
+      const result = await RentalReserveService.create(id, req.body, req.userInfo);
       return res.status(201).json(serializeRentalReserve(result));
     } catch (e) {
       return next(e);
@@ -36,11 +36,8 @@ class RentalReserveController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idReserve } = req.params;
-      const result = await RentalReserveService.update(id, idReserve, req.body);
-      if (result) {
-        return res.status(200).json(serializeRentalReserve(result));
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      const result = await RentalReserveService.update(id, idReserve, req.body, req.userInfo);
+      return res.status(200).json(serializeRentalReserve(result));
     } catch (e) {
       return next(e);
     }
@@ -49,11 +46,8 @@ class RentalReserveController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, idReserve } = req.params;
-      const removed = await RentalReserveService.delete(id, idReserve);
-      if (removed) {
-        return res.status(204).end();
-      }
-      return res.status(400).send([{ description: 'Bad Request', name: 'Something went wrong!' }]);
+      await RentalReserveService.delete(id, idReserve);
+      return res.status(204).end();
     } catch (e) {
       return next(e);
     }

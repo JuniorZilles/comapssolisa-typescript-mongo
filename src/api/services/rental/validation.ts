@@ -21,10 +21,8 @@ const checkIfIsValidCNPJ = (result: Rental, cnpj: string): void => {
 
 export const checkIfExistsCNPJ = async (cnpj: string, id: string | undefined = undefined): Promise<void> => {
   const result = await RentalRepository.getRentalByCNPJ(cnpj, id);
-  if (result) {
-    if (result.id !== id) {
-      checkIfIsValidCNPJ(result, cnpj);
-    }
+  if (result && result.id !== id) {
+    checkIfIsValidCNPJ(result, cnpj);
   }
 };
 
