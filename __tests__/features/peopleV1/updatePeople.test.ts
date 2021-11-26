@@ -67,8 +67,8 @@ describe('src :: api :: controllers :: people :: update', () => {
     expect(response.status).toBe(400);
     checkDefaultErrorFormat(body);
     expect(body).toHaveLength(1);
-    expect(body[0].description).toBe('Bad Request');
-    expect(body[0].name).toBe("The field 'data_nascimento' is out of the standard format");
+    expect(body[0].description).toBe('data_nascimento');
+    expect(body[0].name).toBe('Age is less than 18');
   });
 
   test('should return 400 with errors if cpf is invalid on update', async () => {

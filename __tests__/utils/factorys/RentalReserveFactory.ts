@@ -22,7 +22,7 @@ factory.define('RentalReserve', RentalReserveModel, {
     const generatedCar = await fleetFactory.create<RentalFleet>('RentalFleet');
     return generatedCar._id?.toString() as string;
   }),
-  valor_final: factory.sequence(() => faker.datatype.float({ max: 300, min: 50 })),
+  valor_final: factory.sequence(() => faker.finance.amount(50, 300, 2)),
   data_inicio: factory.sequence(() => moment().add(3, 'days').format('YYYY-MM-DD HH:mm:ss')),
   data_fim: factory.sequence(() =>
     moment()

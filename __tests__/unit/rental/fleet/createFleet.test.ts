@@ -12,7 +12,8 @@ describe('src :: api :: services :: rental :: car :: create', () => {
       let createdRentalFleet: RentalFleet;
       beforeEach(async () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
-        generatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        generatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria: value, placa };
         createdRentalFleet = await RentalFleetService.create(id_locadora?.toString() as string, generatedRentalFleet);
       });
 
@@ -33,10 +34,11 @@ describe('src :: api :: services :: rental :: car :: create', () => {
       test('THEN should throw a invalid value', async () => {
         try {
           const { id_locadora, id_carro, status, valor_diaria, placa } = generated;
+          const value = valor_diaria?.toLocaleString('pt-BR') as string;
           await RentalFleetService.create(id_locadora as string, {
             id_carro: id_carro.toString() as string,
             status,
-            valor_diaria,
+            valor_diaria: value,
             placa
           });
         } catch (e) {
@@ -55,10 +57,11 @@ describe('src :: api :: services :: rental :: car :: create', () => {
       test('THEN should throw a not found error', async () => {
         try {
           const { id_locadora, status, valor_diaria, placa } = generated;
+          const value = valor_diaria?.toLocaleString('pt-BR') as string;
           await RentalFleetService.create(id_locadora as string, {
             id_carro: '6171508962f47a7a91938d30',
             status,
-            valor_diaria,
+            valor_diaria: value,
             placa
           });
         } catch (e) {
@@ -77,10 +80,11 @@ describe('src :: api :: services :: rental :: car :: create', () => {
       test('THEN should throw a not found error', async () => {
         try {
           const { id_carro, status, valor_diaria, placa } = generated;
+          const value = valor_diaria?.toLocaleString('pt-BR') as string;
           await RentalFleetService.create('6171508962f47a7a91938d30', {
             id_carro: id_carro.toString() as string,
             status,
-            valor_diaria,
+            valor_diaria: value,
             placa
           });
         } catch (e) {

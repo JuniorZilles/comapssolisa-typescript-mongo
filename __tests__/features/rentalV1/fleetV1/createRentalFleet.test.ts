@@ -14,7 +14,8 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
       let generatedRentalFleet: RentalFleet;
       beforeEach(async () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
-        generatedRentalFleet = { id_carro: id_carro.toString(), status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        generatedRentalFleet = { id_carro: id_carro.toString(), status, valor_diaria: value, placa };
         response = await request(app)
           .post(RENTALFLEETPREFIX.replace('{id}', id_locadora?.toString() as string))
           .send(generatedRentalFleet);
@@ -39,9 +40,10 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
       let response: request.Response;
       beforeEach(async () => {
         const { id_locadora, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .post(RENTALFLEETPREFIX.replace('{id}', id_locadora?.toString() as string))
-          .send({ status, valor_diaria, placa });
+          .send({ status, valor_diaria: value, placa });
       });
       test('THEN it should return status 400 for validation error', async () => {
         expect(response.status).toBe(400);
@@ -63,9 +65,10 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet', {
           placa: '    '
         });
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .post(RENTALFLEETPREFIX.replace('{id}', id_locadora?.toString() as string))
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
       });
       test('THEN it should return status 400 for validation error', async () => {
         expect(response.status).toBe(400);
@@ -88,9 +91,10 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet', {
           placa: 'KFA0205'
         });
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .post(RENTALFLEETPREFIX.replace('{id}', id_locadora?.toString() as string))
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
       });
       test('THEN it should return status 400 for validation error', async () => {
         expect(response.status).toBe(400);
@@ -111,9 +115,10 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
       beforeEach(async () => {
         const result = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(`${RENTALFLEETPREFIX.replace('{id}', '23')}/${result._id?.toString()}`)
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
       });
 
       test('THEN it should return status 400 for validation error', async () => {

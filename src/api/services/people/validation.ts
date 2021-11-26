@@ -32,7 +32,7 @@ export const isOlderAndTransfromToDateString = (data_nascimento: string): Date =
   const birthday = moment(data_nascimento, 'DD/MM/YYYY');
   const age = moment().diff(birthday, 'years', false);
   if (age < 18) {
-    throw new InvalidValue('Bad Request', 'data_nascimento', false);
+    throw new InvalidValue('data_nascimento', 'Age is less than 18');
   }
   return birthday.toDate();
 };

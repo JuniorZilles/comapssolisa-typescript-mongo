@@ -12,7 +12,7 @@ factory.define('RentalFleet', RentalCarModel, {
     return generatedCar._id?.toString() as string;
   }),
   status: factory.sequence(() => faker.random.arrayElement(['disponível', 'indisponível'])),
-  valor_diaria: factory.sequence(() => faker.datatype.float({ max: 300, min: 50 })),
+  valor_diaria: factory.sequence(() => faker.finance.amount(50, 300, 2)),
   id_locadora: factory.sequence(async () => {
     const generatedRental = await rentalFactory.create<Rental>('Rental');
     return generatedRental._id?.toString() as string;

@@ -24,6 +24,7 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
           `${RENTALFLEETPREFIX.replace('{id}', baseGenerated.id_locadora?.toString() as string)}`
         );
       });
+
       test('THEN it should return status code 200', async () => {
         expect(response.status).toBe(200);
       });
@@ -31,7 +32,8 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
       test('THEN it should match de defined body format', async () => {
         checkDefaultRentalsFleetFormat(response.body);
       });
-      test('THEN it should return all the 5 existing registers', async () => {
+
+      test('THEN it should return all the 10 existing registers', async () => {
         const { body } = response;
         expect(body.frota).toHaveLength(10);
         expect(body.limit).toEqual(100);
@@ -43,6 +45,7 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
         });
       });
     });
+
     describe('WHEN searched passing limit=5', () => {
       let response: request.Response;
       let baseGenerated: RentalFleet;
@@ -59,6 +62,7 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
           `${RENTALFLEETPREFIX.replace('{id}', baseGenerated.id_locadora?.toString() as string)}?limit=5`
         );
       });
+
       test('THEN it should return status code 200', async () => {
         expect(response.status).toBe(200);
       });
@@ -79,6 +83,7 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
         });
       });
     });
+
     describe('WHEN searched passing limit=5 and offset=2', () => {
       let response: request.Response;
       let baseGenerated: RentalFleet;
@@ -158,16 +163,9 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
 
     describe('WHEN searched passing empty status', () => {
       let response: request.Response;
-      let baseGenerated: RentalFleet;
 
       beforeEach(async () => {
-        baseGenerated = await factory.create<RentalFleet>('RentalFleet', { status: 'disponível' });
-        await factory.createMany<RentalFleet>('RentalFleet', 9, {
-          status: 'disponível',
-          id_locadora: baseGenerated.id_locadora
-        });
-        // create 5 with random id_locadora to check if it will be filtered
-        await factory.createMany<RentalFleet>('RentalFleet', 5, { status: 'disponível' });
+        const baseGenerated = await factory.create<RentalFleet>('RentalFleet', { status: 'disponível' });
         response = await request(app).get(
           `${RENTALFLEETPREFIX.replace('{id}', baseGenerated.id_locadora?.toString() as string)}?status=`
         );
@@ -193,16 +191,8 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
 
     describe('WHEN trying to get with a rental ID that is invalid', () => {
       let response: request.Response;
-      let baseGenerated: RentalFleet;
 
       beforeEach(async () => {
-        baseGenerated = await factory.create<RentalFleet>('RentalFleet', { status: 'disponível' });
-        await factory.createMany<RentalFleet>('RentalFleet', 9, {
-          status: 'disponível',
-          id_locadora: baseGenerated.id_locadora
-        });
-        // create 5 with random id_locadora to check if it will be filtered
-        await factory.createMany<RentalFleet>('RentalFleet', 5, { status: 'disponível' });
         response = await request(app).get(`${RENTALFLEETPREFIX.replace('{id}', '23')}`);
       });
 
@@ -226,16 +216,9 @@ describe('src :: api :: controllers :: rental :: fleet :: getAll', () => {
 
     describe('WHEN searched passing invalid element', () => {
       let response: request.Response;
-      let baseGenerated: RentalFleet;
 
       beforeEach(async () => {
-        baseGenerated = await factory.create<RentalFleet>('RentalFleet', { status: 'disponível' });
-        await factory.createMany<RentalFleet>('RentalFleet', 9, {
-          status: 'disponível',
-          id_locadora: baseGenerated.id_locadora
-        });
-        // create 5 with random id_locadora to check if it will be filtered
-        await factory.createMany<RentalFleet>('RentalFleet', 5, { status: 'disponível' });
+        const baseGenerated = await factory.create<RentalFleet>('RentalFleet', { status: 'disponível' });
         response = await request(app).get(
           `${RENTALFLEETPREFIX.replace('{id}', baseGenerated.id_locadora?.toString() as string)}?motor=v12`
         );

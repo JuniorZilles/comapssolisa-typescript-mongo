@@ -36,7 +36,7 @@ describe('src :: api :: controllers :: rental :: fleet :: getById', () => {
         expect(body.id_carro).toBe(generatedRentalFleet.id_carro?.toString());
         expect(body.placa).toBe(generatedRentalFleet.placa);
         expect(body.status).toBe(generatedRentalFleet.status);
-        expect(body.valor_diaria).toBe(generatedRentalFleet.valor_diaria);
+        expect(body.valor_diaria).toBe(generatedRentalFleet.valor_diaria.toLocaleString('pt-BR'));
       });
     });
 

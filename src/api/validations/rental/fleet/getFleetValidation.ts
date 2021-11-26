@@ -2,14 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 
 import Joi from 'joi';
 import transformToArray from '@validations/utils/transformJoiResult';
-import { idRegex } from '@validations/utils/regex';
+import { idRegex, moneyRegex } from '@validations/utils/regex';
 
 export default async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
   try {
     const schema = Joi.object({
       id_carro: Joi.string().length(24).trim().regex(idRegex).message('Invalid id_carro'),
       status: Joi.string().trim().valid('disponível', 'indisponível'),
-      valor_diaria: Joi.number(),
+      valor_diaria: Joi.string().trim().regex(moneyRegex).message('Invalid valor_diaria'),
       placa: Joi.string().trim(),
       limit: Joi.number(),
       offset: Joi.number()
