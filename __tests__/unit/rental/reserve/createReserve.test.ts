@@ -9,7 +9,7 @@ import factory from '../../../utils/factorys/RentalReserveFactory';
 import fleetFactory from '../../../utils/factorys/RentalFleetFactory';
 
 describe('src :: api :: services :: rental :: reserve :: create', () => {
-  describe('GIVEN a call to create a reservation', () => {
+  describe('GIVEN a call to create a reservation with a empty database', () => {
     describe('WHEN every validation is meth', () => {
       let generatedRentalReserve: RentalReserve;
       let createdRentalReserve: RentalReserve;
@@ -247,6 +247,41 @@ describe('src :: api :: services :: rental :: reserve :: create', () => {
           expect(e).toBeInstanceOf(NotFound);
           expect((<NotFound>e).description).toBe('Not Found');
           expect((<NotFound>e).message).toBe('Value id_locadora: 6171508962f47a7a91938d30 not found');
+        }
+      });
+    });
+
+    describe('WHEN creating a reservation with a beggining date before the current date', () => {
+      let generatedRentalReserve: RentalReserve;
+      let id_locadora: string;
+      let user: string;
+      beforeEach(async () => {
+        const { data_fim, id_user } = await factory.build<RentalReserve>('RentalReserve');
+        const generateFleet = await fleetFactory.create<RentalFleet>('RentalFleet');
+        const fleetInfo = {
+          id_carro: generateFleet._id?.toString() as string,
+          id_locadora: generateFleet.id_locadora?.toString() as string
+        };
+        user = id_user?.toString() as string;
+        id_locadora = fleetInfo.id_locadora;
+        generatedRentalReserve = {
+          id_carro: fleetInfo.id_carro,
+          data_fim: moment(data_fim, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
+          data_inicio: moment(moment().add(-2, 'days'), 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY')
+        };
+      });
+
+      test('THEN it should throw a invalid field on data_inicio', async () => {
+        try {
+          await RentalReserveService.create(id_locadora, generatedRentalReserve, {
+            id: user?.toString() as string,
+            email: 'mail@mail.com',
+            habilitado: 'sim'
+          });
+        } catch (e) {
+          expect(e).toBeInstanceOf(InvalidValue);
+          expect((<InvalidValue>e).description).toBe('data_inicio');
+          expect((<InvalidValue>e).message).toBe(`The field data_inicio should not be before today`);
         }
       });
     });

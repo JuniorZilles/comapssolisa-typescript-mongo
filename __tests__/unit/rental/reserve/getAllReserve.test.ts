@@ -31,7 +31,7 @@ describe('src :: api :: services :: rental :: reserve :: getAll', () => {
       });
     });
 
-    describe('WHEN searched with a date', () => {
+    describe('WHEN searched with data_inicio', () => {
       let getted: Paginate<RentalReserve>;
       let baseGenerated: RentalReserve;
       const iniDate = moment().add(4, 'days').format('DD/MM/YYYY');
@@ -54,6 +54,33 @@ describe('src :: api :: services :: rental :: reserve :: getAll', () => {
         getted.docs.forEach((element) => {
           expect(element.id_locadora).toEqual(baseGenerated.id_locadora);
           expect(element.data_inicio).toEqual(date);
+        });
+      });
+    });
+
+    describe('WHEN searched with data_fim', () => {
+      let getted: Paginate<RentalReserve>;
+      let baseGenerated: RentalReserve;
+      const fimDate = moment().add(4, 'days').format('DD/MM/YYYY');
+      beforeEach(async () => {
+        baseGenerated = await factory.create<RentalReserve>('RentalReserve');
+        const date = moment(fimDate, 'DD/MM/YYYY');
+
+        await factory.createMany<RentalReserve>('RentalReserve', 10, {
+          id_locadora: baseGenerated.id_locadora?.toString(),
+          data_fim: date.toISOString()
+        });
+        getted = await RentalReserveService.getAll(baseGenerated.id_locadora?.toString() as string, {
+          data_fim: fimDate
+        });
+      });
+
+      test('THEN results all reserves that start at a especific end date', async () => {
+        expect(getted.docs).toHaveLength(10);
+        const date = moment(fimDate, 'DD/MM/YYYY').toDate();
+        getted.docs.forEach((element) => {
+          expect(element.id_locadora).toEqual(baseGenerated.id_locadora);
+          expect(element.data_fim).toEqual(date);
         });
       });
     });

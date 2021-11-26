@@ -30,7 +30,7 @@ const checkDays = ({ data_inicio, data_fim }: RentalReserve): void => {
   }
   const beforeToday = moment().isSameOrBefore(data_inicio, 'days');
   if (!beforeToday) {
-    throw new InvalidValue('data_inicio', 'The field data_inicio should be before today');
+    throw new InvalidValue('data_inicio', 'The field data_inicio should not be before today');
   }
 };
 

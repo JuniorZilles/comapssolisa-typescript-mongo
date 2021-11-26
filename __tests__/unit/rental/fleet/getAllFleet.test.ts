@@ -69,5 +69,30 @@ describe('src :: api :: services :: rental :: fleet :: getAll', () => {
         expect(getted.docs).toHaveLength(0);
       });
     });
+
+    describe('WHEN searched with a monetary field', () => {
+      let getted: Paginate<RentalFleet>;
+      let baseGenerated: RentalFleet;
+      beforeEach(async () => {
+        baseGenerated = await factory.create<RentalFleet>('RentalFleet');
+        await factory.createMany<RentalFleet>('RentalFleet', 4, {
+          valor_diaria: baseGenerated.valor_diaria,
+          id_locadora: baseGenerated.id_locadora
+        });
+        // create 5 with random id_locadora to check if it will be filtered
+        await factory.createMany<RentalFleet>('RentalFleet', 5);
+        getted = await RentalFleetService.getAll(baseGenerated.id_locadora?.toString() as string, {
+          valor_diaria: baseGenerated.valor_diaria.toLocaleString('pt-BR')
+        });
+      });
+
+      test('THEN results all the cars that have the value', async () => {
+        expect(getted.docs).toHaveLength(5);
+        getted.docs.forEach((element) => {
+          expect(element.id_locadora).toEqual(baseGenerated.id_locadora);
+          expect(element.valor_diaria).toEqual(baseGenerated.valor_diaria);
+        });
+      });
+    });
   });
 });
