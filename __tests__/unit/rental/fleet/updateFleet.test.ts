@@ -13,7 +13,8 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         const result = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
-        generatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        generatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria: value, placa };
         updatedRentalFleet = await RentalFleetService.update(
           result.id_locadora?.toString() as string,
           result._id?.toString() as string,
@@ -40,7 +41,8 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet', {
           placa: 'AAA-1111'
         });
-        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria: value, placa };
 
         generatedRentalFleet = { _id: result._id, id_locadora, ...updatedRentalFleet };
       });
@@ -65,8 +67,9 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
       let updatedRentalFleet: RentalFleet;
       beforeEach(async () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         id = id_locadora?.toString() as string;
-        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria, placa };
+        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria: value, placa };
       });
       test('THEN throws a not found error', async () => {
         try {
@@ -86,7 +89,8 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
         const result = await factory.create<RentalFleet>('RentalFleet', { placa: 'AAA-1111' });
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
         idFleet = result.id_locadora?.toString() as string;
-        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria: value, placa };
       });
       test('THEN throws a not found error', async () => {
         try {
@@ -105,7 +109,8 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         const { id_locadora, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
         id = id_locadora?.toString() as string;
-        updatedRentalFleet = { id_carro: '6171508962f47a7a91938d30', status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        updatedRentalFleet = { id_carro: '6171508962f47a7a91938d30', status, valor_diaria: value, placa };
       });
       test('THEN should throw a not found error', async () => {
         try {

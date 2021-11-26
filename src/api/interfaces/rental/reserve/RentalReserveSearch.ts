@@ -6,5 +6,5 @@ export interface RentalReserveSearch extends Pagination {
   data_fim?: string;
   id_carro?: string;
   id_locadora?: string;
-  valor_final?: number;
+  valor_final?: number | string;
 }

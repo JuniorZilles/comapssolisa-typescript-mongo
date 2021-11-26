@@ -110,8 +110,8 @@ describe('src :: api :: services :: people :: update', () => {
         await PeopleService.update(personGenerated._id, tempData);
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidValue);
-        expect((<InvalidValue>e).description).toBe('Bad Request');
-        expect((<InvalidValue>e).name).toBe("The field 'data_nascimento' is out of the standard format");
+        expect((<InvalidValue>e).description).toBe('data_nascimento');
+        expect((<InvalidValue>e).name).toBe('Age is less than 18');
       }
     }
   });

@@ -7,7 +7,7 @@ export const checkDefaultRentalReserveFormat = (body): void => {
     id_user: expect.any(String),
     id_carro: expect.any(String),
     id_locadora: expect.any(String),
-    valor_final: expect.any(Number)
+    valor_final: expect.any(String)
   });
 };
 
@@ -24,7 +24,7 @@ export const checkDefaultRentalsReserveFormat = (body): void => {
         id_user: expect.any(String),
         id_carro: expect.any(String),
         id_locadora: expect.any(String),
-        valor_final: expect.any(Number)
+        valor_final: expect.any(String)
       }
     ]),
     total: expect.any(Number)

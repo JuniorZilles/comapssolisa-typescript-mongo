@@ -151,7 +151,7 @@ if you are runnig locally it should be found on `localhost:3000`
    - PUT http://localhost:3000/api/v1/car/:id
    - GET http://localhost:3000/api/v1/car/:id
    - DELETE http://localhost:3000/api/v1/car/:id
-   - PATCH http://localhost:3000/api/v1/car/:id/acessorios/:id
+   - PATCH http://localhost:3000/api/v1/car/:id/acessorios/:idAccessory
 3. people
    - POST http://localhost:3000/api/v1/people
    - GET http://localhost:3000/api/v1/people
@@ -166,6 +166,18 @@ if you are runnig locally it should be found on `localhost:3000`
    - PUT http://localhost:3000/api/v1/rental/:id
    - GET http://localhost:3000/api/v1/rental/:id
    - DELETE http://localhost:3000/api/v1/rental/:id
+6. rental fleet
+   - POST http://localhost:3000/api/v1/rental/:id/fleet
+   - GET http://localhost:3000/api/v1/rental/:id/fleet
+   - PUT http://localhost:3000/api/v1/rental/:id/fleet/:idFleet
+   - GET http://localhost:3000/api/v1/rental/:id/fleet/:idFleet
+   - DELETE http://localhost:3000/api/v1/rental/:id/fleet/:idFleet
+7. rental reserve
+   - POST http://localhost:3000/api/v1/rental/:id/reserve
+   - GET http://localhost:3000/api/v1/rental/:id/reserve
+   - PUT http://localhost:3000/api/v1/rental/:id/reserve/:idReserve
+   - GET http://localhost:3000/api/v1/rental/:id/reserve/:idReserve
+   - DELETE http://localhost:3000/api/v1/rental/:id/reserve/:idReserve
 
 ## License
 

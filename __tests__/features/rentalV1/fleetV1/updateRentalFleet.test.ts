@@ -16,7 +16,8 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         generatedRentalFleet = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
-        updateRentalFleet = { id_carro: id_carro.toString(), status, valor_diaria, placa };
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        updateRentalFleet = { id_carro: id_carro.toString(), status, valor_diaria: value, placa };
         response = await request(app)
           .put(
             `${RENTALFLEETPREFIX.replace('{id}', generatedRentalFleet.id_locadora?.toString() as string)}/${
@@ -51,13 +52,14 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         generatedRentalFleet = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(
             `${RENTALFLEETPREFIX.replace('{id}', generatedRentalFleet.id_locadora?.toString() as string)}/${
               generatedRentalFleet._id
             }`
           )
-          .send({ id_carro: id_carro.toString(), valor_diaria, placa });
+          .send({ id_carro: id_carro.toString(), valor_diaria: value, placa });
       });
 
       test('THEN it should return status 400 for validation error', async () => {
@@ -84,13 +86,14 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
         const { id_carro, valor_diaria, placa, status } = await factory.build<RentalFleet>('RentalFleet', {
           status: '    '
         });
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(
             `${RENTALFLEETPREFIX.replace('{id}', generatedRentalFleet.id_locadora?.toString() as string)}/${
               generatedRentalFleet._id
             }`
           )
-          .send({ id_carro: id_carro.toString(), valor_diaria, placa, status });
+          .send({ id_carro: id_carro.toString(), valor_diaria: value, placa, status });
       });
 
       test('THEN it should return status 400 for validation error', async () => {
@@ -119,13 +122,14 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet', {
           placa: 'KFA0205'
         });
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(
             `${RENTALFLEETPREFIX.replace('{id}', generatedRentalFleet.id_locadora?.toString() as string)}/${
               generatedRentalFleet._id
             }`
           )
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
       });
 
       test('THEN it should return status 400 for validation error', async () => {
@@ -149,9 +153,10 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         const result = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(`${RENTALFLEETPREFIX.replace('{id}', '23')}/${result._id?.toString()}`)
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
       });
 
       test('THEN it should return status 400 for validation error', async () => {
@@ -177,9 +182,10 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         const result = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(`${RENTALFLEETPREFIX.replace('{id}', result.id_locadora?.toString() as string)}/1523`)
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
       });
 
       test('THEN it should return status 400 for validation error', async () => {
@@ -206,9 +212,10 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         const { id_locadora } = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(`${RENTALFLEETPREFIX.replace('{id}', id_locadora?.toString() as string)}/6171508962f47a7a91938d30`)
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
         cretedIdLocadora = id_locadora?.toString() as string;
       });
 
@@ -234,9 +241,10 @@ describe('src :: api :: controllers :: rental :: fleet :: update', () => {
       beforeEach(async () => {
         const result = await factory.create<RentalFleet>('RentalFleet');
         const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
+        const value = valor_diaria?.toLocaleString('pt-BR') as string;
         response = await request(app)
           .put(`${RENTALFLEETPREFIX.replace('{id}', '6171508962f47a7a91938d30')}/${result._id?.toString()}`)
-          .send({ id_carro, status, valor_diaria, placa });
+          .send({ id_carro, status, valor_diaria: value, placa });
         cretedIdFleet = result._id?.toString() as string;
       });
 

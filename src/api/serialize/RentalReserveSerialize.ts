@@ -12,6 +12,7 @@ export const serializeRentalReserve = ({
   id_locadora,
   valor_final
 }: RentalReserve): RentalReserve => {
+  const value = new Intl.NumberFormat('pt-BR').format(valor_final as number);
   return {
     _id,
     id_user,
@@ -19,7 +20,7 @@ export const serializeRentalReserve = ({
     data_fim: moment(data_fim, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY'),
     id_carro,
     id_locadora,
-    valor_final
+    valor_final: value
   };
 };
 

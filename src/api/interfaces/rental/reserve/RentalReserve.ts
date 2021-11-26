@@ -5,5 +5,5 @@ export interface RentalReserve {
   data_fim: string | Date;
   id_carro: string;
   id_locadora?: string;
-  valor_final?: number;
+  valor_final?: number | string;
 }
