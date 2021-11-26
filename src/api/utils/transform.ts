@@ -11,5 +11,5 @@ export const toDate = (date: string): Date => {
 export const toNumber = (value: string): number => {
   const cleanValue = value.replace(/[.]/g, '');
   const finalValue = cleanValue.replace(/[,]/g, '.');
-  return value ? parseFloat(finalValue) : 0;
+  return parseFloat(finalValue);
 };
