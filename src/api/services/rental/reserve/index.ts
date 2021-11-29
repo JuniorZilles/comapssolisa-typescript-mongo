@@ -26,7 +26,7 @@ class RentalReserveService {
   }
 
   private getReserveDays(ini: Date, fim: Date): number {
-    return moment(ini).diff(fim, 'days', false);
+    return moment(fim).diff(ini, 'days', false);
   }
 
   async update(id: string, idReserve: string, payload: RentalReserve, userInfo: UserInfo) {

@@ -33,7 +33,7 @@ const checkIfExistsPlate = async (
   idFleet: string | undefined = undefined
 ): Promise<void> => {
   const result = await RentalFleetRepository.validatePlate(placa);
-  if (result && result.id_locadora !== id && result._id !== idFleet) {
+  if (result && result.id_locadora?.toString() !== id && result._id?.toString() !== idFleet) {
     checkIfIsValidPlate(result, placa);
   }
 };

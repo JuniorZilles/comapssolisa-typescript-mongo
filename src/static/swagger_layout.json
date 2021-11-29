@@ -1292,7 +1292,8 @@
             "name": "valor_diaria",
             "in": "query",
             "schema": {
-              "type": "number"
+              "type": "string",
+              "example": "0,00"
             }
           },
           {
@@ -1672,7 +1673,8 @@
             "name": "valor_final",
             "in": "query",
             "schema": {
-              "type": "number"
+              "type": "string",
+              "example": "0,00"
             }
           },
           {
@@ -2000,7 +2002,8 @@
             "type": "string"
           },
           "valor_final": {
-            "type": "number"
+            "type": "string",
+            "example": "0,00"
           },
           "data_inicio": {
             "type": "string",
@@ -2055,7 +2058,8 @@
             ]
           },
           "valor_diaria": {
-            "type": "number"
+            "type": "string",
+            "example": "0,00"
           },
           "placa": {
             "type": "string"
@@ -2082,7 +2086,8 @@
             ]
           },
           "valor_diaria": {
-            "type": "number"
+            "type": "string",
+            "example": "0,00"
           },
           "placa": {
             "type": "string"

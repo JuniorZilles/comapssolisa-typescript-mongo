@@ -8,6 +8,7 @@ import { validateOnCreateRentalFleet, validateOnUpdateRentalFleet } from './vali
 class RentalFleetService {
   async create(id: string, payload: RentalFleet) {
     payload.id_locadora = id;
+    payload.placa = payload.placa.toUpperCase();
     await validateOnCreateRentalFleet(payload);
     payload.valor_diaria = toNumber(payload.valor_diaria as string);
     const result = await RentalFleetRepository.create(payload);
@@ -16,6 +17,7 @@ class RentalFleetService {
 
   async update(id: string, idFleet: string, payload: RentalFleet) {
     payload.id_locadora = id;
+    payload.placa = payload.placa.toUpperCase();
     await validateOnUpdateRentalFleet(idFleet, payload);
     payload.valor_diaria = toNumber(payload.valor_diaria as string);
     const result = await RentalFleetRepository.updateFleet(id, idFleet, payload);
@@ -45,6 +47,9 @@ class RentalFleetService {
     payload.id_locadora = id;
     if (payload.valor_diaria) {
       payload.valor_diaria = toNumber(payload.valor_diaria as string);
+    }
+    if (payload.placa) {
+      payload.placa = payload.placa.toUpperCase();
     }
     const result = await RentalFleetRepository.findAll(payload);
     return result;

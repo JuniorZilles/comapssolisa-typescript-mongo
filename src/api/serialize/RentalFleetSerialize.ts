@@ -10,7 +10,7 @@ export const serializeRentalCar = ({
   id_locadora,
   placa
 }: RentalFleet): RentalFleet => {
-  const value = new Intl.NumberFormat('pt-BR').format(valor_diaria as number);
+  const value = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(valor_diaria as number);
   return {
     _id,
     id_carro,

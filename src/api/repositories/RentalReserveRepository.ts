@@ -17,12 +17,10 @@ class RentalReserveRepository extends Repository<RentalReserveSearch, RentalRese
   ): Promise<RentalReserve> {
     let query = {
       id_locadora,
+      id_carro,
       $or: [
-        { id_carro },
         { data_inicio: { $lte: data_inicio }, data_fim: { $gte: data_fim } },
-        { data_inicio: { $lte: data_inicio }, data_fim: { $lte: data_fim } },
         { data_inicio: { $lte: data_inicio }, data_fim },
-        { data_inicio: { $gte: data_inicio }, data_fim: { $gte: data_fim } },
         { data_inicio: { $gte: data_inicio }, data_fim: { $lte: data_fim } },
         { data_inicio: { $gte: data_inicio }, data_fim },
         { data_inicio, data_fim: { $gte: data_fim } },

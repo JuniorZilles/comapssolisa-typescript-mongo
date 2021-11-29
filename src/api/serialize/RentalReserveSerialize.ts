@@ -12,7 +12,7 @@ export const serializeRentalReserve = ({
   id_locadora,
   valor_final
 }: RentalReserve): RentalReserve => {
-  const value = new Intl.NumberFormat('pt-BR').format(valor_final as number);
+  const value = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(valor_final as number);
   return {
     _id,
     id_user,
