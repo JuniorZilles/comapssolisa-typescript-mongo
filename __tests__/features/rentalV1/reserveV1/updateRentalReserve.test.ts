@@ -115,7 +115,9 @@ describe('src :: api :: controllers :: rental :: reserve :: update', () => {
         };
         await factory.create<RentalReserve>('RentalReserve', {
           id_carro: fleetInfo.id_carro,
-          id_locadora: fleetInfo.id_locadora
+          id_locadora: fleetInfo.id_locadora,
+          data_fim,
+          data_inicio
         });
         const { _id } = await factory.create<RentalReserve>('RentalReserve', {
           id_locadora: fleetInfo.id_locadora
@@ -154,11 +156,13 @@ describe('src :: api :: controllers :: rental :: reserve :: update', () => {
           id_locadora: generateFleet.id_locadora?.toString() as string
         };
         await factory.create<RentalReserve>('RentalReserve', {
-          id_user: USERDATANOTHABILTADO.id,
-          id_locadora: fleetInfo.id_locadora
+          id_user: USERDATAHABILTADO.id,
+          id_locadora: fleetInfo.id_locadora,
+          data_fim,
+          data_inicio
         });
         const { _id } = await factory.create<RentalReserve>('RentalReserve', {
-          id_user: USERDATANOTHABILTADO.id,
+          id_user: USERDATAHABILTADO.id,
           id_locadora: fleetInfo.id_locadora
         });
         response = await request(app)

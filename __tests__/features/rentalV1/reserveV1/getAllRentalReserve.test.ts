@@ -281,7 +281,9 @@ describe('src :: api :: controllers :: rental :: reserve :: getAll', () => {
         await factory.createMany<RentalReserve>('RentalReserve', 9, {
           id_locadora: baseGenerated.id_locadora
         });
-        value = baseGenerated.valor_final?.toLocaleString('pt-BR') as string;
+        value = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(
+          baseGenerated.valor_final as number
+        );
         response = await request(app)
           .get(
             `${RENTALRESERVEPREFIX.replace(

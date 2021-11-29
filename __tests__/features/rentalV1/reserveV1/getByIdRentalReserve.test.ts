@@ -52,7 +52,10 @@ describe('src :: api :: controllers :: rental :: reserve :: getById', () => {
         expect(body.data_inicio).toBe(
           moment(generatedRentalReserve.data_inicio, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY')
         );
-        expect(body.valor_final).toBe(generatedRentalReserve.valor_final?.toLocaleString('pt-BR'));
+        const value = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(
+          generatedRentalReserve.valor_final as number
+        );
+        expect(body.valor_final).toBe(value);
       });
     });
 

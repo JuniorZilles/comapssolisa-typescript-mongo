@@ -14,7 +14,7 @@ describe('src :: api :: controllers :: rental :: fleet :: create', () => {
       let generatedRentalFleet: RentalFleet;
       beforeEach(async () => {
         const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet');
-        const value = valor_diaria?.toLocaleString('pt-BR') as string;
+        const value = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(valor_diaria as number);
         generatedRentalFleet = { id_carro: id_carro.toString(), status, valor_diaria: value, placa };
         response = await request(app)
           .post(RENTALFLEETPREFIX.replace('{id}', id_locadora?.toString() as string))
