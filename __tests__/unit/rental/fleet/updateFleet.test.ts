@@ -38,18 +38,18 @@ describe('src :: api :: services :: rental :: fleet :: update', () => {
       let updatedRentalFleet: RentalFleet;
       beforeEach(async () => {
         const result = await factory.create<RentalFleet>('RentalFleet', { placa: 'AAA-1111' });
-        const { id_locadora, id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet', {
+        const { id_carro, status, valor_diaria, placa } = await factory.build<RentalFleet>('RentalFleet', {
           placa: 'AAA-1111'
         });
         const value = valor_diaria?.toLocaleString('pt-BR') as string;
-        updatedRentalFleet = { id_carro: id_carro.toString() as string, status, valor_diaria: value, placa };
+        updatedRentalFleet = { id_carro, status, valor_diaria: value, placa };
 
-        generatedRentalFleet = { _id: result._id, id_locadora, ...updatedRentalFleet };
+        generatedRentalFleet = { _id: result._id, id_locadora: result.id_locadora?.toString(), ...updatedRentalFleet };
       });
 
       test('THEN should throw a invalid value', async () => {
         try {
-          updatedRentalFleet = await RentalFleetService.update(
+          await RentalFleetService.update(
             generatedRentalFleet.id_locadora?.toString() as string,
             generatedRentalFleet._id?.toString() as string,
             updatedRentalFleet
