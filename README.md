@@ -9,6 +9,8 @@ Development of the first stage of the API Compassolisa
 [![GitHub forks](https://img.shields.io/github/forks/JuniorZilles/projeto_final.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/JuniorZilles/projeto_final/network/)
 [![GitHub followers](https://img.shields.io/github/followers/JuniorZilles.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/JuniorZilles?tab=followers)
 
+## Info
+
 <p align="center">
    <img src="http://img.shields.io/static/v1?label=License&message=MIT&color=red&style=for-the-badge"/>
    <img src="http://img.shields.io/static/v1?label=Node&message=14.18.1&color=green&style=for-the-badge&logo=node.js"/>
@@ -17,6 +19,11 @@ Development of the first stage of the API Compassolisa
    <img src="http://img.shields.io/static/v1?label=express&message=4.17.1&color=blue&style=for-the-badge&logo=express"/>
    <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=yellow&style=for-the-badge"/>
 </p>
+
+## Running on 
+<a href="https://compassolisa01.herokuapp.com/api/v1/api-docs/">
+      <img src="http://img.shields.io/static/v1?label=HEROKU&message=Click here to access&color=purple&style=for-the-badge&logo=heroku"/>
+</a>
 
 ## Summary
 
