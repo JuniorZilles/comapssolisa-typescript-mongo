@@ -15,7 +15,7 @@
     "joi": "17.4.2",
     "jsonwebtoken": "9.0.0",
     "moment": "2.29.4",
-    "mongoose": "6.4.6",
+    "mongoose": "6.11.3",
     "mongoose-paginate-v2": "1.4.2",
     "swagger-ui-express": "4.1.6"
   },
